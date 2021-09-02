@@ -10,6 +10,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import "core-js/stable";
 import "regenerator-runtime/runtime"
 
+
 // import babelPolyfill from 'babel-polyfill'
 
 Vue.config.performance = true

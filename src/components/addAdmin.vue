@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="addAdmin">
     <el-button type="text" @click="dialogFormVisible = true"
       ><button class="btn btn-success">Add new Admin</button></el-button
     >
@@ -101,6 +101,7 @@ export default {
         email: "",
         phone: "",
       },
+      userToken: "",
       ruleForm: {
         pass: "",
         checkPass: "",
@@ -135,9 +136,24 @@ export default {
       this.$refs[formName].resetFields();
     },
     async adAdmin() {
-      const response = await api.addAdmin(this.addAdmin);
-      console.log(response);
+      try {
+        const token = this.userToken;
+        const response = await api.addAdmin(this.addAdmin);
+        console.log(response);
+        this.dialogFormVisible = !this.dialogFormVisible;
+        this.$message({
+          message: "New Admin Added.",
+          type: "success",
+        });
+      } catch (error) {
+        console.log(error.response.data);
+
+        this.$message.error(`${error.response.data.data}`);
+      }
     },
+  },
+  created() {
+    this.userToken = this.$store.getters.isLoggedIn;
   },
 };
 </script>
@@ -147,8 +163,9 @@ export default {
   z-index: 0 !important;
 }
 .el-dialog {
-  width: 30% !important;
+  width: 100% !important;
 }
+
 input {
   margin-bottom: 1.5rem;
   padding: 0.5rem;
@@ -156,5 +173,11 @@ input {
 label {
   margin-bottom: 0.5rem;
   color: #000;
+}
+
+@media (min-width: 768px) {
+  .el-dialog {
+    width: 30% !important;
+  }
 }
 </style>

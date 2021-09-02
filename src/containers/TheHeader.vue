@@ -10,9 +10,10 @@
       class="ml-3 d-md-down-none"
       @click="$store.commit('toggleSidebarDesktop')"
     />
-    <CHeaderBrand class="mx-auto d-lg-none" to="/">
+
+    <!-- <CHeaderBrand class="mx-auto d-lg-none" to="/">
       <CIcon name="logo" height="48" alt="Logo" />
-    </CHeaderBrand>
+    </CHeaderBrand> -->
     <CHeaderNav class="d-md-down-none mr-auto">
       <CHeaderNavItem class="px-3">
         <CHeaderNavLink to="/dashboard"> Dashboard </CHeaderNavLink>
@@ -23,7 +24,7 @@
     </CHeaderNav>
 
     <CHeaderNav class="mr-4">
-      <CHeaderNavItem class="d-md-down-none mx-2">
+      <CHeaderNavItem class="mx-2">
         <CHeaderNavLink>
           <addAdmin />
         </CHeaderNavLink>
@@ -42,11 +43,7 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>Action 1</el-dropdown-item>
-              <el-dropdown-item
-                ><span @click="changePassword"
-                  >Change Password</span
-                ></el-dropdown-item
-              >
+              <el-dropdown-item><span>Change Password</span></el-dropdown-item>
               <el-dropdown-item
                 ><span @click="logout">Logout</span></el-dropdown-item
               >
@@ -62,6 +59,7 @@
 </template>
 
 <script>
+import store from "@/store.js";
 import addAdmin from "../components/addAdmin.vue";
 export default {
   name: "TheHeader",
@@ -71,6 +69,14 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch("logout").then(this.$router.push("/login"));
+    },
+    toggleOne() {
+      alert(99);
+    },
+
+    toggleTwo() {
+      store.commit("toggleSidebarDesktop");
+      console.log(store);
     },
   },
 };

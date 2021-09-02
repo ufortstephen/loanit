@@ -2,7 +2,9 @@
   <CRow>
     <CCol col="12" xl="12">
       <CCard>
-        <CCardHeader> Administrators </CCardHeader>
+        <!-- <CCardHeader> Administrators </CCardHeader> -->
+        <h4 class="pl-3 pt-3">Administrators {{items.length}} </h4>
+
         <CCardBody>
           <CDataTable
             hover
@@ -35,24 +37,22 @@
 </template>
 
 <script>
+import api from "../../helpers/api";
 import usersData from "./adminData";
 export default {
   name: "Users",
   data() {
     return {
-      items: usersData,
+      items: [],
       fields: [
-        { key: "id" },
+        { key: "reference" },
+        { key: "first_name" },
+        { key: "middle_name" },
+        { key: "last_name" },
+        { key: "email" },
+        { key: "phone" },
 
-        { key: "username", label: "Name", _classes: "font-weight-bold" },
-        { key: "registered" },
-        { key: "loanAmount" },
-        { key: "loanInterest" },
-
-        { key: "amountDue" },
-        { key: "dueDate" },
-
-        { key: "status" },
+        // { key: "id", label: "Name", _classes: "font-weight-bold" },
       ],
       activePage: 1,
     };
@@ -88,6 +88,16 @@ export default {
     pageChange(val) {
       this.$router.push({ query: { page: val } });
     },
+    async getAdmins() {
+      const res = await api.viewAdmins();
+      console.log(res);
+      this.items = res;
+      console.log(this.items.length)
+    },
+  },
+
+  created() {
+    this.getAdmins();
   },
 };
 </script>

@@ -3,6 +3,7 @@
     <CCol col="12" lg="12">
       <CCard>
         <CCardHeader> Administrator id: {{ $route.params.id }} </CCardHeader>
+        <!-- {{ items }} -->
         <CCardBody>
           <CDataTable
             striped
@@ -26,11 +27,12 @@ export default {
   name: "User",
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.usersOpened = from.fullPath.includes("users");
+      vm.usersOpened = from.fullPath.includes("admins");
     });
   },
   data() {
     return {
+      items: [],
       usersOpened: null,
     };
   },
@@ -60,7 +62,12 @@ export default {
     goBack() {
       this.usersOpened
         ? this.$router.go(-1)
-        : this.$router.push({ path: "/admins" });
+        : this.$router.push({ path: "/superAdmin" });
+    },
+    async getAdmins() {
+      const res = await api.viewAdmins();
+      console.log(res);
+      this.items = res;
     },
   },
 };

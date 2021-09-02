@@ -1,6 +1,10 @@
 import axios from "axios";
+import store from '@/store.js'
+
+let token = store.getters.isLoggedIn
 
 const baseUrl = "https://loan-history.herokuapp.com/"
+
 
 export default {
     async login(credentials) {
@@ -8,8 +12,19 @@ export default {
             .then(response => response.data)
     },
     async addAdmin(adminDetails) {
-        const tokenStr = this.$store.getters.isLoggedIn;
-        return axios.post(baseUrl + 'auth/add', { headers: { "Authorization": `Bearer ${tokenStr}` } }, adminDetails)
+
+        return axios.post(baseUrl + 'auth/add', adminDetails, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then(response => response.data)
+    },
+    async viewAdmins() {
+        return axios.get(baseUrl + 'auth/list', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data.data.users)
     }
 }

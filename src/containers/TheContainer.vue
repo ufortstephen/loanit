@@ -1,6 +1,10 @@
 <template>
   <div class="c-app">
-  
+    <!-- {{ userDetails }}
+    <br />
+    <br />
+    Token:
+    {{ userToken }} -->
     <TheSidebar />
     <CWrapper>
       <TheHeader />
@@ -30,6 +34,7 @@ export default {
   data() {
     return {
       userDetails: {},
+      userToken: {},
     };
   },
   methods: {
@@ -39,6 +44,7 @@ export default {
   },
   created() {
     this.userDetails = this.$store.getters.getUser;
+    this.userToken = this.$store.getters.isLoggedIn;
     if (!this.$store.getters.isLoggedIn) {
       this.$router.push("/login");
     }

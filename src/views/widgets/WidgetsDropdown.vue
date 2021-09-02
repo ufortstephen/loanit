@@ -27,7 +27,7 @@
       </CWidgetDropdown>
     </CCol>
     <CCol sm="6" lg="3">
-      <CWidgetDropdown color="info" header="9" text="Administrators">
+      <CWidgetDropdown color="info" :header="itemLength" text="Administrators">
         <template #default>
           <CDropdown
             color="transparent p-0"
@@ -152,11 +152,29 @@
 </template>
 
 <script>
+import api from "../../helpers/api";
 import { CChartLineSimple, CChartBarSimple } from "../charts/index.js";
 
 export default {
   name: "WidgetsDropdown",
   components: { CChartLineSimple, CChartBarSimple },
+  data() {
+    return {
+      items: [],
+      itemLength: ''
+    };
+  },
+  methods: {
+    async getAdmins() {
+      const res = await api.viewAdmins();
+      console.log(res);
+      this.items = res;
+     this.itemLength = res.length.toString()
+    },
+  },
+  created() {
+    this.getAdmins();
+  },
 };
 </script>
 
