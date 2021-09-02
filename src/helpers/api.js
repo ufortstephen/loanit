@@ -26,5 +26,19 @@ export default {
                 'Authorization': `Bearer ${token}`
             }
         }).then(response => response.data.data.users)
+    },
+    async addLoan(loanDetails) {
+        return axios.post(baseUrl + 'project/loan', loanDetails, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data)
+    },
+    async addLoan(loanDetails) {
+        return axios.post(baseUrl + 'project/loan', loanDetails, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data)
     }
 }

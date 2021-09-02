@@ -137,6 +137,33 @@ const Agent_Dashboard = () =>
 const agent_transactions = () =>
     import ('@/views/agentPages/agent_transactions')
 
+// Add Loan
+const add_loan = () =>
+    import ('@/adminContainer/adminComponent/addLoan')
+
+// Admin Loanees
+const loanees = () =>
+    import ('@/adminContainer/adminComponent/loanees')
+
+
+// Active Loanees
+const active_loanees = () =>
+    import ('@/adminContainer/adminComponent/active_loanees')
+
+// Due Loanees
+const due_loanees = () =>
+    import ('@/adminContainer/adminComponent/due_loanees')
+
+
+// Settled Loans
+const settled_loans = () =>
+    import ('@/adminContainer/adminComponent/settled_loans')
+
+//  Loans Calculator
+const loan_calculator = () =>
+    import ('@/adminContainer/adminComponent/loan_calculator')
+
+
 
 Vue.use(Router)
 
@@ -572,6 +599,36 @@ function configRoutes() {
                     path: 'agent_transactions',
                     name: 'agent_transactions',
                     component: agent_transactions
+                },
+                {
+                    path: 'add_loan',
+                    name: 'add_loan',
+                    component: add_loan
+                },
+                {
+                    path: 'loanees',
+                    name: 'loanees',
+                    component: loanees
+                },
+                {
+                    path: 'active_loanees',
+                    name: 'active_loanees',
+                    component: active_loanees
+                },
+                {
+                    path: 'due_loanees',
+                    name: 'due_loanees',
+                    component: due_loanees
+                },
+                {
+                    path: 'settled_loans',
+                    name: 'settled_loans',
+                    component: settled_loans
+                },
+                {
+                    path: 'loan_calculator',
+                    name: 'loan_calculator',
+                    component: loan_calculator
                 },
                 {
                     path: 'theme',

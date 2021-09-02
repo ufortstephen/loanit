@@ -26,6 +26,24 @@ export default {
     TheSidebar,
     TheHeader,
   },
+  data() {
+    return {
+      userDetails: {},
+      userToken: {},
+    };
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logout").then(this.$router.push("/login"));
+    },
+  },
+  created() {
+    this.userDetails = this.$store.getters.getUser;
+    this.userToken = this.$store.getters.isLoggedIn;
+    if (!this.$store.getters.isLoggedIn) {
+      this.$router.push("/login");
+    }
+  },
 };
 </script>
 

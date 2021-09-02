@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <WidgetsDropdown /> -->
-    <admins />
+    <loanees />
 
     <!-- <users class="my-5" /> -->
   </div>
@@ -10,7 +10,7 @@
 <script>
 // import MainChartExample from "./charts/MainChartExample";
 // import WidgetsDropdown from "./widgets/WidgetsDropdown";
-import admins from "../admins/admins.vue";
+import loanees from "@/adminContainer/adminComponent/loanees.vue";
 // import users from "./users/Users.vue";
 // import WidgetsBrand from "./widgets/WidgetsBrand";
 
@@ -19,7 +19,7 @@ export default {
   components: {
     // MainChartExample,
     // WidgetsDropdown,
-    admins,
+    loanees,
     // users,
     // WidgetsBrand,
   },

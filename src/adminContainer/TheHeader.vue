@@ -39,6 +39,22 @@
           <CIcon name="cil-list" />
         </CHeaderNavLink>
       </CHeaderNavItem>
+      <CHeaderNavItem class="d-md-down-none mx-2">
+        <CHeaderNavLink>
+           <el-dropdown>
+            <span class="el-dropdown-link">
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>Action 1</el-dropdown-item>
+              <el-dropdown-item><span>Change Password</span></el-dropdown-item>
+              <el-dropdown-item
+                ><span @click="logout">Logout</span></el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </el-dropdown>
+        </CHeaderNavLink>
+      </CHeaderNavItem>
     </CHeaderNav>
     <CSubheader class="px-3">
       <CBreadcrumbRouter class="border-0 mb-0" />
@@ -53,5 +69,10 @@ export default {
   components: {
     addAdmin,
   },
+  methods: {
+     logout() {
+      this.$store.dispatch("logout").then(this.$router.push("/login"));
+    },
+  }
 };
 </script>

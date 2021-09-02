@@ -121,7 +121,11 @@ export default {
         this.open2();
 
         // Push router to SuperAdmin Dashboard
-        this.$router.push("/superAdmin");
+        if (response.data.user.email === "super@gmail.com") {
+          this.$router.push("/superAdmin");
+        } else {
+          this.$router.push("/agentAdmin");
+        }
       } catch (err) {
         // Show error message
         this.open4();
