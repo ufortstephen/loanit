@@ -49,7 +49,7 @@
             type="primary"
             @click="submitForm('dynamicValidateForm')"
             class="sign__in--btn w-100"
-            >Login</el-button
+            >{{login_text}}</el-button
           >
         </el-form-item>
       </el-form>
@@ -73,14 +73,15 @@ export default {
     };
 
     return {
+      login_text: "Login",
       // Form input models
       dynamicValidateForm: {
         email: "",
         pass: "",
       },
-
+      
       // Ui Rules
-      rules: {
+    rules: {
         pass: [{ validator: validatePass, trigger: "blur" }],
       },
     };
@@ -101,6 +102,7 @@ export default {
     async login() {
       try {
         // making api call with defined parameters
+        this.login_text = "Verifying......"
         const response = await api.login({
           email: this.dynamicValidateForm.email,
           password: this.dynamicValidateForm.pass,

@@ -132,12 +132,11 @@ export default {
     },
   },
   created() {
-    setTimeout(this.showLoans(), 5000);
+    setTimeout(this.showLoans(), 10000);
   },
 };
 </script>
 
 }
 
-traveler.map(amount).reduce(sum);
-// => 235;
+
