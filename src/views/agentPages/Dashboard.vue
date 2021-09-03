@@ -90,9 +90,12 @@ export default {
   },
   methods: {
     async showLoans() {
-      const res = await api.getLoans();
-
-      this.items = res;
+      try {
+        const res = await api.getLoans();
+        this.items = res;
+      } catch (error) {
+        // this.showLoans()
+      }
       this.getItem();
     },
     amount(item) {
@@ -129,7 +132,7 @@ export default {
     },
   },
   created() {
-    this.showLoans();
+    setTimeout(this.showLoans(), 5000);
   },
 };
 </script>

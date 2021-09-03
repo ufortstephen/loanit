@@ -161,7 +161,7 @@ export default {
   data() {
     return {
       items: [],
-      itemLength: ''
+      itemLength: "",
     };
   },
   methods: {
@@ -169,11 +169,11 @@ export default {
       const res = await api.viewAdmins();
       console.log(res);
       this.items = res;
-     this.itemLength = res.length.toString()
+      this.itemLength = res.length.toString();
     },
   },
   created() {
-    this.getAdmins();
+    setTimeout(this.getAdmins(), 10000);
   },
 };
 </script>

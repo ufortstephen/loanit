@@ -144,7 +144,7 @@ export default {
     // Successful message function
     open2() {
       this.$message({
-        message: "Congrats, this is a success message.",
+        message: "Welcome",
         type: "success",
       });
     },

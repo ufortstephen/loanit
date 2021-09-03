@@ -36,6 +36,12 @@
     left: 55% !important;
 }
 
+.sign__in--btn {
+    background-color: #3c4b64 !important;
+    color: #fff !important;
+    width: 100% !important;
+}
+
 @media(min-width: 768px) {
     .form {
         width: 35%;
