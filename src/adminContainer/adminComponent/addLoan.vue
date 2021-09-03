@@ -236,8 +236,8 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="">Repayment Days</label>
-              
-                 <input
+
+                <input
                   type="number"
                   name=""
                   id=""
@@ -253,10 +253,12 @@
       </form>
     </div>
     <div class="loan__button">
-      <el-button style="margin-top: 12px" @click="next">{{stepText}}</el-button>
+      <el-button style="margin-top: 12px" class="loan__btn" @click="next">{{
+        stepText
+      }}</el-button>
       <!-- {{addLoan.first_name}} {{addLoan.last_name}} {{addLoan.email}} {{addLoan.mobile}} {{addLoan.date_of_birth}} {{addLoan.mobile}} {{addLoan.dependants}} {{addLoan.occupation}} <br>
       {{addLoan.dependants}} {{addLoan.marital_status}} {{addLoan.gender}} {{addLoan.address}} {{addLoan.category}} {{addLoan.purpose}} {{addLoan.amount}} {{addLoan.interest}} {{addLoan.repayment_date}} -->
-    </div> 
+    </div>
   </div>
 </template>
 
@@ -265,7 +267,7 @@ import api from "../../helpers/api";
 export default {
   data() {
     return {
-        stepText: "Next",
+      stepText: "Next",
       personal: true,
       otherInfo: false,
       loanDetails: false,
@@ -299,33 +301,40 @@ export default {
         this.personal = true;
         this.otherInfo = false;
         this.loanDetails = false;
+        this.stepText = "Next";
       } else if (this.active == 1) {
         this.personal = false;
         this.otherInfo = true;
         this.loanDetails = false;
+        this.stepText = "Next";
       } else if (this.active == 2) {
-          this.stepText = "Request Loan"
+        this.stepText = "Request Loan";
         this.personal = false;
         this.otherInfo = false;
         this.loanDetails = !this.loanDetails;
       } else if (this.active == 3) {
         this.addNewLoan();
-        this.active++;
+        this.personal = true;
+        this.otherInfo = false;
+        this.loanDetails = false;
+        this.stepText = "Next";
       }
     },
     async addNewLoan() {
       try {
-          const response = await api.addLoan(this.addLoan)
-          this.active = 0;
-          console.log(response);
-          this.$message({
-          message: 'New Loan added successfully.',
-          type: 'success'
+        const response = await api.addLoan(this.addLoan);
+        this.active = 0;
+        console.log(response);
+        this.$message({
+          message: "New Loan added successfully.",
+          type: "success",
         });
-          
       } catch (error) {
-          console.log(error);
-          
+        console.log(error);
+        this.$message({
+          message: "Error adding new loan",
+          type: "error",
+        });
       }
     },
   },
@@ -340,6 +349,11 @@ export default {
   width: 100%;
 
   text-align: center;
+}
+.loan__btn {
+  background-color: #3c4b64 !important;
+  color: #fff !important;
+  width: 100% !important;
 }
 
 @media (min-width: 768px) {

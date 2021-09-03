@@ -90,9 +90,9 @@ export default {
     },
     async getAdmins() {
       const res = await api.viewAdmins();
-      console.log(res);
+      
       this.items = res;
-      console.log(this.items.length)
+      
     },
   },
 

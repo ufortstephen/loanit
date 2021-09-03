@@ -34,11 +34,32 @@ export default {
             }
         }).then(response => response.data)
     },
-    async addLoan(loanDetails) {
-        return axios.post(baseUrl + 'project/loan', loanDetails, {
+    async getLoans() {
+        return axios.get(baseUrl + 'project/my-loan', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
-        }).then(response => response.data)
-    }
+        }).then(response => response.data.data.loans)
+    },
+    async getActiveLoans() {
+        return axios.get(baseUrl + 'project/active', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data.data.active)
+    },
+    async dueLoans() {
+        return axios.get(baseUrl + 'project/due', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data.data.due)
+    },
+    async settledLoans() {
+        return axios.get(baseUrl + 'project/settled', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data.data.settled)
+    },
 }
