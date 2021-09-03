@@ -3,7 +3,7 @@
     <CCol col="12" xl="12">
       <CCard>
         <!-- <CCardHeader> Administrators </CCardHeader> -->
-        <h4 class="pl-3 pt-3">Administrators {{ items.length }}</h4>
+        <h4 class="pl-3 pt-3">All Items {{ items.length }}</h4>
 
         <CCardBody>
           <CDataTable
@@ -37,20 +37,20 @@
 </template>
 
 <script>
-import api from "../../helpers/api";
-import usersData from "./adminData";
+import api from "@/helpers/api";
+// import usersData from "./adminData";
 export default {
   name: "Users",
   data() {
     return {
       items: [],
       fields: [
-        { key: "reference" },
-        { key: "first_name" },
-        { key: "middle_name" },
-        { key: "last_name" },
-        { key: "email" },
-        { key: "phone" },
+        { key: "user_id" },
+        { key: "amount" },
+        { key: "date_issued" },
+        { key: "repayment_date" },
+        { key: "interest" },
+        { key: "daily_return" },
 
         // { key: "id", label: "Name", _classes: "font-weight-bold" },
       ],
@@ -90,7 +90,7 @@ export default {
     },
     async getAdmins() {
       try {
-        const res = await api.viewAdmins();
+        const res = await api.listAllLoans();
         this.items = res;
       } catch (error) {
         console.log(error);
@@ -99,7 +99,7 @@ export default {
   },
 
   created() {
-    this.getAdmins();
+    setTimeout(this.getAdmins(), 5000);
   },
 };
 </script>

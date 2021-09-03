@@ -137,6 +137,15 @@ export default {
 };
 </script>
 
+<style scoped>
+@media (max-width: 768px) {
+  .col-md-3 {
+    margin-bottom: 2rem;
+  }
+  .el-card__body {
+    height: 120px;
+  }
 }
+</style>
 
 

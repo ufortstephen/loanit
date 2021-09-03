@@ -21,7 +21,7 @@ export default {
             .then(response => response.data)
     },
     async viewAdmins() {
-        return axios.get(baseUrl + 'auth/list', {
+        return axios.get(baseUrl + 'auth/list-user', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -61,5 +61,12 @@ export default {
                 'Authorization': `Bearer ${token}`
             }
         }).then(response => response.data.data.settled)
+    },
+    async listAllLoans() {
+        return axios.get(baseUrl + 'project/list-loan', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data.data.loans)
     },
 }
