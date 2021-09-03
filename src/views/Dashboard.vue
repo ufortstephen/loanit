@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <WidgetsDropdown /> -->
-    {{ token }}
+
     <div class="row mb-5">
       <div class="col-md-3">
         <el-card class="box-card">
@@ -133,7 +133,7 @@ export default {
     },
   },
   created() {
-    this.showLoans();
+    setTimeout(this.showLoans(), 5000);
   },
   mounted() {
     let getToken = this.$store.getters.isLoggedIn;
