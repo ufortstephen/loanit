@@ -1,86 +1,82 @@
 <template>
-  <CRow>
-    <CCol col="12" xl="12">
-      <CCard>
-        <CCardHeader>
-          Loanees
-        </CCardHeader>
-        <CCardBody>
-          <CDataTable
-            hover
-            striped
-            :items="items"
-            :fields="fields"
-            :items-per-page="10"
-            clickable-rows
-            :active-page="activePage"
-            @row-clicked="rowClicked"
-            :pagination="{ doubleArrows: false, align: 'center'}"
-            @page-change="pageChange"
+  <div>
+    <el-table
+      class="p-3"
+      stripe
+      :data="
+        tableData.filter(
+          (data) =>
+            !search ||
+            data.loan_user.first_name
+              .toLowerCase()
+              .includes(search.toLowerCase()) ||
+            data.loan_user.last_name
+              .toLowerCase()
+              .includes(search.toLowerCase()) ||
+            data.loan_user.email.toLowerCase().includes(search.toLowerCase()) ||
+            data.status.toLowerCase().includes(search.toLowerCase())
+        )
+      "
+      style="width: 100%"
+    >
+      <el-table-column align="">
+        <template slot="header" slot-scope="scope">
+          <el-input v-model="search" size="mini" placeholder="Type to search" />
+        </template>
+        <!-- <template slot-scope="scope">
+          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
+            >Edit</el-button
           >
-            <template #status="data">
-              <td>
-                <CBadge :color="getBadge(data.item.status)" style="width: 50px; text-align:center" class="py-2">
-                  {{data.item.status}}
-                </CBadge>
-              </td>
-            </template>
-          </CDataTable>
-        </CCardBody>
-      </CCard>
-    </CCol>
-  </CRow>
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)"
+            >Delete</el-button
+          >
+        </template> -->
+      </el-table-column>
+      <el-table-column label="First name" prop="loan_user.first_name">
+      </el-table-column>
+      <el-table-column label="Last name" prop="loan_user.last_name">
+      </el-table-column>
+      <el-table-column label="Email" prop="loan_user.email"> </el-table-column>
+      <el-table-column label="Phone" prop="loan_user.mobile"> </el-table-column>
+      <el-table-column label="Status" prop="status"> </el-table-column>
+    </el-table>
+  </div>
 </template>
 
 <script>
-import usersData from './UsersData'
+import api from "@/helpers/api.js";
+
 export default {
-  name: 'Users',
-  data () {
+  data() {
     return {
-      items: usersData,
-      fields: [
-        { key: 'id' },
-        
-        { key: 'username', label: 'Name', _classes: 'font-weight-bold' },
-        { key: 'registered' },
-        { key: 'loanAmount' },
-        { key: 'loanInterest' },
-        
-        { key: 'amountDue' },
-        { key: 'dueDate' },
-        
-        { key: 'status' }
-      ],
-      activePage: 1
-    }
-  },
-  watch: {
-    $route: {
-      immediate: true,
-      handler (route) {
-        if (route.query && route.query.page) {
-          this.activePage = Number(route.query.page)
-        }
-      }
-    }
+      scope: "scope",
+      tableData: [],
+      search: "",
+    };
   },
   methods: {
-    getBadge (status) {
-      switch (status) {
-        case 'Active': return 'success'
-        case 'Inactive': return 'secondary'
-        case 'Pending': return 'warning'
-        case 'Due': return 'danger'
-        default: 'primary'
+    handleEdit(index, row) {
+      console.log(index, row);
+    },
+    handleDelete(index, row) {
+      console.log(index, row);
+    },
+    async getallLoanees() {
+      //get all users from api
+      try {
+        const response = await api.listAllLoans();
+        console.log(response);
+        this.tableData = response;
+      } catch (error) {
+        console.log(error.response);
       }
     },
-    rowClicked (item, index) {
-      this.$router.push({path: `users/${index + 1}`})
-    },
-    pageChange (val) {
-      this.$router.push({ query: { page: val }})
-    }
-  }
-}
+  },
+  created() {
+    this.getallLoanees();
+  },
+};
 </script>

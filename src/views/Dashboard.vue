@@ -131,9 +131,18 @@ export default {
       let todayAmt = this.items.map(this.today).reduce(this.sum);
       this.dueToday = formatter.format(todayAmt);
     },
+    refresh() {
+      if (!localStorage.getItem("firstLoad")) {
+        localStorage["firstLoad"] = true;
+        window.location.reload();
+      } else {
+        localStorage.removeItem("firstLoad");
+      }
+    },
   },
   created() {
-    setTimeout(this.showLoans(), 5000);
+    this.showLoans();
+    this.refresh();
   },
   mounted() {
     let getToken = this.$store.getters.isLoggedIn;

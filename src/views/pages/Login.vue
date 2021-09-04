@@ -49,7 +49,9 @@
             type="primary"
             @click="submitForm('dynamicValidateForm')"
             class="sign__in--btn w-100"
-            >{{login_text}}</el-button
+            :class="{ loading: loading }"
+            :disabled="disabled"
+            >{{ login_text }}</el-button
           >
         </el-form-item>
       </el-form>
@@ -73,15 +75,17 @@ export default {
     };
 
     return {
+      disabled: false,
+      loading: false,
       login_text: "Login",
       // Form input models
       dynamicValidateForm: {
         email: "",
         pass: "",
       },
-      
+
       // Ui Rules
-    rules: {
+      rules: {
         pass: [{ validator: validatePass, trigger: "blur" }],
       },
     };
@@ -102,7 +106,9 @@ export default {
     async login() {
       try {
         // making api call with defined parameters
-        this.login_text = "Verifying......"
+        this.login_text = "Verifying......";
+        this.loading = true;
+        this.disabled = true;
         const response = await api.login({
           email: this.dynamicValidateForm.email,
           password: this.dynamicValidateForm.pass,
@@ -119,8 +125,7 @@ export default {
         // Dispatching token and userdata to store
         this.$store.dispatch("login", { token, userData });
 
-        // Successful alert
-        this.open2();
+       
 
         // Push router to SuperAdmin Dashboard
         if (response.data.user.email === "super@gmail.com") {
@@ -128,6 +133,9 @@ export default {
         } else {
           this.$router.push("/agentAdmin");
         }
+
+         // Successful alert
+        this.open2();
       } catch (err) {
         // Show error message
         this.open4();
@@ -135,6 +143,9 @@ export default {
         // Reset Input fields
         this.dynamicValidateForm.email = "";
         this.dynamicValidateForm.pass = "";
+        this.login_text = "Login";
+        this.loading = false;
+        this.disabled = false;
       }
     },
 

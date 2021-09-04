@@ -45,7 +45,7 @@ export default {
     return {
       items: [],
       fields: [
-        { key: "reference" },
+        // { key: "reference" },
         { key: "first_name" },
         { key: "middle_name" },
         { key: "last_name" },

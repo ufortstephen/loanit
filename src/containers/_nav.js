@@ -31,7 +31,7 @@ export default [{
         },
         {
             _name: 'CSidebarNavItem',
-            name: 'Users',
+            name: 'All Loanees',
             to: '/superAdmin/users',
             icon: 'cil-user'
         },
