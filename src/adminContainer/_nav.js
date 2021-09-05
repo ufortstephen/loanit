@@ -59,12 +59,12 @@ export default [{
             _name: 'CSidebarNavTitle',
             _children: ['Utilities']
         },
-        {
-            _name: 'CSidebarNavItem',
-            name: 'Loan Calculator',
-            to: '/agentAdmin/loan_calculator',
-            icon: 'cil-calculator'
-        },
+        // {
+        //     _name: 'CSidebarNavItem',
+        //     name: 'Loan Calculator',
+        //     to: '/agentAdmin/loan_calculator',
+        //     icon: 'cil-calculator'
+        // },
 
 
 

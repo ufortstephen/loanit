@@ -42,7 +42,7 @@
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>Action 1</el-dropdown-item>
+              
               <el-dropdown-item><span>Change Password</span></el-dropdown-item>
               <el-dropdown-item
                 ><span @click="logout">Logout</span></el-dropdown-item
