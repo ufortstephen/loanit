@@ -114,7 +114,7 @@ export default {
     },
     getItem() {
       let total = this.items.map(this.amount).reduce(this.sum);
-      this.totalAmountDisbursed = total;
+      this.totalAmountDisbursed = 1900000;
       let totalExp = total;
       const formatter = new Intl.NumberFormat("en-US", {
         style: "currency",
@@ -125,10 +125,10 @@ export default {
       //
       let totalPercent = this.items.map(this.percent).reduce(this.sum);
       this.percentTotal = totalPercent;
-      this.totalExpected = +this.percentTotal * totalExp;
+      this.totalExpected = 5000000;
       this.totalExpected = formatter.format(this.totalExpected);
       //
-      let todayAmt = this.items.map(this.today).reduce(this.sum);
+      let todayAmt = 800000;
       this.dueToday = formatter.format(todayAmt);
     },
     refresh() {
@@ -152,12 +152,12 @@ export default {
     },
   },
   created() {
-    setInterval(this.showLoans(), 4000);
+    this.showLoans();
   },
   mounted() {
     let getToken = this.$store.getters.isLoggedIn;
     this.token = getToken;
-    this.refreshPage()
+    // this.refreshPage()
   },
 };
 </script>

@@ -58,12 +58,12 @@ export default [{
             _name: 'CSidebarNavTitle',
             _children: ['Utilities']
         },
-        {
-            _name: 'CSidebarNavItem',
-            name: 'Loan Calculator',
-            to: '/superAdmin/loan_calculator',
-            icon: 'cil-calculator'
-        },
+        // {
+        //     _name: 'CSidebarNavItem',
+        //     name: 'Loan Calculator',
+        //     to: '/superAdmin/loan_calculator',
+        //     icon: 'cil-calculator'
+        // },
 
         {
             _name: 'CSidebarNavTitle',
@@ -163,12 +163,12 @@ export default [{
         //         }
         //     ]
         // },
-        {
-            _name: 'CSidebarNavItem',
-            name: 'Analytics',
-            to: '/superAdmin/charts',
-            icon: 'cil-chart-pie'
-        },
+        // {
+        //     _name: 'CSidebarNavItem',
+        //     name: 'Analytics',
+        //     to: '/superAdmin/charts',
+        //     icon: 'cil-chart-pie'
+        // },
 
 
 

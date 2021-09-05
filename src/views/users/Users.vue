@@ -102,7 +102,7 @@ export default {
     },
   },
   created() {
-    setInterval(this.getallLoanees(), 1000)
+    this.getallLoanees();
   },
 };
 </script>

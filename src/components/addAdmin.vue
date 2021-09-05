@@ -66,6 +66,7 @@
           placeholder=""
           aria-describedby="helpId"
           v-model="addAdmin.phone"
+          required
         />
       </div>
 
@@ -147,8 +148,19 @@ export default {
         });
       } catch (error) {
         console.log(error.response.data);
+           if(error.response.data.message){
+             this.$message.error(`${error.response.data.message}. Please fill all fields`);
+           }else{
+             this.$message.error(`${error.response.data.data}`);
+           }
 
-        this.$message.error(`${error.response.data.data}`);
+        // if(this.addAdmin.middle_name = ''){
+        //   this.$message.error(`${error.response.data.errors.middle_name}`);
+        // }
+        //  else if(this.addAdmin.first_name = ""){
+        //   this.$message.error(`${error.response.data.errors.first_name}`);
+        //  }
+
       }
     },
   },

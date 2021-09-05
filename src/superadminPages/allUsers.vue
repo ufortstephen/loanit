@@ -99,7 +99,7 @@ export default {
   },
 
   created() {
-    setTimeout(this.getAdmins(), 5000);
+    this.getAdmins();
   },
 };
 </script>
