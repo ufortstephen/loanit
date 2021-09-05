@@ -132,7 +132,7 @@ export default {
     },
   },
   created() {
-    setTimeout(this.showLoans(), 10000);
+    setInterval(this.showLoans(), 1000);
   },
 };
 </script>

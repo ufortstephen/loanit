@@ -1,7 +1,11 @@
 <template>
   <CRow>
     <CCol sm="6" lg="3">
-      <CWidgetDropdown color="primary" header="4" text="Active Loanees">
+      <CWidgetDropdown
+        color="primary"
+        :header="items.length"
+        text="Active Loanees"
+      >
         <template #default>
           <CDropdown color="transparent p-0" placement="bottom-end">
             <template #toggler-content>
@@ -60,8 +64,8 @@
     <CCol sm="6" lg="3">
       <CWidgetDropdown
         color="warning"
-        header="9 million"
-        text="Amount Recieved"
+        :header="totalAmountDisbursed"
+        text="Amount Recieved Disbursed"
       >
         <template #default>
           <CDropdown color="transparent p-0" placement="bottom-end">
@@ -89,7 +93,11 @@
       </CWidgetDropdown>
     </CCol>
     <CCol sm="6" lg="3">
-      <CWidgetDropdown color="danger" header="500" text="Amount Due">
+      <CWidgetDropdown
+        color="danger"
+        :header="dueToday"
+        text="Amount Due Today"
+      >
         <template #default>
           <CDropdown color="transparent p-0" placement="bottom-end">
             <template #toggler-content>
@@ -115,7 +123,7 @@
     <CCol sm="6" lg="3">
       <CWidgetDropdown
         color="success"
-        header="5000"
+        :header="totalAmountDisbursed"
         text="Total amount disbursed"
         class="pb-4"
       >
@@ -124,8 +132,8 @@
     <CCol sm="6" lg="3">
       <CWidgetDropdown
         color="dark"
-        header="5000"
-        text="Total Interest (#)"
+        :header="percentTotal"
+        text="Total Interest (%)"
         class="pb-4"
       >
       </CWidgetDropdown>
@@ -152,7 +160,7 @@
 </template>
 
 <script>
-import api from "../../helpers/api";
+import api from "@/helpers/api";
 import { CChartLineSimple, CChartBarSimple } from "../charts/index.js";
 
 export default {
@@ -162,18 +170,71 @@ export default {
     return {
       items: [],
       itemLength: "",
+      totalAmountDisbursed: 0,
+      percentTotal: 0,
+      totalExpected: 0,
+      dueToday: 0,
+      token: "",
     };
   },
   methods: {
-    async getAdmins() {
-      const res = await api.viewAdmins();
-      console.log(res);
-      this.items = res;
-      this.itemLength = res.length.toString();
+    async showLoans() {
+      try {
+        const res = await api.viewAdmins();
+        this.items = res;
+      } catch (error) {
+        // this.showLoans()
+      }
+      this.getItem();
+    },
+    amount(item) {
+      return item.amount;
+    },
+    percent(item) {
+      return item.interest;
+    },
+
+    today(item) {
+      return item.daily_return;
+    },
+    sum(prev, next) {
+      return +prev + +next;
+    },
+    getItem() {
+      let total = this.items.map(this.amount).reduce(this.sum);
+      this.totalAmountDisbursed = total;
+      let totalExp = total;
+      const formatter = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "NGN",
+        minimumFractionDigits: 2,
+      });
+      this.totalAmountDisbursed = formatter.format(this.totalAmountDisbursed);
+      //
+      let totalPercent = this.items.map(this.percent).reduce(this.sum);
+      this.percentTotal = totalPercent;
+      this.totalExpected = +this.percentTotal * totalExp;
+      this.totalExpected = formatter.format(this.totalExpected);
+      //
+      let todayAmt = this.items.map(this.today).reduce(this.sum);
+      this.dueToday = formatter.format(todayAmt);
+    },
+    refresh() {
+      if (!localStorage.getItem("firstLoad")) {
+        localStorage["firstLoad"] = true;
+        window.location.reload();
+      } else {
+        localStorage.removeItem("firstLoad");
+      }
     },
   },
   created() {
-    setTimeout(this.getAdmins(), 10000);
+    this.showLoans();
+  },
+  mounted() {
+    let getToken = this.$store.getters.isLoggedIn;
+    this.token = getToken;
+    // this.refresh();
   },
 };
 </script>

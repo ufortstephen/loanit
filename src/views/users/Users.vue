@@ -1,5 +1,17 @@
 <template>
-  <div>
+  <div class="all__users">
+    <h3 class="p-3">All Loanees</h3>
+    <el-table class="search__table">
+      <el-table-column align="right">
+        <template slot="header" slot-scope="scope">
+          <el-input
+            v-model="search"
+            size="mini"
+            placeholder="Search user by name, email and mobile"
+          />
+        </template>
+      </el-table-column>
+    </el-table>
     <el-table
       class="p-3"
       stripe
@@ -12,36 +24,47 @@
               .includes(search.toLowerCase()) ||
             data.loan_user.last_name
               .toLowerCase()
-              .includes(search.toLowerCase()) ||
-            data.loan_user.email.toLowerCase().includes(search.toLowerCase()) ||
-            data.status.toLowerCase().includes(search.toLowerCase())
+              .includes(search.toLowerCase())
         )
       "
       style="width: 100%"
     >
-      <el-table-column align="">
-        <template slot="header" slot-scope="scope">
-          <el-input v-model="search" size="mini" placeholder="Type to search" />
-        </template>
-        <!-- <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
-            >Edit</el-button
-          >
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
-            >Delete</el-button
-          >
-        </template> -->
-      </el-table-column>
       <el-table-column label="First name" prop="loan_user.first_name">
       </el-table-column>
       <el-table-column label="Last name" prop="loan_user.last_name">
       </el-table-column>
-      <el-table-column label="Email" prop="loan_user.email"> </el-table-column>
-      <el-table-column label="Phone" prop="loan_user.mobile"> </el-table-column>
+      <!-- <el-table-column label="Email" prop="loan_user.email"> </el-table-column> -->
+      <!-- <el-table-column label="Amount" prop="amount"> </el-table-column> -->
+
+      <el-table-column label="Date Issued" prop="date_issued">
+      </el-table-column>
+
+      <el-table-column label="Repayment Date" prop="repayment_date">
+      </el-table-column>
+      <el-table-column label="Amount due today" prop="daily_return">
+      </el-table-column>
+
       <el-table-column label="Status" prop="status"> </el-table-column>
+      <el-table-column label="Admin" prop="admin.first_name"> </el-table-column>
+      <el-table-column
+        prop="status"
+        label="Status"
+        width="100"
+        :filters="[
+          { text: 'active', value: 'active' },
+          { text: 'due', value: 'due' },
+        ]"
+        :filter-method="filterTag"
+        filter-placement="bottom-end"
+      >
+        <template slot-scope="scope">
+          <el-tag
+            :type="scope.row.tag === 'due' ? 'primary' : 'success'"
+            disable-transitions
+            >{{ scope.row.status }}
+          </el-tag>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -74,9 +97,38 @@ export default {
         console.log(error.response);
       }
     },
+    filterTag(value, row) {
+      return row.status === value;
+    },
   },
   created() {
-    this.getallLoanees();
+    setInterval(this.getallLoanees(), 1000)
   },
 };
 </script>
+
+
+<style>
+.search__table .el-table__empty-block {
+  display: none !important;
+}
+.search__table input {
+  height: 40px !important;
+}
+.c-main {
+  /* padding-top: 0 !important; */
+}
+.c-main .container-fluid {
+  /* padding: 0 !important; */
+}
+
+@media (min-width: 768px) {
+  .search__table input {
+    width: 40%;
+    height: 40px !important;
+  }
+  .search__table .el-input__inner {
+    font-size: 16px !important;
+  }
+}
+</style>

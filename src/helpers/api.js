@@ -69,4 +69,11 @@ export default {
             }
         }).then(response => response.data.data.loans)
     },
+    async listDueLoans() {
+        return axios.get(baseUrl + 'project/due', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data.data.loans)
+    },
 }

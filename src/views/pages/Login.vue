@@ -125,8 +125,6 @@ export default {
         // Dispatching token and userdata to store
         this.$store.dispatch("login", { token, userData });
 
-       
-
         // Push router to SuperAdmin Dashboard
         if (response.data.user.email === "super@gmail.com") {
           this.$router.push("/superAdmin");
@@ -134,7 +132,7 @@ export default {
           this.$router.push("/agentAdmin");
         }
 
-         // Successful alert
+        // Successful alert
         this.open2();
       } catch (err) {
         // Show error message

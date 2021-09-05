@@ -11,13 +11,13 @@ export default [{
             icon: 'cil-chart-pie',
 
         },
-        {
-            _name: 'CSidebarNavItem',
-            name: 'Transactions',
-            to: '/superAdmin/transaction',
-            icon: 'cil-spreadsheet',
+        // {
+        //     _name: 'CSidebarNavItem',
+        //     name: 'Transactions',
+        //     to: '/superAdmin/transaction',
+        //     icon: 'cil-spreadsheet',
 
-        },
+        // },
 
         {
             _name: 'CSidebarNavItem',
