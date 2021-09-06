@@ -1,105 +1,112 @@
 <template>
-  <CRow>
-    <CCol col="12" xl="12">
-      <CCard>
-        <!-- <CCardHeader> Administrators </CCardHeader> -->
-        <h4 class="pl-3 pt-3">Settled Loans {{ items.length }}</h4>
+  <div class="all__users all">
+    <h3 class="p-3">Settled Loans {{ tableData.length }}</h3>
 
-        <CCardBody>
-          <CDataTable
-            hover
-            striped
-            :items="items"
-            :fields="fields"
-            :items-per-page="10"
-            clickable-rows
-            :active-page="activePage"
-            @row-clicked="rowClicked"
-            :pagination="{ doubleArrows: false, align: 'center' }"
-            @page-change="pageChange"
-          >
-            <template #status="data">
-              <td>
-                <CBadge
-                  :color="getBadge(data.item.status)"
-                  style="width: 50px; text-align: center"
-                  class="py-2"
-                >
-                  {{ data.item.status }}
-                </CBadge>
-              </td>
-            </template>
-          </CDataTable>
-        </CCardBody>
-      </CCard>
-    </CCol>
-  </CRow>
+    <el-table
+      class="p-3"
+      stripe
+      :data="
+        tableData.filter(
+          (data) =>
+            !search ||
+            data.loan_user.first_name
+              .toLowerCase()
+              .includes(search.toLowerCase()) ||
+            data.loan_user.last_name
+              .toLowerCase()
+              .includes(search.toLowerCase()) ||
+            data.id.toLowerCase().includes(search.toLowerCase())
+        )
+      "
+      style="width: 100%"
+    >
+      <el-table-column label="First name" prop="loan_user.first_name">
+      </el-table-column>
+      <el-table-column label="Last name" prop="loan_user.last_name">
+      </el-table-column>
+      <!-- <el-table-column label="Email" prop="loan_user.email"> </el-table-column> -->
+      <!-- <el-table-column label="Amount" prop="amount"> </el-table-column> -->
+
+      <el-table-column label="Date Issued" prop="date_issued">
+      </el-table-column>
+
+      <el-table-column label="Repayment Date" prop="repayment_date">
+      </el-table-column>
+
+      <el-table-column label="Status" prop="status"> </el-table-column>
+      <el-table-column label="Admin" prop="admin.first_name"> </el-table-column>
+    </el-table>
+  </div>
 </template>
 
 <script>
-import api from "@/helpers/api";
+import api from "@/helpers/api.js";
 
 export default {
-  name: "Users",
   data() {
     return {
-      items: [],
-      fields: [
-        // { key: "reference" },
-        { key: "first_name" },
-        { key: "middle_name" },
-        { key: "last_name" },
-        { key: "email" },
-        { key: "phone" },
-
-        // { key: "id", label: "Name", _classes: "font-weight-bold" },
-      ],
-      activePage: 1,
+      scope: "scope",
+      tableData: [],
+      search: "",
     };
   },
-  watch: {
-    $route: {
-      immediate: true,
-      handler(route) {
-        if (route.query && route.query.page) {
-          this.activePage = Number(route.query.page);
-        }
-      },
-    },
-  },
   methods: {
-    getBadge(status) {
-      switch (status) {
-        case "Active":
-          return "success";
-        case "Inactive":
-          return "secondary";
-        case "Pending":
-          return "warning";
-        case "Due":
-          return "danger";
-        default:
-          "primary";
-      }
+    handleEdit(index, row) {
+      console.log(index, row);
     },
-    rowClicked(item, index) {
-      this.$router.push({ path: `admins/${index + 1}` });
+    handleDelete(index, row) {
+      console.log(index, row);
     },
-    pageChange(val) {
-      this.$router.push({ query: { page: val } });
-    },
-    async getDueLoans() {
+    async getallLoanees() {
+      //get all users from api
       try {
-        const res = await api.listDueLoans();
-        this.items = res;
+        const response = await api.settledLoans();
+        console.log(response);
+        this.tableData = response;
       } catch (error) {
-        console.log(error);
+        console.log(error.response);
       }
+    },
+    filterTag(value, row) {
+      return row.status === value;
     },
   },
-
   created() {
-    this.getDueLoans();
+    this.getallLoanees();
   },
 };
 </script>
+
+
+<style>
+.search__table .el-table__empty-block {
+  display: none !important;
+}
+.search__table input {
+  height: 40px !important;
+}
+.c-main {
+  /* padding-top: 0 !important; */
+}
+.c-main .container-fluid {
+  /* padding: 0 !important; */
+}
+.all .el-tag--successs {
+  background-color: green !important;
+  color: #fff !important;
+}
+.all .el-tag--warning {
+  background-color: #ffc107c1 !important;
+  color: #fff !important;
+}
+
+@media (min-width: 768px) {
+  .search__table input {
+    width: 40%;
+    height: 40px !important;
+  }
+  .search__table .el-input__inner {
+    font-size: 16px !important;
+  }
+}
+</style>

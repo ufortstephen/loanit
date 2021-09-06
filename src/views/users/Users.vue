@@ -1,13 +1,13 @@
 <template>
-  <div class="all__users">
-    <h3 class="p-3">All Loanees</h3>
+  <div class="all__users all">
+    <h3 class="p-3">All Loanees {{tableData.length}}</h3>
     <el-table class="search__table">
       <el-table-column align="right">
         <template slot="header" slot-scope="scope">
           <el-input
             v-model="search"
             size="mini"
-            placeholder="Search user by name, email and mobile"
+            placeholder="Search user by name, email or id"
           />
         </template>
       </el-table-column>
@@ -24,7 +24,8 @@
               .includes(search.toLowerCase()) ||
             data.loan_user.last_name
               .toLowerCase()
-              .includes(search.toLowerCase())
+              .includes(search.toLowerCase()) ||
+            data.id.toLowerCase().includes(search.toLowerCase())
         )
       "
       style="width: 100%"
@@ -53,13 +54,14 @@
         :filters="[
           { text: 'active', value: 'active' },
           { text: 'due', value: 'due' },
+          { text: 'settled', value: 'settled' },
         ]"
         :filter-method="filterTag"
         filter-placement="bottom-end"
       >
         <template slot-scope="scope">
           <el-tag
-            :type="scope.row.tag === 'due' ? 'primary' : 'success'"
+            :type="scope.row.status === 'settled' ? 'successs' : 'warning'"
             disable-transitions
             >{{ scope.row.status }}
           </el-tag>
@@ -120,6 +122,14 @@ export default {
 }
 .c-main .container-fluid {
   /* padding: 0 !important; */
+}
+.all .el-tag--successs {
+  background-color: green !important;
+  color: #fff !important;
+}
+.all .el-tag--warning {
+  background-color: #ffc107c1 !important;
+  color: #fff !important;
 }
 
 @media (min-width: 768px) {

@@ -163,6 +163,9 @@ const settled_loans = () =>
 const loan_calculator = () =>
     import ('@/adminContainer/adminComponent/loan_calculator')
 
+const update_status = () =>
+    import ('@/adminContainer/adminComponent/updateStatus')
+
 
 
 Vue.use(Router)
@@ -629,6 +632,11 @@ function configRoutes() {
                     path: 'loan_calculator',
                     name: 'loan_calculator',
                     component: loan_calculator
+                },
+                {
+                    path: 'update_status',
+                    name: 'update_status',
+                    component: update_status
                 },
                 {
                     path: 'theme',

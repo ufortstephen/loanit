@@ -44,7 +44,7 @@
               <div class="form-group">
                 <label for="email">Email</label>
                 <input
-                  type="text"
+                  type="email"
                   name="email"
                   id="email"
                   class="form-control"
@@ -113,29 +113,29 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="">Dependants</label>
-                <input
-                  type="text"
+                <select
+                  class="form-control"
                   name=""
                   id=""
-                  class="form-control"
-                  placeholder=""
-                  aria-describedby="helpId"
                   v-model="addLoan.dependants"
-                />
+                >
+                  <option>0-5</option>
+                  <option>5 & above</option>
+                </select>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label for="">Marital Status</label>
-                <input
-                  type="text"
+                <select
+                  class="form-control"
                   name=""
                   id=""
-                  class="form-control"
-                  placeholder=""
-                  aria-describedby="helpId"
                   v-model="addLoan.marital_status"
-                />
+                >
+                  <option>Single</option>
+                  <option>Married</option>
+                </select>
               </div>
             </div>
           </div>
@@ -143,15 +143,15 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="">Gender</label>
-                <input
-                  type="text"
+                <select
+                  class="form-control"
                   name=""
                   id=""
-                  class="form-control"
-                  placeholder=""
-                  aria-describedby="helpId"
                   v-model="addLoan.gender"
-                />
+                >
+                  <option>Male</option>
+                  <option>Female</option>
+                </select>
               </div>
             </div>
             <div class="col-md-6">
@@ -176,15 +176,18 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="">Loan Category</label>
-                <input
-                  type="text"
+                <select
+                  class="form-control"
                   name=""
                   id=""
-                  class="form-control"
-                  placeholder=""
-                  aria-describedby="helpId"
                   v-model="addLoan.category"
-                />
+                >
+                  <option>Business Loan</option>
+                  <option>Education Loan</option>
+                  <option>Personal Loan</option>
+
+                  <option>Others</option>
+                </select>
               </div>
             </div>
             <div class="col-md-6">
@@ -220,15 +223,19 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="">Loan Interest</label>
-                <input
-                  type="number"
+                <select
+                  class="form-control"
                   name=""
                   id=""
-                  class="form-control"
-                  placeholder=""
-                  aria-describedby="helpId"
                   v-model="addLoan.interest"
-                />
+                >
+                  <option>2%</option>
+                  <option>4%</option>
+                  <option>6%</option>
+                  <option>8%</option>
+                  <option>10%</option>
+                  <option>12%</option>
+                </select>
               </div>
             </div>
           </div>
@@ -320,21 +327,62 @@ export default {
         this.stepText = "Next";
       }
     },
+    open() {
+      this.$confirm(
+        "This will permanently delete the file. Continue?",
+        "Warning",
+        {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "warning",
+        }
+      )
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "Delete completed",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "Delete canceled",
+          });
+        });
+    },
     async addNewLoan() {
       try {
         const response = await api.addLoan(this.addLoan);
         this.active = 0;
-        console.log(response);
+        // console.log(response);
         this.$message({
           message: "New Loan added successfully.",
           type: "success",
         });
+        this.addLoan.first_name = "";
+        this.addLoan.last_name = "";
+        this.addLoan.email = "";
+        this.addLoan.mobile = "";
+        this.addLoan.date_of_birth = "";
+        this.addLoan.occupation = "";
+        this.addLoan.dependants = "";
+        this.addLoan.marital_status = "";
+        this.addLoan.gender = "";
+        this.addLoan.address = "";
+        this.addLoan.category = "";
+        this.addLoan.purpose = "";
+        this.addLoan.amount = "";
+        this.addLoan.interest = "";
+        this.addLoan.repayment_date = "";
       } catch (error) {
-        console.log(error);
-        this.$message({
-          message: "Error adding new loan",
-          type: "error",
-        });
+        console.log(error.response);
+        if (error.response.status == 422) {
+          console.log(`${error.response.data.errors.address}`);
+          for (let prop in error.response.data.errors) {
+            console.log(error.response.data.errors[prop][0]);
+            this.$message.error(error.response.data.errors[prop][0]);
+          }
+        }
       }
     },
   },

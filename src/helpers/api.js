@@ -76,4 +76,11 @@ export default {
             }
         }).then(response => response.data.data.loans)
     },
+    async changeStatus(userId) {
+        return axios.post(baseUrl + 'project/change-status', userId, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data)
+    },
 }
