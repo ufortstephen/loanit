@@ -42,11 +42,14 @@
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              
-              <el-dropdown-item><span>Change Password</span></el-dropdown-item>
-              <el-dropdown-item
-                ><span @click="logout">Logout</span></el-dropdown-item
+              <span @click="gotoChangePass"
+                ><el-dropdown-item
+                  ><span>Change Password</span></el-dropdown-item
+                ></span
               >
+              <span @click="logout">
+                <el-dropdown-item><span>Logout</span></el-dropdown-item>
+              </span>
             </el-dropdown-menu>
           </el-dropdown>
         </CHeaderNavLink>
@@ -77,6 +80,9 @@ export default {
     toggleTwo() {
       store.commit("toggleSidebarDesktop");
       console.log(store);
+    },
+    gotoChangePass() {
+      this.$router.push("/superAdmin/change__password");
     },
   },
 };

@@ -41,15 +41,19 @@
       </CHeaderNavItem>
       <CHeaderNavItem class="d-md-down-none mx-2">
         <CHeaderNavLink>
-           <el-dropdown>
+          <el-dropdown>
             <span class="el-dropdown-link">
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <!-- <el-dropdown-item>Action 1</el-dropdown-item> -->
-              <el-dropdown-item><span>Change Password</span></el-dropdown-item>
-              <el-dropdown-item
-                ><span @click="logout">Logout</span></el-dropdown-item
+              <span @click="gotoChangePass"
+                ><el-dropdown-item
+                  ><span>Change Password</span></el-dropdown-item
+                ></span
+              >
+              <span @click="logout">
+                <el-dropdown-item><span>Logout</span></el-dropdown-item></span
               >
             </el-dropdown-menu>
           </el-dropdown>
@@ -70,9 +74,12 @@ export default {
     addAdmin,
   },
   methods: {
-     logout() {
+    logout() {
       this.$store.dispatch("logout").then(this.$router.push("/login"));
     },
-  }
+    gotoChangePass() {
+      this.$router.push("/agentAdmin/change_password_agent");
+    },
+  },
 };
 </script>

@@ -83,4 +83,11 @@ export default {
             }
         }).then(response => response.data)
     },
+    async changePassword(passwords) {
+        return axios.post(baseUrl + 'auth/change-password', passwords, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data)
+    },
 }

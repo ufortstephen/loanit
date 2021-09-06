@@ -5,6 +5,7 @@
     <br />
     Token:
     {{ userToken }} -->
+    <!-- {{ userDetails }} -->
     <TheSidebar />
     <CWrapper>
       <TheHeader />
@@ -41,7 +42,7 @@ export default {
     logout() {
       this.$store.dispatch("logout").then(this.$router.push("/login"));
     },
-      refreshPage() {
+    refreshPage() {
       if (localStorage.getItem("reloaded")) {
         // The page was just reloaded. Clear the value from local storage
         // so that it will reload the next time this page is visited.
@@ -56,10 +57,11 @@ export default {
   created() {
     this.userDetails = this.$store.getters.getUser;
     this.userToken = this.$store.getters.isLoggedIn;
+
     if (!this.$store.getters.isLoggedIn) {
       this.$router.push("/login");
     }
-    this.refreshPage()
+    this.refreshPage();
   },
 };
 </script>

@@ -163,8 +163,17 @@ const settled_loans = () =>
 const loan_calculator = () =>
     import ('@/adminContainer/adminComponent/loan_calculator')
 
+//Update status
 const update_status = () =>
     import ('@/adminContainer/adminComponent/updateStatus')
+
+
+//Change Password
+const change__password = () =>
+    import ('@/superadminPages/changePassword')
+
+const change_password_agent = () =>
+    import ('@/views/agentPages/changePassword')
 
 
 
@@ -326,6 +335,24 @@ function configRoutes() {
                             path: '',
                             name: 'Active Loans',
                             component: Active_Loans
+                        },
+
+                    ]
+                },
+                {
+                    path: 'change__password',
+                    meta: {
+                        label: 'Change Password'
+                    },
+                    component: {
+                        render(c) {
+                            return c('router-view')
+                        }
+                    },
+                    children: [{
+                            path: '',
+                            name: 'Change Password',
+                            component: change__password
                         },
 
                     ]
@@ -637,6 +664,11 @@ function configRoutes() {
                     path: 'update_status',
                     name: 'update_status',
                     component: update_status
+                },
+                {
+                    path: 'change_password_agent',
+                    name: 'change_password_agent',
+                    component: change_password_agent
                 },
                 {
                     path: 'theme',

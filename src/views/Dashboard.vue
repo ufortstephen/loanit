@@ -39,13 +39,13 @@
       <div class="col-md-3">
         <el-card class="box-card">
           <h6>Active Loans</h6>
-          <h4 id="agent_recieved">7</h4>
+          <h4 id="agent_recieved">9</h4>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
           <h6>Settled Loans</h6>
-          <h4 id="interest_recieved">0</h4>
+          <h4 id="interest_recieved">1</h4>
         </el-card>
       </div>
       <div class="col-md-3">
@@ -53,6 +53,7 @@
           <h6>Due Loans</h6>
           <h4 id="loanees">0</h4>
         </el-card>
+        {{ userDetails }}
       </div>
     </div>
     <!-- {{ items }} -->
@@ -81,6 +82,7 @@ export default {
   },
   data() {
     return {
+      userDetails: "",
       items: [],
       totalAmountDisbursed: 0,
       percentTotal: 0,
@@ -114,14 +116,14 @@ export default {
     },
     getItem() {
       let total = this.items.map(this.amount).reduce(this.sum);
-      this.totalAmountDisbursed = 1900000;
+      this.totalAmountDisbursed = total;
       let totalExp = total;
       const formatter = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "NGN",
         minimumFractionDigits: 2,
       });
-      this.totalAmountDisbursed = formatter.format(this.totalAmountDisbursed);
+      this.totalAmountDisbursed = formatter.format(+this.totalAmountDisbursed);
       //
       let totalPercent = this.items.map(this.percent).reduce(this.sum);
       this.percentTotal = totalPercent;
@@ -139,7 +141,7 @@ export default {
         localStorage.removeItem("firstLoad");
       }
     },
-      refreshPage() {
+    refreshPage() {
       if (localStorage.getItem("reloaded")) {
         // The page was just reloaded. Clear the value from local storage
         // so that it will reload the next time this page is visited.
@@ -152,10 +154,16 @@ export default {
     },
   },
   created() {
+    
+    console.log(this.userDetails);
+    //   if (!this.userDetails.first_name === "Super") {
+    //   this.$router.push("/agentAdmin");
+    // }
     this.showLoans();
   },
   mounted() {
     let getToken = this.$store.getters.isLoggedIn;
+    this.userDetails = this.$store.getters.userData;
     this.token = getToken;
     // this.refreshPage()
   },
