@@ -132,8 +132,8 @@ export default {
           this.$router.push("/agentAdmin");
         }
 
-        // Successful alert
-        this.open2();
+        // Successful alert   
+        // this.open2();
       } catch (err) {
         // Show error message
         this.open4();

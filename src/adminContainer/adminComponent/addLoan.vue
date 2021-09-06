@@ -7,7 +7,7 @@
         <el-step title="Other Information"><h2>Other Info</h2></el-step>
         <el-step title="Loan Details"></el-step>
       </el-steps>
-      <form action="" class="mt-5">
+      <form action="" class="mt-5" id="myFormId" @submit.prevent="addNewLoan">
         <div class="personal" v-if="personal">
           <div class="row">
             <div class="col-md-6">
@@ -19,6 +19,7 @@
                   id="first_name"
                   class="form-control"
                   placeholder=""
+                  required
                   aria-describedby="helpId"
                   v-model="addLoan.first_name"
                 />
@@ -31,6 +32,7 @@
                   type="text"
                   name="last_name"
                   id="last_name"
+                  required
                   class="form-control"
                   placeholder=""
                   aria-describedby="helpId"
@@ -47,6 +49,7 @@
                   type="email"
                   name="email"
                   id="email"
+                  required
                   class="form-control"
                   placeholder=""
                   aria-describedby="helpId"
@@ -58,9 +61,12 @@
               <div class="form-group">
                 <label for="mobile">Phone Number</label>
                 <input
-                  type="text"
+                  type="number"
+                  pattern="[0-9]*"
+                  inputmode="numeric"
                   name="mobile"
                   id="mobile"
+                  required
                   class="form-control"
                   placeholder=""
                   aria-describedby="helpId"
@@ -87,6 +93,7 @@
                     v-model="addLoan.date_of_birth"
                     type="date"
                     placeholder="Pick a day"
+                    required
                   >
                   </el-date-picker>
                 </div>
@@ -99,6 +106,7 @@
                   type="text"
                   name=""
                   id=""
+                  required
                   class="form-control"
                   placeholder=""
                   aria-describedby="helpId"
@@ -113,15 +121,18 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="">Dependants</label>
-                <select
+                <input
+                  type="number"
+                  pattern="[0-9]*"
+                  inputmode="numeric"
                   class="form-control"
                   name=""
+                  required
                   id=""
+                  aria-describedby="emailHelpId"
+                  placeholder=""
                   v-model="addLoan.dependants"
-                >
-                  <option>0-5</option>
-                  <option>5 & above</option>
-                </select>
+                />
               </div>
             </div>
             <div class="col-md-6">
@@ -131,6 +142,7 @@
                   class="form-control"
                   name=""
                   id=""
+                  required
                   v-model="addLoan.marital_status"
                 >
                   <option>Single</option>
@@ -147,6 +159,7 @@
                   class="form-control"
                   name=""
                   id=""
+                  required
                   v-model="addLoan.gender"
                 >
                   <option>Male</option>
@@ -161,6 +174,7 @@
                   type="text"
                   name=""
                   id=""
+                  required
                   class="form-control"
                   placeholder=""
                   aria-describedby="helpId"
@@ -179,6 +193,7 @@
                 <select
                   class="form-control"
                   name=""
+                  required
                   id=""
                   v-model="addLoan.category"
                 >
@@ -192,27 +207,14 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="">Purpose</label>
-                <input
-                  type="text"
-                  name=""
-                  id=""
-                  class="form-control"
-                  placeholder=""
-                  aria-describedby="helpId"
-                  v-model="addLoan.purpose"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
                 <label for="">Loan Amount</label>
                 <input
                   type="number"
+                  pattern="[0-9]*"
+                  inputmode="numeric"
                   name=""
                   id=""
+                  required
                   class="form-control"
                   placeholder=""
                   aria-describedby="helpId"
@@ -220,8 +222,28 @@
                 />
               </div>
             </div>
+          </div>
+          <div class="row">
             <div class="col-md-6">
               <div class="form-group">
+                <label for="">Repayment Days</label>
+
+                <input
+                  type="number"
+                  pattern="[0-9]*"
+                  inputmode="numeric"
+                  name=""
+                  id=""
+                  required
+                  class="form-control"
+                  placeholder=""
+                  aria-describedby="helpId"
+                  v-model="addLoan.repayment_date"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <!-- <div class="form-group">
                 <label for="">Loan Interest</label>
                 <select
                   class="form-control"
@@ -236,23 +258,39 @@
                   <option>10%</option>
                   <option>12%</option>
                 </select>
+              </div> -->
+              <div class="form-group">
+                <label for="" class="d-block">Loan Interest</label>
+                <div class="input-group mb-3">
+                  <input
+                    type="number"
+                    pattern="[0-9]*"
+                    inputmode="numeric"
+                    class="form-control"
+                    v-model="addLoan.interest"
+                    aria-label="Recipient's username"
+                    aria-describedby="basic-addon2"
+                    required
+                  />
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">%</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          <div class="row"></div>
           <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="">Repayment Days</label>
-
-                <input
-                  type="number"
+            <div class="col-md-12">
+              <div class="form-group w-100">
+                <label for="">Purpose</label>
+                <textarea
+                  class="form-control"
                   name=""
                   id=""
-                  class="form-control"
-                  placeholder=""
-                  aria-describedby="helpId"
-                  v-model="addLoan.repayment_date"
-                />
+                  rows="3"
+                  required
+                ></textarea>
               </div>
             </div>
           </div>
@@ -260,11 +298,16 @@
       </form>
     </div>
     <div class="loan__button">
+      <el-button
+        style="margin-top: 12px"
+        v-if="back"
+        class="loan__btn"
+        @click="goBack"
+        >Back</el-button
+      >
       <el-button style="margin-top: 12px" class="loan__btn" @click="next">{{
         stepText
       }}</el-button>
-      <!-- {{addLoan.first_name}} {{addLoan.last_name}} {{addLoan.email}} {{addLoan.mobile}} {{addLoan.date_of_birth}} {{addLoan.mobile}} {{addLoan.dependants}} {{addLoan.occupation}} <br>
-      {{addLoan.dependants}} {{addLoan.marital_status}} {{addLoan.gender}} {{addLoan.address}} {{addLoan.category}} {{addLoan.purpose}} {{addLoan.amount}} {{addLoan.interest}} {{addLoan.repayment_date}} -->
     </div>
   </div>
 </template>
@@ -274,6 +317,8 @@ import api from "../../helpers/api";
 export default {
   data() {
     return {
+      errors: [],
+      back: false,
       stepText: "Next",
       personal: true,
       otherInfo: false,
@@ -309,22 +354,41 @@ export default {
         this.otherInfo = false;
         this.loanDetails = false;
         this.stepText = "Next";
+        this.active = 1;
       } else if (this.active == 1) {
+        this.back = true;
         this.personal = false;
         this.otherInfo = true;
         this.loanDetails = false;
         this.stepText = "Next";
       } else if (this.active == 2) {
-        this.stepText = "Request Loan";
         this.personal = false;
         this.otherInfo = false;
         this.loanDetails = !this.loanDetails;
-      } else if (this.active == 3) {
+      } else if (this.active++ > 2) {
+        this.stepText = "Request Loan";
         this.addNewLoan();
         this.personal = true;
         this.otherInfo = false;
         this.loanDetails = false;
         this.stepText = "Next";
+        this.back = false;
+        this.active = 0;
+      }
+    },
+    goBack() {
+      if (this.active == 1) {
+        this.back = false;
+        this.active = 0;
+        this.personal = true;
+        this.otherInfo = false;
+        this.loanDetails = false;
+      }
+      if (this.active == 2) {
+        this.active = 1;
+        this.personal = false;
+        this.otherInfo = true;
+        this.loanDetails = false;
       }
     },
     open() {
@@ -380,8 +444,22 @@ export default {
           console.log(`${error.response.data.errors.address}`);
           for (let prop in error.response.data.errors) {
             console.log(error.response.data.errors[prop][0]);
-            this.$message.error(error.response.data.errors[prop][0]);
+            this.errors.push(error.response.data.errors[prop][0]);
           }
+          for (let index = 0; index < this.errors.length; index++) {
+            setTimeout(() => {
+              this.$message.error({
+                message: `${this.errors[index]}`,
+                position: "top-right",
+                duration: 5000,
+              });
+              if (index > this.errors.length - 1) {
+                this.errors = [];
+              }
+            }, 5);
+            index++;
+          }
+          console.log(this.errors);
         }
       }
     },
@@ -395,13 +473,35 @@ export default {
 }
 .loan__button {
   width: 100%;
-
+  display: flex;
   text-align: center;
 }
 .loan__btn {
   background-color: #3c4b64 !important;
   color: #fff !important;
-  width: 100% !important;
+  /* width: 100% !important; */
+}
+.loan__btn:focus {
+  border: none !important;
+  outline: none !important;
+}
+/* Chrome, Safari, Edge, Opera */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+input:focus,
+select:focus {
+  box-shadow: 0px 1px 1px 1px #3c4b64 !important;
+  border: none !important;
+}
+
+/* Firefox */
+
+input[type="number"] {
+  -moz-appearance: textfield !important;
 }
 
 @media (min-width: 768px) {

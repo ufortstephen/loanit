@@ -1,5 +1,5 @@
 <template>
-  <div class="c-app">
+  <div class="c-app" v-if="show">
     <!-- {{ userDetails }}
     <br />
     <br />
@@ -34,6 +34,7 @@ export default {
   },
   data() {
     return {
+      show: false,
       userDetails: {},
       userToken: {},
     };
@@ -62,6 +63,8 @@ export default {
       this.$router.push("/login");
     }
     this.refreshPage();
+    this.show = true;
+    this.$message.success("Welcome Admin");
   },
 };
 </script>
