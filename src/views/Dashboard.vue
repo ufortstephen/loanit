@@ -5,7 +5,7 @@
     <div class="row mb-5">
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6>Total Amount Disburded</h6>
+          <h6>Total Amount Disbursed</h6>
           <h4 id="agent_disburded">{{ totalAmountDisbursed }}</h4>
         </el-card>
       </div>
@@ -45,7 +45,7 @@
       <div class="col-md-3">
         <el-card class="box-card">
           <h6>Settled Loans</h6>
-          <h4 id="interest_recieved">1</h4>
+          <h4 id="interest_recieved">15656</h4>
         </el-card>
       </div>
       <div class="col-md-3">
@@ -154,7 +154,6 @@ export default {
     },
   },
   created() {
-    
     console.log(this.userDetails);
     //   if (!this.userDetails.first_name === "Super") {
     //   this.$router.push("/agentAdmin");

@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import api from "@/helpers/api";
 import usersData from "./adminData";
 export default {
   name: "User",
@@ -43,19 +44,32 @@ export default {
         { key: "value", label: "", _style: "width:150px;" },
       ];
     },
+
     userData() {
+      // this.getAdmins();
+      const detail = this.$route.params.id;
       const id = this.$route.params.id;
-      const user = usersData.find((user, index) => index + 1 == id);
+      const user = this.items.find((item, index) => detail == item.id);
       const userDetails = user ? Object.entries(user) : [["id", "Not found"]];
+      userDetails.pop()
+
       return userDetails.map(([key, value]) => {
+        // console.log(userDetails.pop());
         return { key, value };
       });
     },
+    // visibleData() {
+    //   return this.userData.filter((param) => param.key !== "username");
+    // },
+    // username() {
+    //   return this.userData.filter((param) => param.key === "username")[0].value;
+    // },
+
     visibleData() {
       return this.userData.filter((param) => param.key !== "username");
     },
     username() {
-      return this.userData.filter((param) => param.key === "username")[0].value;
+      return this.userData.filter((param) => param.key === "username")[0];
     },
   },
   methods: {
@@ -69,6 +83,9 @@ export default {
       console.log(res);
       this.items = res;
     },
+  },
+  created() {
+    this.getAdmins();
   },
 };
 </script>

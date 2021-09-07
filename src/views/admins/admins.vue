@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import api from "../../helpers/api";
+import api from "@/helpers/api";
 import usersData from "./adminData";
 export default {
   name: "Users",
@@ -51,6 +51,7 @@ export default {
         { key: "last_name" },
         { key: "email" },
         { key: "phone" },
+        { key: "id" },
 
         // { key: "id", label: "Name", _classes: "font-weight-bold" },
       ],
@@ -82,8 +83,12 @@ export default {
           "primary";
       }
     },
-    rowClicked(item, index) {
-      this.$router.push({ path: `admins/${index + 1}` });
+    rowClicked(e, item, id) {
+      console.log(e.id);
+      id = e.id;
+      this.$router.push({
+        path: `admins/${id}`,
+      });
     },
     pageChange(val) {
       this.$router.push({ query: { page: val } });
@@ -92,6 +97,7 @@ export default {
       try {
         const res = await api.viewAdmins();
         this.items = res;
+        console.log(this.items);
       } catch (error) {
         console.log(error);
       }

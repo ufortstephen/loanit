@@ -16,10 +16,10 @@
     </CHeaderBrand> -->
     <CHeaderNav class="d-md-down-none mr-auto">
       <CHeaderNavItem class="px-3">
-        <CHeaderNavLink to="/dashboard"> Dashboard </CHeaderNavLink>
+        <CHeaderNavLink to="/superAdmin"> Dashboard </CHeaderNavLink>
       </CHeaderNavItem>
       <CHeaderNavItem class="px-3">
-        <CHeaderNavLink to="/users" exact> Loanees </CHeaderNavLink>
+        <CHeaderNavLink to="/superAdmin/users" exact> Loanees </CHeaderNavLink>
       </CHeaderNavItem>
     </CHeaderNav>
 

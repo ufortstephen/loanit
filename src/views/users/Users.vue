@@ -1,6 +1,6 @@
 <template>
   <div class="all__users all">
-    <h3 class="p-3">All Loanees {{tableData.length}}</h3>
+    <h3 class="p-3">All Loanees {{ tableData.length }}</h3>
     <el-table class="search__table">
       <el-table-column align="right">
         <template slot="header" slot-scope="scope">
@@ -59,7 +59,7 @@
         :filter-method="filterTag"
         filter-placement="bottom-end"
       >
-        <template slot-scope="scope">
+        <template slot-scope="scope" class="p-0">
           <el-tag
             :type="scope.row.status === 'settled' ? 'successs' : 'warning'"
             disable-transitions
@@ -130,6 +130,9 @@ export default {
 .all .el-tag--warning {
   background-color: #ffc107c1 !important;
   color: #fff !important;
+}
+.all .el-tag {
+  padding: 0 !important ;
 }
 
 @media (min-width: 768px) {
