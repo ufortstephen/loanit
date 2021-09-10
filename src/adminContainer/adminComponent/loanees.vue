@@ -160,6 +160,15 @@ export default {
 .c-main .container-fluid {
   /* padding: 0 !important; */
 }
+.wallet {
+  background-color: transparent !important;
+  border: 1px solid #3c4b64;
+  color: #3c4b64;
+  border-radius: 5px;
+  padding: 0px 10px !important ;
+  width: max-content !important;
+  cursor: pointer;
+}
 .loanees .el-tag--successs {
   background-color: green !important;
   color: #fff !important;

@@ -71,7 +71,7 @@
       <el-table-column label="History" prop="">
         <template slot-scope="scope" class="p-0" prop="loan_user.id">
           <el-tag
-            class="wallet"
+            class="wallet btn"
             @click.native.prevent="
               rowClicked(tableData[scope.$index].loan_user.id)
             "
@@ -155,9 +155,9 @@ export default {
 .search__table input {
   height: 40px !important;
 }
-tr {
+/* tr {
   cursor: pointer !important;
-}
+} */
 .all .el-tag--successs {
   background-color: green !important;
   color: #fff !important;
@@ -167,7 +167,7 @@ tr {
   color: #fff !important;
 }
 .all .el-tag {
-  padding: 0 !important ;
+  /* padding: 0 !important ; */
 }
 .wallet {
   background-color: transparent !important;
@@ -175,6 +175,8 @@ tr {
   color: #3c4b64;
   border-radius: 5px;
   padding: 0px 10px !important ;
+  width: max-content !important;
+  cursor: pointer;
 }
 
 @media (min-width: 768px) {

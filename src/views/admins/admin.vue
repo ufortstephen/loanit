@@ -3,7 +3,7 @@
     <CCol col="12" lg="12">
       <CCard>
         <CCardHeader> Administrator id: {{ $route.params.id }} </CCardHeader>
-        <!-- {{ items }} -->
+
         <CCardBody>
           <CDataTable
             striped
@@ -43,7 +43,7 @@
                 <td scope="column">
                   <span
                     @click.prevent="gotowallet(y.loan_user.id)"
-                    class="wallet"
+                    class="wallet btn"
                     >View Wallet</span
                   >
                 </td>
@@ -91,7 +91,7 @@ export default {
   computed: {
     fields() {
       return [
-        { key: "key", label: this.username, _style: "width:150px" },
+        { key: "key", label: "Admin Details", _style: "width:150px" },
         { key: "value", label: "", _style: "width:150px;" },
       ];
     },
@@ -164,3 +164,15 @@ export default {
   },
 };
 </script>
+
+<style>
+.wallet {
+  background-color: transparent !important;
+  border: 1px solid #3c4b64;
+  color: #3c4b64;
+  border-radius: 5px;
+  padding: 0px 10px !important ;
+  width: max-content !important;
+  cursor: pointer;
+}
+</style>

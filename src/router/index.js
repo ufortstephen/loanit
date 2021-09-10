@@ -664,36 +664,7 @@ function configRoutes() {
                         }
                     ]
                 },
-                // {
-                //     path: 'admins',
-                //     meta: {
-                //         label: 'Admins'
-                //     },
-                //     component: {
-                //         render(c) {
-                //             return c('router-view')
-                //         }
-                //     },
-                //     children: [{
-                //             path: '',
-                //             name: 'Admins',
-                //             component: Admins
-                //         },
-                //         {
-                //             path: ':id',
-                //             meta: {
-                //                 label: 'Admin Details'
-                //             },
-                //             name: 'Admin',
-                //             component: Admin
-                //         }
-                //     ]
-                // },
-                // {
-                //     path: 'loanees',
-                //     name: 'loanees',
-                //     component: loanees
-                // },
+
                 {
                     path: 'active_loanees',
                     name: 'active_loanees',

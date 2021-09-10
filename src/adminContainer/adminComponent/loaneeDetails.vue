@@ -33,7 +33,6 @@
             >{{ amountBorrowed }}</span
           >
           <br />
-          <!-- <el-button type="text">Manage</el-button> -->
         </div>
       </div>
 
@@ -64,6 +63,10 @@
       <div class="d-flex justify-content-between">
         <div>Balance</div>
         <div>{{ amountBorrowed }}</div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <div></div>
+        <div><el-button type="text">Manage</el-button></div>
       </div>
     </el-card>
 
