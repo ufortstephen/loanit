@@ -1,5 +1,5 @@
 <template>
-  <div class="all__users all">
+  <div class="all__users all mb-5" v-loading="loading">
     <h3 class="p-3">All Loanees {{ tableData.length }}</h3>
     <el-table class="search__table">
       <el-table-column align="right">
@@ -40,12 +40,13 @@
       <el-table-column label="Date Issued" prop="date_issued">
       </el-table-column>
 
-      <el-table-column label="Repayment Date" prop="repayment_date">
+      <!-- <el-table-column label="Repayment Date" prop="end_date">
+      </el-table-column> -->
+      <el-table-column label="Daily Payment" prop="daily_payment">
       </el-table-column>
-      <el-table-column label="Amount due today" prop="daily_return">
+      <el-table-column label="Total Payment" prop="total_payment">
       </el-table-column>
 
-      <el-table-column label="Status" prop="status"> </el-table-column>
       <el-table-column label="Admin" prop="admin.first_name"> </el-table-column>
       <el-table-column
         prop="status"
@@ -59,11 +60,23 @@
         :filter-method="filterTag"
         filter-placement="bottom-end"
       >
-        <template slot-scope="scope" class="p-0">
+        <template slot-scope="scope" class="p-0" prop="loan_user.id">
           <el-tag
             :type="scope.row.status === 'settled' ? 'successs' : 'warning'"
             disable-transitions
             >{{ scope.row.status }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="History" prop="">
+        <template slot-scope="scope" class="p-0" prop="loan_user.id">
+          <el-tag
+            class="wallet"
+            @click.native.prevent="
+              rowClicked(tableData[scope.$index].loan_user.id)
+            "
+            disable-transitions
+            >Wallet
           </el-tag>
         </template>
       </el-table-column>
@@ -77,6 +90,7 @@ import api from "@/helpers/api.js";
 export default {
   data() {
     return {
+      loading: true,
       scope: "scope",
       tableData: [],
       search: "",
@@ -102,26 +116,47 @@ export default {
     filterTag(value, row) {
       return row.status === value;
     },
+    rowClicked(e) {
+      console.log(e);
+      this.$router.push({
+        path: `users/${e}`,
+      });
+    },
   },
-  created() {
-    this.getallLoanees();
+  async beforeCreate() {
+    let token = this.$store.getters.isLoggedIn;
+    console.log(token);
+    console.log(this.tableData);
+    try {
+      const response = await api.listAllLoans({
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response);
+      console.log(this.tableData);
+      this.tableData = response;
+      console.log(this.tableData);
+      this.loading = false;
+    } catch (error) {
+      console.log(error.response);
+      console.log(this.tableData);
+    }
+    // this.getallLoanees();
   },
 };
 </script>
 
 
-<style>
+<style >
 .search__table .el-table__empty-block {
   display: none !important;
 }
 .search__table input {
   height: 40px !important;
 }
-.c-main {
-  /* padding-top: 0 !important; */
-}
-.c-main .container-fluid {
-  /* padding: 0 !important; */
+tr {
+  cursor: pointer !important;
 }
 .all .el-tag--successs {
   background-color: green !important;
@@ -133,6 +168,13 @@ export default {
 }
 .all .el-tag {
   padding: 0 !important ;
+}
+.wallet {
+  background-color: transparent !important;
+  border: 1px solid #3c4b64;
+  color: #3c4b64;
+  border-radius: 5px;
+  padding: 0px 10px !important ;
 }
 
 @media (min-width: 768px) {

@@ -8,10 +8,12 @@
         "github": "https://github.com/coreui",
         "twitter": "https://twitter.com/core_ui"
     },
-    "contributors": [{
-        "name": "CoreUI Team",
-        "url": "https://github.com/orgs/coreui/people"
-    }],
+    "contributors": [
+        {
+            "name": "CoreUI Team",
+            "url": "https://github.com/orgs/coreui/people"
+        }
+    ],
     "repository": {
         "type": "git",
         "url": "git@github.com:coreui/coreui-free-vue-admin-template.git"

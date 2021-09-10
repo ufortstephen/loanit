@@ -2,17 +2,25 @@
   <div class="pb-5">
     <h2>Add Loan</h2>
     <div class="loan__container">
+      <!-- Steps Header -->
       <el-steps :active="active" finish-status="success">
         <el-step title="Personal Information"><h2>Personnal Info</h2></el-step>
         <el-step title="Other Information"><h2>Other Info</h2></el-step>
         <el-step title="Loan Details"></el-step>
+        <el-step title="Preview"></el-step>
       </el-steps>
+      <!-- Steps Header -->
+
+      <!-- Add Loan Form -->
       <form action="" class="mt-5" id="myFormId" @submit.prevent="addNewLoan">
+        <!-- Personal Information Section -->
         <div class="personal" v-if="personal">
           <div class="row">
             <div class="col-md-6">
+              <!-- First Name Form Group -->
               <div class="form-group">
                 <label for="first_name">First Name</label>
+
                 <input
                   type="text"
                   name="first_name"
@@ -25,9 +33,12 @@
                 />
               </div>
             </div>
+
+            <!-- Lasy Name  -->
             <div class="col-md-6">
               <div class="form-group">
                 <label for="last_name">Last Name</label>
+
                 <input
                   type="text"
                   name="last_name"
@@ -43,8 +54,10 @@
           </div>
           <div class="row">
             <div class="col-md-6">
+              <!-- Email -->
               <div class="form-group">
                 <label for="email">Email</label>
+
                 <input
                   type="email"
                   name="email"
@@ -58,8 +71,10 @@
               </div>
             </div>
             <div class="col-md-6">
+              <!-- Phone Number -->
               <div class="form-group">
                 <label for="mobile">Phone Number</label>
+
                 <input
                   type="number"
                   pattern="[0-9]*"
@@ -77,16 +92,10 @@
           </div>
           <div class="row">
             <div class="col-md-6">
+              <!-- Date Of Birth -->
               <div class="form-group">
                 <label for="">Date of birth</label>
-                <!-- <input
-                  type="text"
-                  name=""
-                  id=""
-                  class="form-control"
-                  placeholder=""
-                  aria-describedby="helpId"
-                /> -->
+
                 <br />
                 <div>
                   <el-date-picker
@@ -94,14 +103,18 @@
                     type="date"
                     placeholder="Pick a day"
                     required
+                    max="1998-12-31"
+                    :picker-options="datePickerOptions1"
                   >
                   </el-date-picker>
                 </div>
               </div>
             </div>
             <div class="col-md-6">
+              <!-- Occupation -->
               <div class="form-group">
                 <label for="">Occupation</label>
+
                 <input
                   type="text"
                   name=""
@@ -116,11 +129,16 @@
             </div>
           </div>
         </div>
+        <!-- Personal Info Ends Here -->
+
+        <!-- Other Information -->
         <div class="other_info" v-if="otherInfo">
           <div class="row">
+            <!-- Dependants -->
             <div class="col-md-6">
               <div class="form-group">
                 <label for="">Dependants</label>
+
                 <input
                   type="number"
                   pattern="[0-9]*"
@@ -136,8 +154,10 @@
               </div>
             </div>
             <div class="col-md-6">
+              <!-- Marital Status -->
               <div class="form-group">
                 <label for="">Marital Status</label>
+
                 <select
                   class="form-control"
                   name=""
@@ -154,7 +174,9 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
+                <!-- Gender -->
                 <label for="">Gender</label>
+
                 <select
                   class="form-control"
                   name=""
@@ -168,8 +190,10 @@
               </div>
             </div>
             <div class="col-md-6">
+              <!-- Address -->
               <div class="form-group">
                 <label for="">Address</label>
+
                 <input
                   type="text"
                   name=""
@@ -184,12 +208,16 @@
             </div>
           </div>
         </div>
+        <!-- Other Information Ends Here -->
 
+        <!-- Loan Details -->
         <div class="loan_details" v-if="loanDetails">
           <div class="row">
             <div class="col-md-6">
+              <!-- Loan Category -->
               <div class="form-group">
                 <label for="">Loan Category</label>
+
                 <select
                   class="form-control"
                   name=""
@@ -206,8 +234,10 @@
               </div>
             </div>
             <div class="col-md-6">
+              <!-- Loan Amount -->
               <div class="form-group">
                 <label for="">Loan Amount</label>
+
                 <input
                   type="number"
                   pattern="[0-9]*"
@@ -225,89 +255,129 @@
           </div>
           <div class="row">
             <div class="col-md-6">
+              <!-- Start Date -->
               <div class="form-group">
-                <label for="">Repayment Days</label>
+                <label for="">Start Date</label> <br />
 
-                <input
-                  type="number"
-                  pattern="[0-9]*"
-                  inputmode="numeric"
-                  name=""
-                  id=""
-                  required
-                  class="form-control"
-                  placeholder=""
-                  aria-describedby="helpId"
-                  v-model="addLoan.repayment_date"
-                />
+                <el-date-picker
+                  style="width: 195px"
+                  value-format="yyyy-MM-dd"
+                  v-model="addLoan.start_date"
+                  type="date"
+                  :picker-options="pickerOptions"
+                  placeholder="Select start date"
+                >
+                </el-date-picker>
               </div>
             </div>
             <div class="col-md-6">
-              <!-- <div class="form-group">
-                <label for="">Loan Interest</label>
-                <select
-                  class="form-control"
-                  name=""
-                  id=""
-                  v-model="addLoan.interest"
-                >
-                  <option>2%</option>
-                  <option>4%</option>
-                  <option>6%</option>
-                  <option>8%</option>
-                  <option>10%</option>
-                  <option>12%</option>
-                </select>
-              </div> -->
+              <!-- Start Date -->
               <div class="form-group">
-                <label for="" class="d-block">Loan Interest</label>
-                <div class="input-group mb-3">
-                  <input
-                    type="number"
-                    pattern="[0-9]*"
-                    inputmode="numeric"
-                    class="form-control"
-                    v-model="addLoan.interest"
-                    aria-label="Recipient's username"
-                    aria-describedby="basic-addon2"
-                    required
-                  />
-                  <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">%</span>
-                  </div>
-                </div>
+                <label for="">End Date</label> <br />
+
+                <el-date-picker
+                  style="width: 195px"
+                  value-format="yyyy-MM-dd"
+                  v-model="addLoan.end_date"
+                  type="date"
+                  :picker-options="pickerOptions"
+                  placeholder="Select end date"
+                >
+                </el-date-picker>
               </div>
             </div>
           </div>
-          <div class="row"></div>
+
           <div class="row">
             <div class="col-md-12">
               <div class="form-group w-100">
                 <label for="">Purpose</label>
+
                 <textarea
                   class="form-control"
                   name=""
                   id=""
-                  rows="3"
+                  rows="5"
                   required
+                  v-model="addLoan.purpose"
                 ></textarea>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- Preview Loan -->
+        <div v-if="preview_loan">
+          <el-row>
+            <el-col>
+              <el-card shadow="hover" class="preview">
+                <h5 class="text-center mb-4">Loan It</h5>
+                <div class="row">
+                  <div class="col-6">
+                    <h6>First Name</h6>
+                    <p>{{ addLoan.first_name }}</p>
+                  </div>
+                  <div class="col-6">
+                    <h6>Last Name</h6>
+                    <p>{{ addLoan.last_name }}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <h6>Phone</h6>
+                    <p>{{ addLoan.mobile }}</p>
+                  </div>
+                  <div class="col-6">
+                    <h6>Loan Category</h6>
+                    <p>{{ addLoan.category }}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <h6>Loan Amount</h6>
+                    <p>NGN {{ addLoan.amount }}</p>
+                  </div>
+                  <div class="col-6">
+                    <h6>Loan Interest</h6>
+                    <p>15%</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <h6>Start Date</h6>
+                    <p>{{ addLoan.start_date }}</p>
+                  </div>
+                  <div class="col-6">
+                    <h6>End Date</h6>
+                    <p>{{ addLoan.end_date }}</p>
+                  </div>
+                </div>
+                <div class="mt-3">
+                  <button class="btn btn-dark w-100">Add Loan</button>
+                </div>
+              </el-card>
+            </el-col>
+          </el-row>
+        </div>
       </form>
     </div>
+
+    <!-- Steps Navigations -->
     <div class="loan__button">
       <el-button
         style="margin-top: 12px"
         v-if="back"
         class="loan__btn"
         @click="goBack"
-        >Back</el-button
+        >{{ back_text }}</el-button
       >
-      <el-button style="margin-top: 12px" class="loan__btn" @click="next">{{
-        stepText
-      }}</el-button>
+      <el-button
+        style="margin-top: 12px"
+        class="loan__btn"
+        v-if="loan_buttons"
+        @click="next"
+        >{{ stepText }}</el-button
+      >
     </div>
   </div>
 </template>
@@ -317,13 +387,35 @@ import api from "../../helpers/api";
 export default {
   data() {
     return {
+      // Disable Weekends Function
+      datePickerOptions1: {
+        disabledDate(date) {
+          return new Date("1999-1-1") < date;
+        },
+      },
+      pickerOptions: {
+        disabledDate(time) {
+          console.log(time.getDay());
+          if (time.getDay() == 0) {
+            return time.getDay();
+          }
+          if (time.getDay() == 6) {
+            return time.getDay();
+          }
+        },
+      },
       errors: [],
       back: false,
       stepText: "Next",
       personal: true,
       otherInfo: false,
       loanDetails: false,
+      preview_loan: false,
+      loan_buttons: true,
+      back_text: "Back",
       active: 0,
+
+      // Add Loan Models
       addLoan: {
         first_name: "",
         last_name: "",
@@ -339,7 +431,8 @@ export default {
         purpose: "",
         amount: "",
         interest: "",
-        repayment_date: "",
+        start_date: "",
+        end_date: "",
       },
     };
   },
@@ -353,24 +446,43 @@ export default {
         this.personal = true;
         this.otherInfo = false;
         this.loanDetails = false;
+        this.preview_loan = false;
+        this.loan_buttons = true;
         this.stepText = "Next";
+        this.back_text = "Back";
         this.active = 1;
       } else if (this.active == 1) {
         this.back = true;
         this.personal = false;
         this.otherInfo = true;
         this.loanDetails = false;
+        this.preview_loan = false;
+        this.loan_buttons = true;
         this.stepText = "Next";
+        this.back_text = "Back";
       } else if (this.active == 2) {
         this.personal = false;
         this.otherInfo = false;
+        this.loan_buttons = true;
         this.loanDetails = !this.loanDetails;
-      } else if (this.active++ > 2) {
-        this.stepText = "Request Loan";
-        this.addNewLoan();
+        this.back_text = "Back";
+      } else if (this.active == 3) {
+        this.preview_loan = true;
+        // this.addNewLoan();
+        // this.personal = true;
+        this.otherInfo = false;
+        this.loanDetails = false;
+        this.stepText = "Next";
+        this.back = true;
+        this.loan_buttons = false;
+        this.back_text = "Edit";
+      } else if (this.active++ > 3) {
+        this.preview_loan = true;
+        // this.addNewLoan();
         this.personal = true;
         this.otherInfo = false;
         this.loanDetails = false;
+        this.loan_buttons = true;
         this.stepText = "Next";
         this.back = false;
         this.active = 0;
@@ -383,12 +495,27 @@ export default {
         this.personal = true;
         this.otherInfo = false;
         this.loanDetails = false;
+        this.preview_loan = false;
+        this.loan_buttons = true;
+        this.back_text = "Back";
       }
       if (this.active == 2) {
         this.active = 1;
         this.personal = false;
         this.otherInfo = true;
         this.loanDetails = false;
+        this.preview_loan = false;
+        this.loan_buttons = true;
+        this.back_text = "Back";
+      }
+      if (this.active == 3) {
+        this.active = 2;
+        this.personal = false;
+        this.otherInfo = false;
+        this.loanDetails = true;
+        this.preview_loan = false;
+        this.loan_buttons = true;
+        this.back_text = "Back";
       }
     },
     open() {
@@ -427,9 +554,8 @@ export default {
         this.addLoan.last_name = "";
         this.addLoan.email = "";
         this.addLoan.mobile = "";
-        this.addLoan.date_of_birth = "";
-        this.addLoan.occupation = "";
-        this.addLoan.dependants = "";
+        date_of_birth = "";
+        (this.addLoan.occupation = ""), (this.addLoan.dependants = "");
         this.addLoan.marital_status = "";
         this.addLoan.gender = "";
         this.addLoan.address = "";
@@ -437,15 +563,15 @@ export default {
         this.addLoan.purpose = "";
         this.addLoan.amount = "";
         this.addLoan.interest = "";
-        this.addLoan.repayment_date = "";
+        this.addLoan.start_date = "";
+        this.addLoan.end_date = "";
       } catch (error) {
         console.log(error.response);
         if (error.response.status == 422) {
-          console.log(`${error.response.data.errors.address}`);
           for (let prop in error.response.data.errors) {
-            console.log(error.response.data.errors[prop][0]);
             this.errors.push(error.response.data.errors[prop][0]);
           }
+          this.errors.pop();
           for (let index = 0; index < this.errors.length; index++) {
             setTimeout(() => {
               this.$message.error({
@@ -459,7 +585,6 @@ export default {
             }, 5);
             index++;
           }
-          console.log(this.errors);
         }
       }
     },
@@ -497,6 +622,9 @@ select:focus {
   box-shadow: 0px 1px 1px 1px #3c4b64 !important;
   border: none !important;
 }
+.form-group {
+  margin-bottom: 2rem !important;
+}
 
 /* Firefox */
 
@@ -512,6 +640,14 @@ input[type="number"] {
   .loan__button {
     width: 50%;
     margin: 0px auto;
+  }
+}
+
+@media (min-width: 1324px) {
+  .preview {
+    width: 60%;
+    margin: 0px auto;
+    cursor: pointer;
   }
 }
 </style>

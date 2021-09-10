@@ -1,5 +1,5 @@
 <template>
-  <CRow>
+  <CRow v-loading="loading">
     <CCol col="12" xl="12">
       <CCard>
         <!-- <CCardHeader> Administrators </CCardHeader> -->
@@ -18,7 +18,7 @@
             :pagination="{ doubleArrows: false, align: 'center' }"
             @page-change="pageChange"
           >
-            <template #status="data">
+            <!-- <template #status="data">
               <td>
                 <CBadge
                   :color="getBadge(data.item.status)"
@@ -28,7 +28,7 @@
                   {{ data.item.status }}
                 </CBadge>
               </td>
-            </template>
+            </template> -->
           </CDataTable>
         </CCardBody>
       </CCard>
@@ -43,6 +43,8 @@ export default {
   name: "Users",
   data() {
     return {
+      userDetails: "",
+      loading: true,
       items: [],
       fields: [
         // { key: "reference" },
@@ -51,7 +53,6 @@ export default {
         { key: "last_name" },
         { key: "email" },
         { key: "phone" },
-        { key: "id" },
 
         // { key: "id", label: "Name", _classes: "font-weight-bold" },
       ],
@@ -104,8 +105,30 @@ export default {
     },
   },
 
-  created() {
-    this.getAdmins();
+  async beforeCreate() {
+    // this.getAdmins();
+    this.userDetails = this.$store.getters.getUser;
+    this.userToken = this.$store.getters.isLoggedIn;
+    if (this.userDetails.email !== "super@gmail.com") {
+      this.$router.push("/login");
+    }
+
+    try {
+      const res = await api.viewAdmins();
+      this.items = res;
+      console.log(this.items);
+      this.loading = false;
+    } catch (error) {
+      console.log(error);
+    }
   },
+
+  // beforeMount() {
+  //   this.userDetails = this.$store.getters.getUser;
+  //   this.userToken = this.$store.getters.isLoggedIn;
+  //   if (this.userDetails.email !== "super@gmail.com") {
+  //     this.$router.push("/login");
+  //   }
+  // },
 };
 </script>

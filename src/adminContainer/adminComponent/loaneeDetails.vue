@@ -86,7 +86,7 @@ export default {
   name: "User",
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.usersOpened = from.fullPath.includes("admins");
+      vm.usersOpened = from.fullPath.includes("loanees");
     });
   },
   data() {
@@ -110,12 +110,12 @@ export default {
     goBack() {
       this.usersOpened
         ? this.$router.go(-1)
-        : this.$router.push({ path: "/superAdmin" });
+        : this.$router.push({ path: "/agentAdmin" });
     },
 
     // Get Admin Data functon
     async getAdmins() {
-      const res = await api.listAllLoans();
+      const res = await api.getLoans();
       console.log(res);
       this.items = res;
 

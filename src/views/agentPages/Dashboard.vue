@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <!-- <WidgetsDropdown /> -->
 
     <div class="row mb-5">
@@ -86,6 +86,7 @@ export default {
       percentTotal: 0,
       totalExpected: 0,
       dueToday: 0,
+      loading: true,
     };
   },
   methods: {
@@ -93,10 +94,10 @@ export default {
       try {
         const res = await api.getLoans();
         this.items = res;
+        this.getItem();
       } catch (error) {
         // this.showLoans()
       }
-      this.getItem();
     },
     amount(item) {
       return item.amount;
@@ -129,6 +130,7 @@ export default {
       //
       let todayAmt = this.items.map(this.today).reduce(this.sum);
       this.dueToday = formatter.format(todayAmt);
+      this.loading = false;
     },
   },
   created() {

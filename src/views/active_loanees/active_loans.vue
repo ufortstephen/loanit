@@ -42,13 +42,25 @@
       <el-table-column label="Date Issued" prop="date_issued">
       </el-table-column>
 
-      <el-table-column label="Repayment Date" prop="repayment_date">
+      <el-table-column label="Repayment Date" prop="end_date">
       </el-table-column>
-      <el-table-column label="Amount due today" prop="daily_return">
+      <el-table-column label="Amount due today" prop="daily_payment">
       </el-table-column>
 
       <el-table-column label="Status" prop="status"> </el-table-column>
       <el-table-column label="Admin" prop="admin.first_name"> </el-table-column>
+      <el-table-column label="History" prop="">
+        <template slot-scope="scope" class="p-0" prop="loan_user.id">
+          <el-tag
+            class="wallet"
+            @click.native.prevent="
+              rowClicked(tableData[scope.$index].loan_user.id)
+            "
+            disable-transitions
+            >Wallet
+          </el-tag>
+        </template>
+      </el-table-column>
       <!-- <el-table-column
         prop="status"
         label="Status"
@@ -84,6 +96,13 @@ export default {
     };
   },
   methods: {
+    rowClicked(e) {
+      console.log(e);
+      this.$router.push({
+        path: `users/${e}`,
+      });
+    },
+
     handleEdit(index, row) {
       console.log(index, row);
     },

@@ -1,5 +1,5 @@
 <template>
-  <div class="c-app" v-if="show">
+  <div class="c-app">
     <!-- {{ userDetails }}
     <br />
     <br />
@@ -34,7 +34,6 @@ export default {
   },
   data() {
     return {
-      show: false,
       userDetails: {},
       userToken: {},
     };
@@ -55,16 +54,23 @@ export default {
       }
     },
   },
-  created() {
+  beforeCreate() {
     this.userDetails = this.$store.getters.getUser;
     this.userToken = this.$store.getters.isLoggedIn;
 
     if (!this.$store.getters.isLoggedIn) {
       this.$router.push("/login");
     }
+    if (this.userDetails.email !== "super@gmail.com") {
+      this.$router.push("/login");
+    }
+  },
+  beforeMount() {
     this.refreshPage();
-    this.show = true;
-    this.$message.success("Welcome Admin");
+
+    // this.$message.success("Welcome Admin");
+    console.log(this.userDetails);
+    // this.refreshPage();
   },
 };
 </script>

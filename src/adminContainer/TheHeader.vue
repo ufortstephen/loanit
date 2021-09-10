@@ -67,11 +67,11 @@
 </template>
 
 <script>
-import addAdmin from "../components/addAdmin.vue";
+// import addAdmin from "../components/addAdmin.vue";
 export default {
   name: "TheHeader",
   components: {
-    addAdmin,
+    // addAdmin,
   },
   methods: {
     logout() {

@@ -1,7 +1,6 @@
 <template>
   <div>
-    <!-- <WidgetsDropdown /> -->
-
+    <!-- Card Rows For Analytics Endpoint -->
     <div class="row mb-5">
       <div class="col-md-3">
         <el-card class="box-card">
@@ -56,29 +55,24 @@
         {{ userDetails }}
       </div>
     </div>
-    <!-- {{ items }} -->
+
+    <!-- All Loanees Component -->
+
     <allUsers />
 
-    <!-- <users class="my-5" /> -->
+    <!-- All Loanees Component -->
   </div>
 </template>
 
 <script>
 import api from "@/helpers/api";
-// import MainChartExample from "./charts/MainChartExample";
-// import WidgetsDropdown from "./widgets/WidgetsDropdown";
+
 import allUsers from "@/views/users/Users.vue";
-// import users from "./users/Users.vue";
-// import WidgetsBrand from "./widgets/WidgetsBrand";
 
 export default {
   name: "Dashboard",
   components: {
-    // MainChartExample,
-    // WidgetsDropdown,
     allUsers,
-    // users,
-    // WidgetsBrand,
   },
   data() {
     return {
@@ -96,9 +90,7 @@ export default {
       try {
         const res = await api.viewAdmins();
         this.items = res;
-      } catch (error) {
-        // this.showLoans()
-      }
+      } catch (error) {}
       this.getItem();
     },
     amount(item) {
@@ -132,6 +124,7 @@ export default {
       //
       let todayAmt = 800000;
       this.dueToday = formatter.format(todayAmt);
+      this.fullscreenLoading = false;
     },
     refresh() {
       if (!localStorage.getItem("firstLoad")) {
@@ -155,16 +148,16 @@ export default {
   },
   created() {
     console.log(this.userDetails);
-    //   if (!this.userDetails.first_name === "Super") {
-    //   this.$router.push("/agentAdmin");
-    // }
+    if (!this.userDetails.first_name === "Super") {
+      this.$router.push("/agentAdmin");
+    }
     this.showLoans();
   },
   mounted() {
     let getToken = this.$store.getters.isLoggedIn;
     this.userDetails = this.$store.getters.userData;
     this.token = getToken;
-    // this.refreshPage()
+    // this.refreshPage();
   },
 };
 </script>

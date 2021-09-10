@@ -145,6 +145,10 @@ const add_loan = () =>
 const loanees = () =>
     import ('@/adminContainer/adminComponent/loanees')
 
+// Admin Loanees Details
+const loaneeDetails = () =>
+    import ('@/adminContainer/adminComponent/loaneeDetails')
+
 
 // Active Loanees
 const active_loanees = () =>
@@ -216,7 +220,7 @@ function configRoutes() {
                         {
                             path: ':id',
                             meta: {
-                                label: 'User Details'
+                                label: `User Details`
                             },
                             name: 'User',
                             component: User
@@ -637,9 +641,59 @@ function configRoutes() {
                 },
                 {
                     path: 'loanees',
-                    name: 'loanees',
-                    component: loanees
+                    meta: {
+                        label: 'Loanees'
+                    },
+                    component: {
+                        render(c) {
+                            return c('router-view')
+                        }
+                    },
+                    children: [{
+                            path: '',
+                            name: 'loanees',
+                            component: loanees
+                        },
+                        {
+                            path: ':id',
+                            meta: {
+                                label: 'Loanee Details'
+                            },
+                            name: 'Loanee',
+                            component: loaneeDetails
+                        }
+                    ]
                 },
+                // {
+                //     path: 'admins',
+                //     meta: {
+                //         label: 'Admins'
+                //     },
+                //     component: {
+                //         render(c) {
+                //             return c('router-view')
+                //         }
+                //     },
+                //     children: [{
+                //             path: '',
+                //             name: 'Admins',
+                //             component: Admins
+                //         },
+                //         {
+                //             path: ':id',
+                //             meta: {
+                //                 label: 'Admin Details'
+                //             },
+                //             name: 'Admin',
+                //             component: Admin
+                //         }
+                //     ]
+                // },
+                // {
+                //     path: 'loanees',
+                //     name: 'loanees',
+                //     component: loanees
+                // },
                 {
                     path: 'active_loanees',
                     name: 'active_loanees',

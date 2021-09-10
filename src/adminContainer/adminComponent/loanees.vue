@@ -25,14 +25,16 @@
             data.loan_user.last_name
               .toLowerCase()
               .includes(search.toLowerCase()) ||
-               data.id
-              .toLowerCase()
-              .includes(search.toLowerCase()) 
+            data.id.toLowerCase().includes(search.toLowerCase())
         )
       "
       style="width: 100%"
     >
-      <el-table-column label="First name" prop="loan_user.first_name">
+      <el-table-column
+        id="table"
+        label="First name"
+        prop="loan_user.first_name"
+      >
       </el-table-column>
       <el-table-column label="Last name" prop="loan_user.last_name">
       </el-table-column>
@@ -41,13 +43,16 @@
 
       <el-table-column label="Date Issued" prop="date_issued">
       </el-table-column>
+      <!-- <el-table-column label="Due Date" prop="end_date"> </el-table-column> -->
 
-      <el-table-column label="Repayment Date" prop="repayment_date">
+      <el-table-column label="Period" prop="interval"></el-table-column>
+      <el-table-column label="Due Today" prop="daily_payment">
       </el-table-column>
-      <el-table-column label="Amount due today" prop="daily_return">
+      <el-table-column label="Total Pmt" prop="total_payment">
       </el-table-column>
+      <!-- <el-table-column label="Total Pmt" prop="loan_user.id"> </el-table-column> -->
 
-      <el-table-column label="Status" prop="status"> </el-table-column>
+      <!-- <el-table-column label="Status" prop="status"> </el-table-column> -->
       <el-table-column label="Admin" prop="admin.first_name"> </el-table-column>
       <el-table-column
         prop="status"
@@ -69,6 +74,18 @@
           </el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="History" prop="">
+        <template slot-scope="scope" class="p-0" prop="loan_user.id">
+          <el-tag
+            class="wallet"
+            @click.native.prevent="
+              rowClicked(tableData[scope.$index].loan_user.id)
+            "
+            disable-transitions
+            >Wallet
+          </el-tag>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -84,18 +101,33 @@ export default {
       search: "",
     };
   },
-  methods: {
-    handleEdit(index, row) {
-      console.log(index, row);
+  watch: {
+    $route: {
+      immediate: true,
+      handler(route) {
+        if (route.query && route.query.page) {
+          this.activePage = Number(route.query.page);
+        }
+      },
     },
-    handleDelete(index, row) {
-      console.log(index, row);
+  },
+
+  methods: {
+    rowClicked(e) {
+      console.log(e);
+      this.$router.push({
+        path: `loanees/${e}`,
+      });
+    },
+
+    pageChange(val) {
+      this.$router.push({ query: { page: val } });
     },
     async getallLoanees() {
       //get all users from api
       try {
         const response = await api.getLoans();
-        console.log(response);
+
         this.tableData = response;
       } catch (error) {
         console.log(error.response);
@@ -103,6 +135,9 @@ export default {
     },
     filterTag(value, row) {
       return row.status === value;
+    },
+    go() {
+      alert(66);
     },
   },
   created() {
