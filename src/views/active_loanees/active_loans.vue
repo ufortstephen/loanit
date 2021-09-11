@@ -19,67 +19,59 @@
         tableData.filter(
           (data) =>
             !search ||
-            data.loan_user.first_name
+            data.loanee_wallet[0].paid_by
               .toLowerCase()
-              .includes(search.toLowerCase()) ||
-            data.loan_user.last_name
-              .toLowerCase()
-              .includes(search.toLowerCase()) ||
-            data.loan_user.email.toLowerCase().includes(search.toLowerCase()) ||
-            data.status.toLowerCase().includes(search.toLowerCase()) ||
-            data.loan_user.mobile.toLowerCase().includes(search.toLowerCase())
+              .includes(search.toLowerCase())
         )
       "
       style="width: 100%"
     >
-      <el-table-column label="First name" prop="loan_user.first_name">
+      <el-table-column label="Name" prop="loanee_wallet[0].paid_by">
       </el-table-column>
-      <el-table-column label="Last name" prop="loan_user.last_name">
-      </el-table-column>
-      <!-- <el-table-column label="Email" prop="loan_user.email"> </el-table-column> -->
-      <!-- <el-table-column label="Amount" prop="amount"> </el-table-column> -->
 
       <el-table-column label="Date Issued" prop="date_issued">
       </el-table-column>
+      <el-table-column label="Due Date" prop="end_date"> </el-table-column>
+      <el-table-column label="Interval" prop="interval"> </el-table-column>
 
-      <el-table-column label="Repayment Date" prop="end_date">
+      <el-table-column label="Amount" prop="amount"> </el-table-column>
+      <el-table-column label="Daily Payment" prop="daily_payment">
       </el-table-column>
-      <el-table-column label="Amount due today" prop="daily_payment">
-      </el-table-column>
+      <el-table-column label="Balance" prop="total_payment"> </el-table-column>
+      <!-- <el-table-column label="Status" prop="status"> </el-table-column> -->
 
-      <el-table-column label="Status" prop="status"> </el-table-column>
-      <el-table-column label="Admin" prop="admin.first_name"> </el-table-column>
-      <el-table-column label="History" prop="">
-        <template slot-scope="scope" class="p-0" prop="loan_user.id">
-          <el-tag
-            class="wallet"
-            @click.native.prevent="
-              rowClicked(tableData[scope.$index].loan_user.id)
-            "
-            disable-transitions
-            >Wallet
-          </el-tag>
-        </template>
-      </el-table-column>
-      <!-- <el-table-column
+      <el-table-column
         prop="status"
         label="Status"
         width="100"
         :filters="[
           { text: 'active', value: 'active' },
           { text: 'due', value: 'due' },
+          { text: 'settled', value: 'settled' },
         ]"
         :filter-method="filterTag"
         filter-placement="bottom-end"
       >
-        <template slot-scope="scope">
+        <template slot-scope="scope" class="p-0" prop="loanee_wallet[0].id">
           <el-tag
-            :type="scope.row.tag === 'due' ? 'primary' : 'success'"
+            :type="scope.row.status === 'active' ? 'success' : 'warning'"
             disable-transitions
             >{{ scope.row.status }}
           </el-tag>
         </template>
-      </el-table-column> -->
+      </el-table-column>
+      <el-table-column label="History" prop="">
+        <template slot-scope="scope" class="p-0" prop="loanee_wallet[0].id">
+          <el-tag
+            class="wallet btn d-flex align-self-center"
+            @click.native.prevent="
+              rowClicked(tableData[scope.$index].loanee_wallet[0].id)
+            "
+            disable-transitions
+            >Wallet
+          </el-tag>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -97,26 +89,26 @@ export default {
   },
   methods: {
     rowClicked(e) {
-      console.log(e);
+      // console.log(e);
       this.$router.push({
         path: `users/${e}`,
       });
     },
 
     handleEdit(index, row) {
-      console.log(index, row);
+      // console.log(index, row);
     },
     handleDelete(index, row) {
-      console.log(index, row);
+      // console.log(index, row);
     },
     async getallLoanees() {
       //get all users from api
       try {
         const response = await api.listAllLoans();
-        console.log(response);
+        // console.log(response);
         this.tableData = response;
       } catch (error) {
-        console.log(error.response);
+        // console.log(error.response);
       }
     },
     filterTag(value, row) {
@@ -136,12 +128,6 @@ export default {
 }
 .search__table input {
   height: 40px !important;
-}
-.c-main {
-  /* padding-top: 0 !important; */
-}
-.c-main .container-fluid {
-  /* padding: 0 !important; */
 }
 
 @media (min-width: 768px) {

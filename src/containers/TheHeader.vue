@@ -19,7 +19,7 @@
         <CHeaderNavLink to="/superAdmin"> Dashboard </CHeaderNavLink>
       </CHeaderNavItem>
       <CHeaderNavItem class="px-3">
-        <CHeaderNavLink to="/superAdmin/users" exact> Loanees </CHeaderNavLink>
+        <!-- <CHeaderNavLink to="/superAdmin/users" exact> Loanees </CHeaderNavLink> -->
       </CHeaderNavItem>
     </CHeaderNav>
 

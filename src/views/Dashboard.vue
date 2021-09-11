@@ -147,11 +147,11 @@ export default {
     },
   },
   created() {
-    console.log(this.userDetails);
+    // console.log(this.userDetails);
     if (!this.userDetails.first_name === "Super") {
       this.$router.push("/agentAdmin");
     }
-    this.showLoans();
+    // this.showLoans();
   },
   mounted() {
     let getToken = this.$store.getters.isLoggedIn;

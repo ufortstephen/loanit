@@ -85,12 +85,7 @@ export default {
 .search__table input {
   height: 40px !important;
 }
-.c-main {
-  /* padding-top: 0 !important; */
-}
-.c-main .container-fluid {
-  /* padding: 0 !important; */
-}
+
 .all .el-tag--successs {
   background-color: green !important;
   color: #fff !important;

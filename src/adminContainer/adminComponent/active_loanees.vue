@@ -132,12 +132,7 @@ export default {
 .search__table input {
   height: 40px !important;
 }
-.c-main {
-  /* padding-top: 0 !important; */
-}
-.c-main .container-fluid {
-  /* padding: 0 !important; */
-}
+
 
 @media (min-width: 768px) {
   .search__table input {

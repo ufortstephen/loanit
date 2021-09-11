@@ -85,7 +85,7 @@ export default {
       }
     },
     rowClicked(e, item, id) {
-      console.log(e.id);
+      // console.log(e.id);
       id = e.id;
       this.$router.push({
         path: `admins/${id}`,
@@ -98,9 +98,9 @@ export default {
       try {
         const res = await api.viewAdmins();
         this.items = res;
-        console.log(this.items);
+        // console.log(this.items);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     },
   },
@@ -116,10 +116,10 @@ export default {
     try {
       const res = await api.viewAdmins();
       this.items = res;
-      console.log(this.items);
+      // console.log(this.items);
       this.loading = false;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   },
 

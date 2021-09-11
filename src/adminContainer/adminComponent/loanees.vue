@@ -154,12 +154,7 @@ export default {
 .search__table input {
   height: 40px !important;
 }
-.c-main {
-  /* padding-top: 0 !important; */
-}
-.c-main .container-fluid {
-  /* padding: 0 !important; */
-}
+
 .wallet {
   background-color: transparent !important;
   border: 1px solid #3c4b64;

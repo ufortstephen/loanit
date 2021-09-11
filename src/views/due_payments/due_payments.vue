@@ -93,7 +93,7 @@ export default {
         const res = await api.listDueLoans();
         this.items = res;
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     },
   },

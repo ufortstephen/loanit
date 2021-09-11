@@ -106,9 +106,9 @@ export default {
       const adminLoans = user ? Object.entries(user) : [["id", "Not found"]];
       this.loandetails = adminLoans;
       let loans = userDetails.pop();
-      console.log(loans);
+      // console.log(loans);
       this.loanDetails = loans[1].data;
-      console.log(this.loanDetails);
+      // console.log(this.loanDetails);
 
       userDetails.pop();
       userDetails.pop();
@@ -140,7 +140,7 @@ export default {
     },
     async getAdmins() {
       const res = await api.viewAdmins();
-      console.log(res);
+      // console.log(res);
       this.items = res;
       this.loading = false;
     },
@@ -153,7 +153,7 @@ export default {
     },
 
     gotowallet(e) {
-      console.log(e);
+      // console.log(e);
       this.$router.replace({
         path: `/superAdmin/users/${e}`,
       });
