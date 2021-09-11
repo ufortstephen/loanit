@@ -129,7 +129,7 @@ export default {
 
         // Push router to SuperAdmin Dashboard
         if (response.data.user.email === "super@gmail.com") {
-          this.$router.push("/superAdmin/dashboard");
+          this.$router.push("/superAdmin");
         } else {
           this.$router.push("/agentAdmin");
         }

@@ -69,7 +69,7 @@ export default {
     this.refreshPage();
 
     this.$message.success("Welcome Admin");
-    console.log(this.userDetails);
+    // console.log(this.userDetails);
     // this.refreshPage();
   },
 };
