@@ -39,13 +39,13 @@
       <div class="col-md-3">
         <el-card class="box-card">
           <h6>Active Loans</h6>
-          <h4 id="agent_recieved">7</h4>
+          <h4 id="agent_recieved">{{ items.length }}</h4>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
           <h6>Settled Loans</h6>
-          <h4 id="interest_recieved">1</h4>
+          <h4 id="interest_recieved">0</h4>
         </el-card>
       </div>
       <div class="col-md-3">

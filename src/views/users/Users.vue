@@ -68,7 +68,7 @@
       <el-table-column label="Transactions" prop="">
         <template slot-scope="scope" class="p-0" prop="loanee_wallet[0].id">
           <el-tag
-            class="wallet btn d-flex align-self-center"
+            class="wallet btn d-flex align-items-center"
             @click.native.prevent="
               rowClicked(tableData[scope.$index].loanee_wallet[0].id)
             "

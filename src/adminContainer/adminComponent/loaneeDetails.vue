@@ -12,9 +12,9 @@
         class="d-flex justify-content-between align-items-center"
       >
         <div>
-          <span>{{ loan_user.first_name }} {{ loan_user.last_name }}</span>
+          <span>{{ paidBy }} </span>
           <br />
-          {{ loan_user.email }}
+          john@gmail.com
           <br />
           {{ loan_user.mobile }}
         </div>
@@ -30,9 +30,22 @@
                 >
                 <el-dropdown-item>View Account Log</el-dropdown-item>
               </el-dropdown-menu> </el-dropdown
-            >{{ amountBorrowed }}</span
+            >{{ balance }}</span
           >
           <br />
+          <el-dropdown>
+            <span class="el-dropdown-link text-muted border-rounded">
+              Make Payments<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <span @click="confirmDailyPayment"
+                ><el-dropdown-item>Daily Payment</el-dropdown-item></span
+              >
+              <span @click="promptBulkPayment"
+                ><el-dropdown-item>Bulk Payment</el-dropdown-item></span
+              >
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </div>
 
@@ -46,7 +59,7 @@
       </div>
       <div class="d-flex justify-content-between">
         <div>Amount Borowed</div>
-        <div>{{ amountBorrowed }}</div>
+        <div class="text-success">{{ amountBorrowed }}</div>
       </div>
       <div class="d-flex justify-content-between">
         <div>Interest</div>
@@ -61,21 +74,41 @@
         <div>{{ loanUsers[25] }} days</div>
       </div>
       <div class="d-flex justify-content-between">
-        <div>Balance</div>
-        <div>{{ amountBorrowed }}</div>
+        <div>Category</div>
+        <div>{{ loanUsers[7] }}</div>
       </div>
       <div class="d-flex justify-content-between">
-        <div></div>
-        <div><el-button type="text">Manage</el-button></div>
+        <div>Balance</div>
+        <div class="">{{ balance }}</div>
       </div>
     </el-card>
 
     <div class="my-4" v-if="transactions">
       <h4>Transactions</h4>
+      <div v-for="x in loanUsers[31]" :key="x.id">
+        <div v-for="y in x" :key="y.index">
+          <el-card class="box-card mb-3"
+            >{{ y.type }}: {{ y.channel }}
+            <span class="amount">{{ y.amount }}</span></el-card
+          >
 
-      <el-tag type="success">Tag 2</el-tag>
+          <br />
+          {{ loanUsers[29][0].loan_id }} Loan ID<br />
+          <br />
+          {{ loanUsers[29][0].loanee_id }} Loanee ID <br />
+          <br />
+          {{ loanUsers[29][0].id }} Wallett ID <br />
+          <br />
+          {{ loanUsers[17] }} Daily Payment <br />
+          <br />
+          {{ loanUsers[29][0] }}
+          <!-- {{ y }} -->
+        </div>
+        <!-- {{ x }} -->
+      </div>
+      <!-- <div>{{ loanUsers[29] }}</div> -->
 
-      <el-tag type="danger">Tag 5</el-tag>
+      <!-- <el-tag type="danger">Tag 5</el-tag> -->
     </div>
 
     <div class="btn btn-dark my-3" @click="goBack">Back</div>
@@ -89,7 +122,7 @@ export default {
   name: "User",
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.usersOpened = from.fullPath.includes("loanees");
+      vm.usersOpened = from.fullPath.includes("admins");
     });
   },
   data() {
@@ -103,9 +136,12 @@ export default {
       loan_user: "",
       loading: true,
       // Transactions
-      transactions: false,
+      transactions: true,
       amountBorrowed: "",
       dailyPayment: "",
+      balance: "",
+      success: "danger",
+      paidBy: "",
     };
   },
 
@@ -119,7 +155,7 @@ export default {
     // Get Admin Data functon
     async getAdmins() {
       const res = await api.getLoans();
-      console.log(res);
+      // console.log(res);
       this.items = res;
 
       // defining detail to be route param id
@@ -127,17 +163,22 @@ export default {
 
       // Find detail, params id in response
       const user = this.items.find(
-        (item, index) => detail == item.loan_user.id
+        (item, index) => detail == item.loanee_wallet[0].id
       );
+      // console.log(user);
 
       const userDetails = user ? Object.entries(user) : [["id", "Not found"]];
 
       //
       this.loanDetails = userDetails;
+
       this.loanUsers = this.loanDetails.flat();
+      // console.log(this.loanUsers);
       this.loan_user = this.loanUsers[31];
       this.amountBorrowed = this.loanUsers[11];
       this.dailyPayment = this.loanUsers[17];
+      this.balance = this.loanUsers[27];
+      this.paidBy = this.loanUsers[29][0].paid_by;
       this.loading = false;
 
       // Formatter
@@ -146,19 +187,75 @@ export default {
         currency: "NGN",
         minimumFractionDigits: 2,
       });
+
       this.amountBorrowed = formatter.format(+this.amountBorrowed);
       this.dailyPayment = formatter.format(+this.dailyPayment);
+      this.balance = formatter.format(+this.balance);
     },
     // toggletransactions
     toggletransactions() {
       this.transactions = !this.transactions;
     },
+    formatFigures() {
+      let allAmounts = document.getElementsByTagName("span");
+      allAmounts.forEach((amount) => {
+        if (amount.classList.contains("amount")) {
+          console.log(amount);
+        }
+      });
+      console.log(99);
+      // console.log(allAmounts);
+    },
+
+    // Prompt Confirm
+    confirmDailyPayment() {
+      this.$confirm("Approve daily payment?", {
+        confirmButtonText: "YES",
+        cancelButtonText: "NO",
+        type: "warning",
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "Payment successful",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "Payment cancelled",
+          });
+        });
+    },
+
+    // Prompt Bulk Payment
+    promptBulkPayment() {
+      this.$prompt("Please input amount", "Bulk Payment", {
+        confirmButtonText: "OK",
+        inputType: "number",
+        cancelButtonText: "Cancel",
+      })
+        .then(({ value }) => {
+          this.$message({
+            type: "success",
+            message: "Bulk Payment of" + value + " " + "made",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "Payment canceled",
+          });
+        });
+    },
 
     // Formatter
-    format() {},
   },
   created() {
     this.getAdmins();
+  },
+  mounted() {
+    this.formatFigures();
   },
 };
 </script>
@@ -166,6 +263,17 @@ export default {
 <style scoped>
 .d-flex {
   margin-bottom: 1rem;
+}
+input[type="number" i]::-webkit-inner-spin-button:focus,
+input[type="number" i]::-webkit-inner-spin-button:active,
+input[type="number" i]::-webkit-outer-spin-button:active,
+input[type="number" i]::-webkit-outer-spin-button:focus {
+  -webkit-appearance: none !important;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
 }
 .el-tag {
   width: 100% !important;

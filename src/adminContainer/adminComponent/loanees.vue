@@ -30,56 +30,46 @@
       "
       style="width: 100%"
     >
-      <el-table-column
-        id="table"
-        label="First name"
-        prop="loan_user.first_name"
-      >
+      <el-table-column label="Name" prop="loanee_wallet[0].paid_by">
       </el-table-column>
-      <el-table-column label="Last name" prop="loan_user.last_name">
-      </el-table-column>
-      <!-- <el-table-column label="Email" prop="loan_user.email"> </el-table-column> -->
-      <!-- <el-table-column label="Amount" prop="amount"> </el-table-column> -->
 
       <el-table-column label="Date Issued" prop="date_issued">
       </el-table-column>
-      <!-- <el-table-column label="Due Date" prop="end_date"> </el-table-column> -->
+      <el-table-column label="Due Date" prop="end_date"> </el-table-column>
+      <el-table-column label="Interval" prop="interval"> </el-table-column>
 
-      <el-table-column label="Period" prop="interval"></el-table-column>
-      <el-table-column label="Due Today" prop="daily_payment">
+      <el-table-column label="Amount" prop="amount"> </el-table-column>
+      <el-table-column label="Daily Payment" prop="daily_payment">
       </el-table-column>
-      <el-table-column label="Total Pmt" prop="total_payment">
-      </el-table-column>
-      <!-- <el-table-column label="Total Pmt" prop="loan_user.id"> </el-table-column> -->
-
+      <el-table-column label="Balance" prop="total_payment"> </el-table-column>
       <!-- <el-table-column label="Status" prop="status"> </el-table-column> -->
-      <el-table-column label="Admin" prop="admin.first_name"> </el-table-column>
+
       <el-table-column
         prop="status"
         label="Status"
         width="100"
         :filters="[
           { text: 'active', value: 'active' },
-          { text: 'settled', value: 'settled' },
           { text: 'due', value: 'due' },
+          { text: 'settled', value: 'settled' },
         ]"
         :filter-method="filterTag"
         filter-placement="bottom-end"
       >
-        <template slot-scope="scope">
+        <template slot-scope="scope" class="p-0" prop="loanee_wallet[0].id">
           <el-tag
-            :type="scope.row.status === 'settled' ? 'successs' : 'warning'"
+            :type="scope.row.status === 'active' ? 'success' : 'warning'"
             disable-transitions
             >{{ scope.row.status }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="History" prop="">
-        <template slot-scope="scope" class="p-0" prop="loan_user.id">
+      <el-table-column label="Transactions" prop="">
+        <template slot-scope="scope" class="p-0" prop="loanee_wallet[0].id">
           <el-tag
-            class="wallet"
+            class="wallet btn d-flex align-items-center"
             @click.native.prevent="
-              rowClicked(tableData[scope.$index].loan_user.id)
+              rowClicked(tableData[scope.$index].loanee_wallet[0].id)
             "
             disable-transitions
             >Wallet

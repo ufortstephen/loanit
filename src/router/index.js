@@ -333,7 +333,7 @@ function configRoutes() {
                         }
                     },
                     children: [{
-                            path: '/loanees',
+                            path: '',
                             name: 'loanees',
                             component: loanees
                         },
@@ -343,7 +343,7 @@ function configRoutes() {
                                 label: 'Loanee Details'
                             },
                             name: 'Loanees',
-                            component: loanees
+                            component: loaneeDetails
                         }
                     ]
                 },

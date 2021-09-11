@@ -113,4 +113,14 @@ export default {
             }
         }).then(response => response.data)
     },
+
+    // Make Daily Payment
+    async makeDailyPayment(payment_details) {
+        return axios.post(baseUrl + 'project/daily-payment', payment_details, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data)
+    },
+
 }
