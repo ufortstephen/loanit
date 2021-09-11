@@ -126,14 +126,7 @@ export default {
       this.dueToday = formatter.format(todayAmt);
       this.fullscreenLoading = false;
     },
-    refresh() {
-      if (!localStorage.getItem("firstLoad")) {
-        localStorage["firstLoad"] = true;
-        window.location.reload();
-      } else {
-        localStorage.removeItem("firstLoad");
-      }
-    },
+    
     refreshPage() {
       if (localStorage.getItem("reloaded")) {
         // The page was just reloaded. Clear the value from local storage

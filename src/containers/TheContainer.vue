@@ -57,12 +57,19 @@ export default {
   beforeCreate() {
     this.userDetails = this.$store.getters.getUser;
     this.userToken = this.$store.getters.isLoggedIn;
+
+    if (!this.$store.getters.isLoggedIn) {
+      this.$router.push("/login");
+    }
+    if (this.userDetails.email !== "super@gmail.com") {
+      this.$router.push("/login");
+    }
   },
   beforeMount() {
     this.refreshPage();
 
-    // this.$message.success("Welcome Admin");
-    // console.log(this.userDetails);
+    this.$message.success("Welcome Admin");
+    console.log(this.userDetails);
     // this.refreshPage();
   },
 };
