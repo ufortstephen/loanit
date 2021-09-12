@@ -123,4 +123,13 @@ export default {
         }).then(response => response.data)
     },
 
+    // Make Part Payment
+    async makePartPayment(payment_details) {
+        return axios.post(baseUrl + 'project/part-payment', payment_details, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data)
+    },
+
 }

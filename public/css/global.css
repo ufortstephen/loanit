@@ -12,3 +12,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield !important;
 }
+
+.el-tabs__header {
+    background-color: #3c4b64e7 !important;
+}
