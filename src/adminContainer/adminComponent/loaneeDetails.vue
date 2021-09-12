@@ -8,8 +8,8 @@
       </div>
       <div>
         <div class="balance__container">
-          <p class="mb-0">Balance</p>
-          <h4 class="fa-1x">{{ balance }}</h4>
+          <p class="mb-0">&nbsp; Balance</p>
+          <h4 class="fa-1x">- {{ balance }}</h4>
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@
             <div class="my-4" v-if="transactions">
               <p>Transactions</p>
 
-              <div v-for="x in transactionDetails" :key="x.id">
+              <div v-for="x in transactionDetails" :key="x.loan_id">
                 <div class="d-flex justify-content-between">
                   <div class="d-flex">
                     <div
@@ -105,7 +105,7 @@
             </div>
           </el-tab-pane>
           <el-tab-pane label="Credit">
-            <div v-for="x in creditTransactions" :key="x.id">
+            <div v-for="x in creditTransactions" :key="x.wallet_id">
               <div class="d-flex justify-content-between">
                 <div class="d-flex">
                   <div

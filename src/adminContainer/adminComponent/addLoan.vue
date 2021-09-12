@@ -554,8 +554,9 @@ export default {
         this.addLoan.last_name = "";
         this.addLoan.email = "";
         this.addLoan.mobile = "";
-        date_of_birth = "";
-        (this.addLoan.occupation = ""), (this.addLoan.dependants = "");
+        this.date_of_birth = "";
+        this.addLoan.occupation = "";
+        this.addLoan.dependants = "";
         this.addLoan.marital_status = "";
         this.addLoan.gender = "";
         this.addLoan.address = "";
@@ -565,6 +566,13 @@ export default {
         this.addLoan.interest = "";
         this.addLoan.start_date = "";
         this.addLoan.end_date = "";
+        this.personal = true;
+        this.otherInfo = false;
+        this.loanDetails = false;
+        this.preview_loan = false;
+        this.loan_buttons = true;
+        this.stepText = "Next";
+        this.back_text = "Back";
       } catch (error) {
         console.log(error.response);
         if (error.response.status == 422) {

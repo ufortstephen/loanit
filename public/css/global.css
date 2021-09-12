@@ -6,6 +6,12 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
 
 /* Firefox */
 
@@ -15,4 +21,13 @@ input[type=number] {
 
 .el-tabs__header {
     background-color: #3c4b64e7 !important;
+}
+
+:root {
+    touch-action: pan-x pan-y ! important;
+    height: 100% !important;
+}
+
+input {
+    font-size: 16px !important;
 }
