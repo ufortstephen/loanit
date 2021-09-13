@@ -1,13 +1,13 @@
 <template>
-  <div class="all__users loanees">
-    <h3 class="p-3">All Loanees</h3>
+  <div class="all__users all mb-5" v-loading="loading">
+    <h3 class="p-3">All Loanees {{ tableData.length }}</h3>
     <el-table class="search__table">
       <el-table-column align="right">
         <template slot="header" slot-scope="scope">
           <el-input
             v-model="search"
             size="mini"
-            placeholder="Search user by name or id"
+            placeholder="Search loanee by name"
           />
         </template>
       </el-table-column>
@@ -19,30 +19,23 @@
         tableData.filter(
           (data) =>
             !search ||
-            data.loan_user.first_name
+            data.loanee_wallet[0].paid_by
               .toLowerCase()
-              .includes(search.toLowerCase()) ||
-            data.loan_user.last_name
-              .toLowerCase()
-              .includes(search.toLowerCase()) ||
-            data.id.toLowerCase().includes(search.toLowerCase())
+              .includes(search.toLowerCase())
         )
       "
       style="width: 100%"
     >
-      <el-table-column label="Name" prop="loanee_wallet[0].paid_by">
-      </el-table-column>
+      <el-table-column label="Name" prop="loanee.first_name"> </el-table-column>
 
       <el-table-column label="Date Issued" prop="date_issued">
       </el-table-column>
-      <el-table-column label="Due Date" prop="end_date"> </el-table-column>
-      <el-table-column label="Interval" prop="interval"> </el-table-column>
 
       <el-table-column label="Amount" prop="amount"> </el-table-column>
       <el-table-column label="Daily Payment" prop="daily_payment">
       </el-table-column>
-      <el-table-column label="Balance" prop="total_payment"> </el-table-column>
-      <!-- <el-table-column label="Status" prop="status"> </el-table-column> -->
+      <el-table-column label="Balance" prop="loanee_wallet[0].balance">
+      </el-table-column>
 
       <el-table-column
         prop="status"
@@ -72,7 +65,7 @@
               rowClicked(tableData[scope.$index].loanee_wallet[0].id)
             "
             disable-transitions
-            >Wallet
+            >View
           </el-tag>
         </template>
       </el-table-column>
@@ -86,67 +79,72 @@ import api from "@/helpers/api.js";
 export default {
   data() {
     return {
+      loading: true,
       scope: "scope",
       tableData: [],
       search: "",
     };
   },
-  watch: {
-    $route: {
-      immediate: true,
-      handler(route) {
-        if (route.query && route.query.page) {
-          this.activePage = Number(route.query.page);
-        }
-      },
-    },
-  },
-
   methods: {
+    filterTag(value, row) {
+      return row.status === value;
+    },
     rowClicked(e) {
-      console.log(e);
       this.$router.push({
         path: `loanees/${e}`,
       });
     },
-
-    pageChange(val) {
-      this.$router.push({ query: { page: val } });
-    },
-    async getallLoanees() {
-      //get all users from api
-      try {
-        const response = await api.getLoans();
-
-        this.tableData = response;
-      } catch (error) {
-        console.log(error.response);
-      }
-    },
-    filterTag(value, row) {
-      return row.status === value;
-    },
-    go() {
-      alert(66);
-    },
   },
-  created() {
-    this.getallLoanees();
+  async beforeCreate() {
+    let token = this.$store.getters.isLoggedIn;
+
+    try {
+      const response = await api.getMyLoans({
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response);
+
+      this.tableData = response;
+      this.tableData.forEach((data) => {
+        // Formatter
+        const formatter = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "NGN",
+          minimumFractionDigits: 2,
+        });
+        data.amount = formatter.format(+data.amount);
+        data.daily_payment = formatter.format(+data.daily_payment);
+        data.loanee_wallet[0].balance = formatter.format(
+          +data.loanee_wallet[0].balance
+        );
+      });
+
+      this.loading = false;
+    } catch (error) {}
   },
 };
 </script>
 
 
-<style>
-button:focus {
-  border: none !important;
-  outline: none !important;
-}
+<style >
 .search__table .el-table__empty-block {
   display: none !important;
 }
 .search__table input {
   height: 40px !important;
+}
+/* tr {
+  cursor: pointer !important;
+} */
+.all .el-tag--successs {
+  background-color: green !important;
+  color: #fff !important;
+}
+.all .el-tag--warning {
+  background-color: #ffc107c1 !important;
+  color: #fff !important;
 }
 
 .wallet {
@@ -154,22 +152,14 @@ button:focus {
   border: 1px solid #3c4b64;
   color: #3c4b64;
   border-radius: 5px;
-  padding: 0px 10px !important ;
+  padding: 0px 24px !important ;
   width: max-content !important;
   cursor: pointer;
-}
-.loanees .el-tag--successs {
-  background-color: green !important;
-  color: #fff !important;
-}
-.loanees .el-tag--warning {
-  background-color: #ffc107 !important;
-  color: #fff !important;
 }
 
 @media (min-width: 768px) {
   .search__table input {
-    width: 40%;
+    width: 25%;
     height: 40px !important;
   }
   .search__table .el-input__inner {

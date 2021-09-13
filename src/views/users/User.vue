@@ -8,8 +8,8 @@
       </div>
       <div>
         <div class="balance__container">
-          <p class="mb-0">&nbsp; Balance</p>
-          <h4 class="fa-1x">- {{ balance }}</h4>
+          <p class="mb-0">Balance</p>
+          <h4 class="fa-1x">{{ balance }}</h4>
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@
     </div> -->
 
     <div class="row transactions">
-      <div class="col-md-10">
+      <div class="col-md-10 P-0" style="padding: 0 !important">
         <el-tabs type="border-card">
           <el-tab-pane>
             <span slot="label"> All Transactions</span>
@@ -73,21 +73,25 @@
 
               <div v-for="x in transactionDetails" :key="x.loan_id">
                 <div class="d-flex justify-content-between">
-                  <div class="d-flex">
+                  <div class="d-flex align-self-center">
                     <div
                       class="align-self-center mr-3"
                       style="border-radius: 50%"
                     >
                       <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
                     </div>
-                    <div class="d-flex flex-column">
-                      <div>{{ x.type }}</div>
+                    <div class="align-self-center">
+                      <div class="d-flex flex-column">
+                        <div>{{ x.type }}</div>
 
-                      <span
-                        :type="x.channel === 'Borrowed' ? 'success' : 'danger'"
-                        disable-transitions
-                        ><h6>{{ x.channel }}</h6>
-                      </span>
+                        <span
+                          :type="
+                            x.channel === 'Borrowed' ? 'success' : 'danger'
+                          "
+                          disable-transitions
+                          ><h6>{{ x.channel }}</h6>
+                        </span>
+                      </div>
                     </div>
                   </div>
 
@@ -227,14 +231,15 @@ export default {
 
   methods: {
     goBack() {
-      this.usersOpened
-        ? this.$router.go(-1)
-        : this.$router.push({ path: "/agentAdmin" });
+      // this.usersOpened
+      //   ? this.$router.go(-1)
+      //   : this.$router.push({ path: "/agentAdmin" });
+      history.back();
     },
 
     // Get Loanees Data functon
     async getLoanees() {
-      const res = await api.listAllLoans();
+      const res = await api.viewAllLoans();
       // console.log(res);
       this.items = res;
 
@@ -256,34 +261,47 @@ export default {
       });
       //
       this.loanDetails = userDetails;
-      this.prices = this.loanDetails[15][1].data;
-      this.prices.forEach((price) => {
-        console.log(price.amount);
-        price.amount = formatPrice.format(+price.amount);
-        console.log(price.amount);
-      });
 
+      this.prices = this.loanDetails[15][1];
       // Creating a flat Aarray
       this.loanUsers = this.loanDetails.flat();
+      console.log(this.loanUsers);
+
+      this.prices.forEach((price) => {
+        price.amount = formatPrice.format(+price.amount);
+        price.balance = formatPrice.format(+price.balance);
+        console.log(price.amount);
+      });
 
       this.loan_user = this.loanUsers[31];
       this.amountBorrowed = this.loanUsers[11];
       this.dailyPayment = this.loanUsers[17];
-      this.balance = this.loanUsers[29][0].balance;
-      this.paidBy = this.loanUsers[29][0].paid_by;
+      this.balance = this.loanUsers[31][0].balance;
+      this.paidBy = this.loanUsers[31][0].paid_by;
+      console.log(this.loanUsers[31][0].balance);
+      console.log(this.balance);
 
       // Getting Payment Details
-      this.dailyPaymentDetails.loan_id = this.loanUsers[29][0].loan_id;
-      this.dailyPaymentDetails.loanee_id = this.loanUsers[29][0].loanee_id;
-      this.dailyPaymentDetails.wallet_id = this.loanUsers[29][0].id;
-      this.dailyPaymentDetails.amount = this.loanUsers[17];
+      // this.dailyPaymentDetails.loan_id = this.loanUsers[29][0].loan_id;
+      // this.dailyPaymentDetails.loanee_id = this.loanUsers[29][0].loanee_id;
+      // this.dailyPaymentDetails.wallet_id = this.loanUsers[29][0].id;
+      // this.dailyPaymentDetails.amount = this.loanUsers[17];
       this.loading = false;
 
       console.log(this.loanUsers[31]);
 
-      this.transactionDetails = this.loanUsers[31].data;
+      this.transactionDetails = this.loanUsers[33].data;
+
+      // Formatter
+      const formatter = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "NGN",
+        minimumFractionDigits: 2,
+      });
+
       this.transactionDetails.forEach((type) => {
-        console.log(type);
+        type.amount = formatter.format(+type.amount);
+
         if (type.type == "Credit") {
           this.creditTransactions.push(type);
         } else {
@@ -293,30 +311,15 @@ export default {
 
       console.log(this.creditTransactions);
 
-      // Formatter
-      const formatter = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "NGN",
-        minimumFractionDigits: 2,
-      });
-
       this.amountBorrowed = formatter.format(+this.amountBorrowed);
       this.dailyPayment = formatter.format(+this.dailyPayment);
       this.balance = formatter.format(+this.balance);
+
+      console.log(this.balance);
     },
     // toggletransactions
     toggletransactions() {
       this.transactions = !this.transactions;
-    },
-    formatFigures() {
-      let allAmounts = document.getElementsByTagName("span");
-      allAmounts.forEach((amount) => {
-        if (amount.classList.contains("amount")) {
-          console.log(amount);
-        }
-      });
-      console.log(99);
-      // console.log(allAmounts);
     },
 
     // Prompt Confirm
@@ -394,9 +397,7 @@ export default {
   created() {
     this.getLoanees();
   },
-  mounted() {
-    this.formatFigures();
-  },
+  mounted() {},
 };
 </script>
 
@@ -406,9 +407,7 @@ button:focus {
   border: none;
   outline: none;
 }
-.d-flex {
-  margin-bottom: 1rem;
-}
+
 .payment__buttons {
   display: flex;
   flex-direction: column;
@@ -442,7 +441,7 @@ input::-webkit-inner-spin-button {
 }
 .balance__container {
   /* background-blend-mode: overlay; */
-  background-color: #3c4b64e7;
+  background-color: #f56c6c;
   padding: 1rem 1.6rem;
   color: #fff;
   border-radius: 10px;

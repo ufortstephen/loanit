@@ -1,5 +1,5 @@
 <template>
-  <div class="all__users">
+  <div class="all__users" v-loading="loading">
     <h4 class="pl-2 pb-3">Active Loans</h4>
     <el-table class="search__table">
       <el-table-column align="right">
@@ -7,7 +7,7 @@
           <el-input
             v-model="search"
             size="mini"
-            placeholder="Search user by name, email and mobile"
+            placeholder="Search loanee by name"
           />
         </template>
       </el-table-column>
@@ -31,27 +31,15 @@
 
       <el-table-column label="Date Issued" prop="date_issued">
       </el-table-column>
-      <el-table-column label="Due Date" prop="end_date"> </el-table-column>
-      <el-table-column label="Interval" prop="interval"> </el-table-column>
 
       <el-table-column label="Amount" prop="amount"> </el-table-column>
       <el-table-column label="Daily Payment" prop="daily_payment">
       </el-table-column>
-      <el-table-column label="Balance" prop="total_payment"> </el-table-column>
+      <el-table-column label="Balance" prop="loanee_wallet[0].balance">
+      </el-table-column>
       <!-- <el-table-column label="Status" prop="status"> </el-table-column> -->
 
-      <el-table-column
-        prop="status"
-        label="Status"
-        width="100"
-        :filters="[
-          { text: 'active', value: 'active' },
-          { text: 'due', value: 'due' },
-          { text: 'settled', value: 'settled' },
-        ]"
-        :filter-method="filterTag"
-        filter-placement="bottom-end"
-      >
+      <el-table-column prop="status" label="Status" width="100">
         <template slot-scope="scope" class="p-0" prop="loanee_wallet[0].id">
           <el-tag
             :type="scope.row.status === 'active' ? 'success' : 'warning'"
@@ -60,15 +48,15 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="History" prop="">
+      <el-table-column label="Transactions" prop="">
         <template slot-scope="scope" class="p-0" prop="loanee_wallet[0].id">
           <el-tag
-            class="wallet btn d-flex align-self-center"
+            class="wallet btn d-flex align-items-center"
             @click.native.prevent="
               rowClicked(tableData[scope.$index].loanee_wallet[0].id)
             "
             disable-transitions
-            >Wallet
+            >View
           </el-tag>
         </template>
       </el-table-column>
@@ -82,6 +70,7 @@ import api from "@/helpers/api.js";
 export default {
   data() {
     return {
+      loading: true,
       scope: "scope",
       tableData: [],
       search: "",
@@ -104,9 +93,23 @@ export default {
     async getallLoanees() {
       //get all users from api
       try {
-        const response = await api.listAllLoans();
+        const response = await api.viewAllActiveLoans();
         // console.log(response);
         this.tableData = response;
+        this.tableData.forEach((data) => {
+          // Formatter
+          const formatter = new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "NGN",
+            minimumFractionDigits: 2,
+          });
+          data.amount = formatter.format(+data.amount);
+          data.daily_payment = formatter.format(+data.daily_payment);
+          data.loanee_wallet[0].balance = formatter.format(
+            +data.loanee_wallet[0].balance
+          );
+        });
+        this.loading = false;
       } catch (error) {
         // console.log(error.response);
       }
@@ -129,10 +132,19 @@ export default {
 .search__table input {
   height: 40px !important;
 }
+.wallet {
+  background-color: transparent !important;
+  border: 1px solid #3c4b64;
+  color: #3c4b64;
+  border-radius: 5px;
+  padding: 0px 24px !important ;
+  width: max-content !important;
+  cursor: pointer;
+}
 
 @media (min-width: 768px) {
   .search__table input {
-    width: 40%;
+    width: 25%;
     height: 40px !important;
   }
   .search__table .el-input__inner {

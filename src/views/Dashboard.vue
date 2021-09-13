@@ -4,55 +4,61 @@
     <div class="row mb-5">
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6>Total Amount Disbursed</h6>
-          <h4 id="agent_disburded">{{ totalAmountDisbursed }}</h4>
+          <h6 class="mb-3">Total Amount Disbursed</h6>
+          <div class="d-flex justify-content-between">
+            <h4>{{ amountDisburded.total }}</h4>
+          </div>
         </el-card>
       </div>
 
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6>Total Interest</h6>
-          <h4 id="interest_recieved">{{ percentTotal }}%</h4>
+          <h6 class="mb-3">Total Daily Payment</h6>
+          <div class="d-flex justify-content-between">
+            <h4>{{ daily_payment.total }}</h4>
+          </div>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6>Total Amount Expected</h6>
-          <h4 id="agent_recieved">{{ totalExpected }}</h4>
+          <h6 class="mb-3">Total Monthly Payment</h6>
+          <h4 id="agent_recieved">{{ daily_payment.month.total }}</h4>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6>Amount Due Today</h6>
-          <h4 id="loanees">{{ dueToday }}</h4>
+          <h6 class="mb-3">Amount Due Today</h6>
+          <div class="d-flex justify-content-between">
+            <h4>{{ daily_payment.today.total }}</h4>
+          </div>
         </el-card>
       </div>
     </div>
+
     <div class="row mb-5">
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6>Number of Loanees</h6>
-          <h4 id="agent_disburded">{{ items.length }}</h4>
+          <h6>Administrators</h6>
+          <h4 id="agent_disburded">{{ admins.count }}</h4>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
           <h6>Active Loans</h6>
-          <h4 id="agent_recieved">9</h4>
+          <h4 id="agent_recieved">{{ active_loan.total }}</h4>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
           <h6>Settled Loans</h6>
-          <h4 id="interest_recieved">15656</h4>
+          <h4 id="interest_recieved">{{ settled_loan.total }}</h4>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
           <h6>Due Loans</h6>
-          <h4 id="loanees">0</h4>
+          <h4 id="loanees">{{ active_loan.total }}</h4>
         </el-card>
-        {{ userDetails }}
       </div>
     </div>
 
@@ -83,74 +89,73 @@ export default {
       totalExpected: 0,
       dueToday: 0,
       token: "",
+      analytics: "",
+      amountDisburded: "",
+      loanee: "",
+      daily_payment: "",
+      active_loan: "",
+      settled_loan: "",
+      admins: "",
     };
   },
   methods: {
-    async showLoans() {
+    async getDashboardAnalytics() {
       try {
-        const res = await api.viewAdmins();
-        this.items = res;
+        const response = await api.superadminAnalytics();
+        console.log(response);
+        this.analytics = response;
+        this.amountDisburded = response.total_amount_disbursed;
+        this.loanee = response.total_loanee;
+        this.daily_payment = response.total_daily_payment;
+        this.active_loan = response.active_loan;
+        this.settled_loan = response.settled_loan;
+        this.admins = response.administrators;
+
+        // Formatter
+        const formatter = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "NGN",
+          minimumFractionDigits: 2,
+        });
+
+        this.amountDisburded.total = formatter.format(
+          +this.amountDisburded.total
+        );
+        this.amountDisburded.today.total = formatter.format(
+          +this.amountDisburded.today.total
+        );
+        this.amountDisburded.month.total = formatter.format(
+          +this.amountDisburded.month.total
+        );
+        this.daily_payment.total = formatter.format(+this.daily_payment.total);
+        this.daily_payment.today.total = formatter.format(
+          +this.daily_payment.today.total
+        );
+        this.daily_payment.month.total = formatter.format(
+          +this.daily_payment.month.total
+        );
       } catch (error) {}
-      this.getItem();
-    },
-    amount(item) {
-      return item.amount;
-    },
-    percent(item) {
-      return item.interest;
     },
 
-    today(item) {
-      return item.daily_return;
-    },
-    sum(prev, next) {
-      return +prev + +next;
-    },
-    getItem() {
-      let total = this.items.map(this.amount).reduce(this.sum);
-      this.totalAmountDisbursed = total;
-      let totalExp = total;
-      const formatter = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "NGN",
-        minimumFractionDigits: 2,
-      });
-      this.totalAmountDisbursed = formatter.format(+this.totalAmountDisbursed);
-      //
-      let totalPercent = this.items.map(this.percent).reduce(this.sum);
-      this.percentTotal = totalPercent;
-      this.totalExpected = 5000000;
-      this.totalExpected = formatter.format(this.totalExpected);
-      //
-      let todayAmt = 800000;
-      this.dueToday = formatter.format(todayAmt);
-      this.fullscreenLoading = false;
-    },
-    
     refreshPage() {
       if (localStorage.getItem("reloaded")) {
-        // The page was just reloaded. Clear the value from local storage
-        // so that it will reload the next time this page is visited.
         localStorage.removeItem("reloaded");
       } else {
-        // Set a flag so that we know not to reload the page twice.
         localStorage.setItem("reloaded", "1");
         location.reload();
       }
     },
   },
   created() {
-    // console.log(this.userDetails);
     if (!this.userDetails.first_name === "Super") {
       this.$router.push("/agentAdmin");
     }
-    // this.showLoans();
+    this.getDashboardAnalytics();
   },
   mounted() {
     let getToken = this.$store.getters.isLoggedIn;
     this.userDetails = this.$store.getters.userData;
     this.token = getToken;
-    // this.refreshPage();
   },
 };
 </script>

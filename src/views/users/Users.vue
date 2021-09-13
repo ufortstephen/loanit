@@ -7,7 +7,7 @@
           <el-input
             v-model="search"
             size="mini"
-            placeholder="Search user by name, email or id"
+            placeholder="Search loanee by name"
           />
         </template>
       </el-table-column>
@@ -26,24 +26,16 @@
       "
       style="width: 100%"
     >
-      <!-- <el-table-column label="First name" prop="id"> </el-table-column>
-      <el-table-column label="Last name" prop="loan_user.last_name">
-      </el-table-column> -->
-      <!-- <el-table-column label="Email" prop="loan_user.email"> </el-table-column> -->
-      <!-- <el-table-column label="Amount" prop="amount"> </el-table-column> -->
-      <el-table-column label="Name" prop="loanee_wallet[0].paid_by">
-      </el-table-column>
+      <el-table-column label="Name" prop="loanee.first_name"> </el-table-column>
 
       <el-table-column label="Date Issued" prop="date_issued">
       </el-table-column>
-      <el-table-column label="Due Date" prop="end_date"> </el-table-column>
-      <el-table-column label="Interval" prop="interval"> </el-table-column>
 
       <el-table-column label="Amount" prop="amount"> </el-table-column>
       <el-table-column label="Daily Payment" prop="daily_payment">
       </el-table-column>
-      <el-table-column label="Balance" prop="total_payment"> </el-table-column>
-      <!-- <el-table-column label="Status" prop="status"> </el-table-column> -->
+      <el-table-column label="Balance" prop="loanee_wallet[0].balance">
+      </el-table-column>
 
       <el-table-column
         prop="status"
@@ -73,7 +65,7 @@
               rowClicked(tableData[scope.$index].loanee_wallet[0].id)
             "
             disable-transitions
-            >Wallet
+            >View
           </el-tag>
         </template>
       </el-table-column>
@@ -98,7 +90,6 @@ export default {
       return row.status === value;
     },
     rowClicked(e) {
-      // console.log(e);
       this.$router.push({
         path: `users/${e}`,
       });
@@ -106,24 +97,32 @@ export default {
   },
   async beforeCreate() {
     let token = this.$store.getters.isLoggedIn;
-    // console.log(token);
-    // console.log(this.tableData);
+
     try {
-      const response = await api.listAllLoans({
+      const response = await api.viewAllLoans({
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       console.log(response);
-      // console.log(this.tableData);
+
       this.tableData = response;
-      // console.log(this.tableData);
+      this.tableData.forEach((data) => {
+        // Formatter
+        const formatter = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "NGN",
+          minimumFractionDigits: 2,
+        });
+        data.amount = formatter.format(+data.amount);
+        data.daily_payment = formatter.format(+data.daily_payment);
+        data.loanee_wallet[0].balance = formatter.format(
+          +data.loanee_wallet[0].balance
+        );
+      });
+
       this.loading = false;
-    } catch (error) {
-      // console.log(error.response);
-      // console.log(this.tableData);
-    }
-    // this.getallLoanees();
+    } catch (error) {}
   },
 };
 </script>
@@ -153,14 +152,14 @@ export default {
   border: 1px solid #3c4b64;
   color: #3c4b64;
   border-radius: 5px;
-  padding: 0px 10px !important ;
+  padding: 0px 24px !important ;
   width: max-content !important;
   cursor: pointer;
 }
 
 @media (min-width: 768px) {
   .search__table input {
-    width: 40%;
+    width: 25%;
     height: 40px !important;
   }
   .search__table .el-input__inner {

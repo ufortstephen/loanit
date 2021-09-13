@@ -13,7 +13,10 @@ export default {
             .then(response => response.data)
     },
 
-    // Add Admins
+
+    // SUPER ADMIN ENDPOINTS
+
+    // 1. Add Admins
     async addAdmin(adminDetails) {
 
         return axios.post(baseUrl + 'auth/add', adminDetails, {
@@ -23,6 +26,48 @@ export default {
             })
             .then(response => response.data)
     },
+
+    // 2. View All Loans
+    async viewAllLoans() {
+        return axios.get(baseUrl + 'project/all-loan', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data.data.loans)
+    },
+
+    // 3. View All Active Loans
+    async viewAllActiveLoans() {
+        return axios.get(baseUrl + 'project/all-active-loan', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data.data.active_loan)
+    },
+    // 4. View All Settled Loans
+    async viewAllSettledLoans() {
+        return axios.get(baseUrl + 'project/all-settled-loan', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data.data.settled_loan)
+    },
+
+    // 5. SUPER ADMIN ANALYTICS
+    async superadminAnalytics() {
+        return axios.get(baseUrl + 'project/super-analytics', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data.data.analytics)
+    },
+
+
+    // SUPER ADMIN ENDPOINTS END
+
+
+
+    // AGENT ADMIN ENDPOINTS STARTS HERE
 
     // View Admins
     async viewAdmins() {
@@ -43,12 +88,21 @@ export default {
     },
 
     // Get My Loans Issued
-    async getLoans() {
+    async getMyLoans() {
         return axios.get(baseUrl + 'project/my-loan', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         }).then(response => response.data.data.loans)
+    },
+
+    // ADMIN DASHBOARD ANALYTICS
+    async adminAnalytics() {
+        return axios.get(baseUrl + 'project/admin-analytics', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data.data.analytics)
     },
 
     // Get All Active Loans

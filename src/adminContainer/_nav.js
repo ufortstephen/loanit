@@ -39,7 +39,7 @@ export default [{
 
         {
             _name: 'CSidebarNavItem',
-            name: 'Active Loanees',
+            name: 'Active Loans',
             to: '/agentAdmin/active_loanees',
             icon: 'cil-pencil'
         },
