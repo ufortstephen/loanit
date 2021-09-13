@@ -69,9 +69,11 @@
           <el-tab-pane>
             <span slot="label"> All Transactions</span>
             <div class="my-4" v-if="transactions">
-              <p>Transactions</p>
-
-              <div v-for="x in transactionDetails" :key="x.loan_id">
+              <div
+                v-for="x in transactionDetails"
+                :key="x.loan_id"
+                class="mb-3"
+              >
                 <div class="d-flex justify-content-between">
                   <div class="d-flex align-self-center">
                     <div
