@@ -298,6 +298,11 @@ export default {
         currency: "NGN",
         minimumFractionDigits: 2,
       });
+      this.amountBorrowed = formatter.format(+this.amountBorrowed);
+      this.dailyPayment = formatter.format(+this.dailyPayment);
+      // this.balance = formatter.format(+this.balance);
+
+      console.log(this.balance);
 
       this.transactionDetails.forEach((type) => {
         type.amount = formatter.format(+type.amount);
@@ -310,12 +315,6 @@ export default {
       });
 
       console.log(this.creditTransactions);
-
-      this.amountBorrowed = formatter.format(+this.amountBorrowed);
-      this.dailyPayment = formatter.format(+this.dailyPayment);
-      this.balance = formatter.format(+this.balance);
-
-      console.log(this.balance);
     },
     // toggletransactions
     toggletransactions() {
