@@ -3,7 +3,7 @@
     <CCol col="12" xl="12">
       <CCard>
         <!-- <CCardHeader> Administrators </CCardHeader> -->
-        <h4 class="pl-3 pt-3">Administrators {{ items.length }}</h4>
+        <!-- <h4 class="pl-3 pt-3">Administrators {{ items.length }}</h4> -->
 
         <CCardBody>
           <CDataTable

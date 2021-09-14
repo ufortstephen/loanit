@@ -25,10 +25,10 @@ export default [{
             to: '/superAdmin/admins',
             icon: 'cil-drop'
         },
-        {
-            _name: 'CSidebarNavTitle',
-            _children: ['Loanees']
-        },
+        // {
+        //     _name: 'CSidebarNavTitle',
+        //     _children: ['Loanees']
+        // },
         {
             _name: 'CSidebarNavItem',
             name: 'All Loanees',

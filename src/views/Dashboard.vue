@@ -15,21 +15,23 @@
         <el-card class="box-card">
           <h6 class="mb-3">Total Daily Repayment</h6>
           <div class="d-flex justify-content-between">
-            <h4>{{ daily_payment.today.total }}</h4>
+            <h4 v-if="daily_payment.today">{{ daily_payment.today.total }}</h4>
           </div>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
           <h6 class="mb-3">Total Weekly Repayment</h6>
-          <h4 id="agent_recieved">{{ daily_payment.week.total }}</h4>
+          <h4 id="agent_recieved" v-if="daily_payment.week">
+            {{ daily_payment.week.total }}
+          </h4>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
           <h6 class="mb-3">Total Monthly Repayment</h6>
           <div class="d-flex justify-content-between">
-            <h4>{{ daily_payment.month.total }}</h4>
+            <h4 v-if="daily_payment.month">{{ daily_payment.month.total }}</h4>
           </div>
         </el-card>
       </div>
@@ -154,11 +156,15 @@ export default {
       this.$router.push("/agentAdmin");
     }
     this.getDashboardAnalytics();
-  },
-  mounted() {
     let getToken = this.$store.getters.isLoggedIn;
     this.userDetails = this.$store.getters.userData;
-    this.token = getToken;
+    // this.token = getToken;
+    console.log(getToken);
+  },
+  mounted() {
+    // let getToken = this.$store.getters.isLoggedIn;
+    // this.userDetails = this.$store.getters.userData;
+    // this.token = getToken;
   },
 };
 </script>

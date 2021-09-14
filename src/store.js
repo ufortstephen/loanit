@@ -17,7 +17,7 @@ const defaultState = function() {
 
 export default new Vuex.Store({
     strict: true,
-    state: defaultState,
+    state: defaultState(),
     plugins: [createPersistedState()],
     getters: {
         isLoggedIn: state => {

@@ -31,3 +31,9 @@ input[type=number] {
 input {
     font-size: 16px !important;
 }
+
+.el-tabs__content {
+    overflow: auto !important;
+    /* overflow: hidden; */
+    position: relative;
+}

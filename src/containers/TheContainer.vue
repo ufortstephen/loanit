@@ -1,11 +1,6 @@
 <template>
   <div class="c-app">
-    <!-- {{ userDetails }}
-    <br />
-    <br />
-    Token:
-    {{ userToken }} -->
-    <!-- {{ userDetails }} -->
+  
     <TheSidebar />
     <CWrapper>
       <TheHeader />
@@ -54,7 +49,7 @@ export default {
       }
     },
   },
-  
+
   beforeCreate() {
     this.userDetails = this.$store.getters.getUser;
     console.log(this.userDetails);
@@ -68,7 +63,7 @@ export default {
     }
   },
   beforeMount() {
-    // this.refreshPage();
+    this.refreshPage();
 
     this.$message.success("Welcome Admin");
     // console.log(this.userDetails);

@@ -1,6 +1,6 @@
 <template>
   <div class="all__users" v-loading="loading">
-    <h4 class="pl-2 pb-3">Active Loans</h4>
+    <!-- <h4 class="pl-2 pb-3">Active Loans</h4> -->
     <el-table class="search__table">
       <el-table-column align="right">
         <template slot="header" slot-scope="scope">

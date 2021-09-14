@@ -22,14 +22,14 @@ export default [{
             _name: 'CSidebarNavItem',
             name: 'Add Loan',
             to: '/agentAdmin/add_loan',
-            icon: 'cil-spreadsheet',
+            icon: 'cil-pencil'
 
         },
 
-        {
-            _name: 'CSidebarNavTitle',
-            _children: ['Loanees']
-        },
+        // {
+        //     _name: 'CSidebarNavTitle',
+        //     _children: ['Loanees']
+        // },
         {
             _name: 'CSidebarNavItem',
             name: 'Loanees',
