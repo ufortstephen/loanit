@@ -33,7 +33,7 @@
     <div class="row transactions">
       <div class="col-md-12 p-0" style="padding: 0 !important">
         <el-tabs type="border-card">
-          <el-tab-pane style="overflow: scroll !important">
+          <el-tab-pane class="overflow">
             <span slot="label"> All Transactions</span>
             <div class="my-4" v-if="transactions">
               <table class="table table-striped">
@@ -65,7 +65,7 @@
               </table>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="Credit" style="overflow: scroll !important">
+          <el-tab-pane label="Credit" class="overflow">
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -94,7 +94,7 @@
               </tbody>
             </table>
           </el-tab-pane>
-          <el-tab-pane label="Debit"  style="overflow: scroll !important">
+          <el-tab-pane label="Debit" class="overflow">
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -460,6 +460,9 @@ h4 {
 .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
   color: red !important;
 }
+.overflow {
+  overflow: scroll !important;
+}
 @media (max-width: 768px) {
   .analytics__container .scroll {
     display: flex;
@@ -487,6 +490,9 @@ h4 {
   .analytics__container .scroll {
     display: flex;
     flex-wrap: wrap;
+  }
+  .overflow::-webkit-scrollbar {
+    display: none;
   }
 }
 @media (min-width: 968px) {
