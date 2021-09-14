@@ -13,23 +13,23 @@
 
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6 class="mb-3">Total Daily Payment</h6>
+          <h6 class="mb-3">Total Daily Repayment</h6>
           <div class="d-flex justify-content-between">
-            <h4>{{ daily_payment.total }}</h4>
+            <h4>{{ daily_payment.today.total }}</h4>
           </div>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6 class="mb-3">Total Monthly Payment</h6>
-          <h4 id="agent_recieved">{{ daily_payment.month.total }}</h4>
+          <h6 class="mb-3">Total Weekly Repayment</h6>
+          <h4 id="agent_recieved">{{ daily_payment.week.total }}</h4>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6 class="mb-3">Amount Due Today</h6>
+          <h6 class="mb-3">Total Monthly Repayment</h6>
           <div class="d-flex justify-content-between">
-            <h4>{{ daily_payment.today.total }}</h4>
+            <h4>{{ daily_payment.month.total }}</h4>
           </div>
         </el-card>
       </div>
@@ -133,6 +133,9 @@ export default {
         );
         this.daily_payment.month.total = formatter.format(
           +this.daily_payment.month.total
+        );
+        this.daily_payment.week.total = formatter.format(
+          +this.daily_payment.week.total
         );
       } catch (error) {}
     },

@@ -54,8 +54,10 @@ export default {
       }
     },
   },
+  
   beforeCreate() {
     this.userDetails = this.$store.getters.getUser;
+    console.log(this.userDetails);
     this.userToken = this.$store.getters.isLoggedIn;
 
     if (!this.$store.getters.isLoggedIn) {
@@ -66,7 +68,7 @@ export default {
     }
   },
   beforeMount() {
-    this.refreshPage();
+    // this.refreshPage();
 
     this.$message.success("Welcome Admin");
     // console.log(this.userDetails);

@@ -640,6 +640,13 @@ input[type="number"] {
   -moz-appearance: textfield !important;
 }
 
+@media (max-width: 768px) {
+  .el-step__title {
+    line-height: 16px;
+    /* margin-right: 0.5rem; */
+    font-size: small;
+  }
+}
 @media (min-width: 768px) {
   .loan__container {
     width: 50%;

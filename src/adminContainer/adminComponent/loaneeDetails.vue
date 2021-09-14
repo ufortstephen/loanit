@@ -1,13 +1,13 @@
 <template>
   <div class="user_details" v-loading="loading">
-    <div class="d-sm-flex justify-content-between px-3 mb-5">
+    <div class="d-sm-flex justify-content-between px-0 mb-0">
       <div>
         <h4>Loanee Dashboard</h4>
         <p class="mb-0">{{ paidBy }}</p>
         <p>john@gmail.com</p>
       </div>
       <div>
-        <div class="balance__container">
+        <div :class="{ balance__container: red_balance, green: green_balance }">
           <p class="mb-0">Balance</p>
           <h4 class="fa-1x">{{ balance }}</h4>
         </div>
@@ -15,8 +15,8 @@
     </div>
 
     <div class="row analytics__container">
-      <div class="col-md-10">
-        <div class="row">
+      <div class="col-md-10 px-0">
+        <div class="scroll">
           <div class="col-md-4">
             <el-card class="box-card">
               <div>
@@ -53,11 +53,11 @@
       </div>
     </div>
 
-    <div class="mb-5 payment__buttons px-2">
+    <div class="mb-5 payment__buttons px-0">
       <button @click="confirmDailyPayment">
         <i class="fa fa-money" aria-hidden="true"></i> Make daily payment</button
       ><button @click="promptBulkPayment()">
-        <i class="fa fa-paypal" aria-hidden="true"></i>Make bulk payment</button
+        <i class="fa fa-paypal" aria-hidden="true"></i>Make part payment</button
       ><button>
         <i class="fa fa-sign-out" aria-hidden="true"></i>Settle Loan
       </button>
@@ -234,6 +234,8 @@ export default {
         wallet_id: "",
         amount: "",
       },
+      green_balance: false,
+      red_balance: true,
     };
   },
 
@@ -288,6 +290,12 @@ export default {
       this.paidBy = this.loanUsers[31][0].paid_by;
       console.log(this.loanUsers[31][0].balance);
       console.log(this.balance);
+      console.log(typeof this.loanUsers[31][0].balance);
+      if (this.balance == "NGN 0.00") {
+        this.red_balance = false;
+        this.green_balance = true;
+      } else {
+      }
 
       // Getting Payment Details
       // console.log(this.loanUsers);
@@ -367,10 +375,10 @@ export default {
         });
         this.getLoanees();
       } catch (error) {
-        console.log(response.error);
+        console.log(error.response);
         this.$message({
           type: "error",
-          message: `${response.error}`,
+          message: `${error.response.data.data}`,
         });
       }
     },
@@ -395,18 +403,29 @@ export default {
 
     // Make Part  Payment
     async makePartPayment({ value }) {
-      console.log(value);
-      try {
-        this.dailyPaymentDetails.amount = value;
-        const response = await api.makePartPayment(this.dailyPaymentDetails);
-        console.log(response);
+      if (value) {
+        console.log(value);
+        try {
+          this.dailyPaymentDetails.amount = value;
+          const response = await api.makePartPayment(this.dailyPaymentDetails);
+          console.log(response);
+          this.$message({
+            type: "success",
+            message: "Part Payment of" + " " + value + " " + "made",
+          });
+          this.getLoanees();
+        } catch (error) {
+          console.log(error.response);
+          this.$message({
+            type: "error",
+            message: `${error.response.data.data}`,
+          });
+        }
+      } else {
         this.$message({
-          type: "success",
-          message: "Bulk Payment of" + " " + value + " " + "made",
+          type: "error",
+          message: `Please Input am amount`,
         });
-        this.getLoanees();
-      } catch (error) {
-        console.log(error);
       }
     },
   },
@@ -466,6 +485,13 @@ input::-webkit-inner-spin-button {
   margin: 2rem 0;
   /* opacity: 0.5; */
 }
+.green {
+  background-color: #50ae20;
+  padding: 1rem 1.6rem;
+  color: #fff;
+  border-radius: 10px;
+  margin: 2rem 0;
+}
 .col-md-4 .box-card {
   margin-bottom: 1rem;
 }
@@ -480,7 +506,7 @@ h4 {
 }
 
 .el-tag {
-  font-size: 1rem !important;
+  font-size: 0.8rem !important;
   font-weight: bold;
 }
 .el-tabs__header {
@@ -490,6 +516,23 @@ h4 {
   color: red !important;
 }
 
+@media (max-width: 768px) {
+  .analytics__container .scroll {
+    display: flex;
+    flex-direction: row;
+    overflow: scroll;
+    margin: 3rem 0;
+  }
+  .payment__buttons {
+    margin-top: 4rem;
+  }
+  .payment__buttons > * {
+    margin-bottom: 1.4rem;
+  }
+  .wallet {
+    padding: 0 !important;
+  }
+}
 @media (min-width: 768px) {
   .payment__buttons {
     flex-direction: row;
@@ -498,16 +541,13 @@ h4 {
     margin-top: 4rem;
     margin-bottom: 2rem;
   }
+  .analytics__container .scroll {
+    display: flex;
+    flex-wrap: wrap;
+  }
 }
 @media (min-width: 968px) {
-  /* .user_details {
-    width: 50%;
-    margin: 0px auto;
-  } */
-
   .balance__container {
-    /* background-blend-mode: overlay; */
-
     margin: 0;
   }
   .col-md-4 .box-card {

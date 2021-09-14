@@ -1,13 +1,13 @@
 <template>
   <div class="user_details" v-loading="loading">
-    <div class="d-sm-flex justify-content-between px-3 mb-5">
+    <div class="d-sm-flex justify-content-between align-items-center px-0 mb-0">
       <div>
         <h4>Loanee Dashboard</h4>
         <p class="mb-0">{{ paidBy }}</p>
         <p>john@gmail.com</p>
       </div>
       <div>
-        <div class="balance__container">
+        <div :class="{ balance__container: red_balance, green: green_balance }">
           <p class="mb-0">Balance</p>
           <h4 class="fa-1x">{{ balance }}</h4>
         </div>
@@ -16,7 +16,7 @@
 
     <div class="row analytics__container">
       <div class="col-md-10">
-        <div class="row">
+        <div class="scroll">
           <div class="col-md-4">
             <el-card class="box-card">
               <div>
@@ -64,7 +64,7 @@
     </div> -->
 
     <div class="row transactions">
-      <div class="col-md-10 P-0" style="padding: 0 !important">
+      <div class="col-md-10 p-0" style="padding: 0 !important">
         <el-tabs type="border-card">
           <el-tab-pane>
             <span slot="label"> All Transactions</span>
@@ -228,6 +228,8 @@ export default {
         wallet_id: "",
         amount: "",
       },
+      green_balance: false,
+      red_balance: true,
     };
   },
 
@@ -282,6 +284,11 @@ export default {
       this.paidBy = this.loanUsers[31][0].paid_by;
       console.log(this.loanUsers[31][0].balance);
       console.log(this.balance);
+      if (this.balance == "NGN 0.00") {
+        this.red_balance = false;
+        this.green_balance = true;
+      } else {
+      }
 
       // Getting Payment Details
       // this.dailyPaymentDetails.loan_id = this.loanUsers[29][0].loan_id;
@@ -438,16 +445,20 @@ input::-webkit-inner-spin-button {
   display: block;
   text-align: left !important;
   margin-bottom: 0.5rem;
-  /* color: black !important; */
 }
 .balance__container {
-  /* background-blend-mode: overlay; */
   background-color: #f56c6c;
   padding: 1rem 1.6rem;
   color: #fff;
   border-radius: 10px;
   margin: 2rem 0;
-  /* opacity: 0.5; */
+}
+.green {
+  background-color: #50ae20;
+  padding: 1rem 1.6rem;
+  color: #fff;
+  border-radius: 10px;
+  margin: 2rem 0;
 }
 .col-md-4 .box-card {
   margin-bottom: 1rem;
@@ -463,7 +474,7 @@ h4 {
 }
 
 .el-tag {
-  font-size: 1rem !important;
+  font-size: 0.8rem !important;
   font-weight: bold;
 }
 .el-tabs__header {
@@ -472,14 +483,33 @@ h4 {
 .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
   color: red !important;
 }
+@media (max-width: 768px) {
+  .analytics__container .scroll {
+    display: flex;
+    flex-direction: row;
+    overflow: scroll;
+    margin: 2rem 0;
+  }
+  .transactions {
+    margin: 2rem 0;
+  }
+
+  .wallet {
+    padding: 0 !important;
+  }
+}
 
 @media (min-width: 768px) {
   .payment__buttons {
     flex-direction: row;
   }
   .analytics__container {
-    margin-top: 4rem;
+    margin-top: 2rem;
     margin-bottom: 2rem;
+  }
+  .analytics__container .scroll {
+    display: flex;
+    flex-wrap: wrap;
   }
 }
 @media (min-width: 968px) {

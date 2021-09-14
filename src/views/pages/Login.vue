@@ -139,6 +139,7 @@ export default {
       } catch (err) {
         // Show error message
         this.open4();
+        this.$router.push("/");
 
         // Reset Input fields
         this.dynamicValidateForm.email = "";

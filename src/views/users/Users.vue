@@ -156,6 +156,11 @@ export default {
   width: max-content !important;
   cursor: pointer;
 }
+@media (max-width: 768px) {
+  .wallet {
+    padding: 5px 10px !important;
+  }
+}
 
 @media (min-width: 768px) {
   .search__table input {
