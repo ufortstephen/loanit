@@ -22,9 +22,13 @@
       <div class="col-md-3">
         <el-card class="box-card">
           <h6 class="mb-3">Total Weekly Repayment</h6>
+<<<<<<< HEAD
+          <h4 v-if="daily_payment.week" id="agent_recieved">{{ daily_payment.week.total }}</h4>
+=======
           <h4 id="agent_recieved" v-if="daily_payment.week">
             {{ daily_payment.week.total }}
           </h4>
+>>>>>>> f7354e9183e83d751f9bf84fab5be7fd5fd49e10
         </el-card>
       </div>
       <div class="col-md-3">
@@ -151,7 +155,7 @@ export default {
       }
     },
   },
-  created() {
+  async created() {
     if (!this.userDetails.first_name === "Super") {
       this.$router.push("/agentAdmin");
     }
