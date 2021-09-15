@@ -1,10 +1,9 @@
 import axios from "axios";
-import store from '@/store.js'
-
-let token = store.getters.isLoggedIn
+import store from '../store.js'
 
 const baseUrl = "https://loan-history.herokuapp.com/"
 
+const token = store.getters.isLoggedIn
 
 export default {
     // Login

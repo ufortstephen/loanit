@@ -271,11 +271,11 @@ export default {
       this.loanUsers = this.loanDetails.flat();
       console.log(this.loanUsers);
 
-      this.prices.forEach((price) => {
-        price.amount = formatPrice.format(+price.amount);
-        price.balance = formatPrice.format(+price.balance);
-        console.log(price.amount);
-      });
+      // this.prices.forEach((price) => {
+      //   price.amount = formatPrice.format(+price.amount);
+      //   price.balance = formatPrice.format(+price.balance);
+      //   console.log(price.amount);
+      // });
 
       this.loan_user = this.loanUsers[31];
       this.amountBorrowed = this.loanUsers[11];
