@@ -1,19 +1,49 @@
 <template>
-  <div class="user_details" v-loading="loading">
-    <div class="row el-card mx-0">
-      <div class="col-md-6 border-right">
-        <div class="d-md-flex flex-column py-3">
-          <h6>{{ loaneeDetails.first_name }} {{ loaneeDetails.last_name }}</h6>
-          <h6>{{ loaneeDetails.email }}</h6>
-          <h6>{{ loaneeDetails.mobile }}</h6>
-          <h6>{{ loaneeDetails.address }}</h6>
+  <div>
+    <div class="mb-5">
+      <!-- {{ user.amount }} <br />
+      <br />
+      {{ loaneePersonalDetails }} <br />
+      <br />
+      {{ loaneeWallet }} <br />
+      <br />
+      {{ topUps }} <br />
+      <br />
+      <br />
+      {{ user }} -->
+    </div>
+    <div class="user_details" v-loading="loading">
+      <div class="row el-card mx-0">
+        <div class="col-md-6 border-right">
+          <div class="d-md-flex flex-column py-3">
+            <h6>
+              {{ loaneePersonalDetails.first_name }}
+              {{ loaneePersonalDetails.last_name }}
+            </h6>
+            <h6>{{ loaneePersonalDetails.email }}</h6>
+            <h6>{{ loaneePersonalDetails.mobile }}</h6>
+            <h6>{{ loaneePersonalDetails.address }}</h6>
+          </div>
         </div>
-      </div>
-      <div class="col-md-6">
-        <div class="d-md-flex justify-content-between py-3">
-          <el-tag type="info"> Borrowed- {{ amountBorrowed }}</el-tag>
-          <el-tag type="info"> Due Today- {{ dailyPayment }}</el-tag>
-          <el-tag type="danger">Balance -{{ balance }}</el-tag>
+        <div class="col-md-6">
+          <div class="d-md-flex justify-content-between py-3">
+            <el-tag type="info"> Borrowed- {{ user.amount }}</el-tag>
+            <el-tag type="info"> Due Today- {{ daily_payment }}</el-tag>
+
+            <el-tag type="danger" v-if="user.loanee_wallet"
+              >Balance -{{ user.loanee_wallet[0].balance }}</el-tag
+            >
+          </div>
+          <!-- <div class="mb-0 payment__buttons px-0">
+            <el-tag type="success" @click="confirmDailyPayment">
+              <i class="fa fa-money" aria-hidden="true"></i> Make daily
+              payment</el-tag
+            >
+            <el-tag type="success" @click="promptBulkPayment()">
+              <i class="fa fa-paypal" aria-hidden="true"></i>Make part
+              payment</el-tag
+            >
+          </div> -->
         </div>
       </div>
     </div>
@@ -21,9 +51,10 @@
     <div class="row transactions">
       <div class="col-md-12 p-0" style="padding: 0 !important">
         <el-tabs type="border-card">
-          <el-tab-pane  class="overflow">
+          <el-tab-pane class="overflow">
             <span slot="label"> All Transactions</span>
-            <div class="my-4" v-if="transactions">
+
+            <div class="my-4" v-if="true">
               <table class="table table-striped">
                 <thead>
                   <tr>
@@ -35,7 +66,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(item, i) in transactionDetails" :key="i">
+                  <tr v-for="(item, i) in loaneeWallet" :key="i">
                     <th scope="row">
                       <el-tag
                         :type="item.type === 'Credit' ? 'success' : 'danger'"
@@ -46,7 +77,7 @@
                     <td class="font-weight-bod">{{ item.amount }}</td>
                     <td class="font-weight-bod">{{ item.channel }}</td>
 
-                    <td>{{ item.type }}</td>
+                    <td>{{ item.updated_at }}</td>
                     <td class="font-weight-bold">{{ item.balance }}</td>
                   </tr>
                 </tbody>
@@ -76,7 +107,7 @@
                   <td class="font-weight-bod">{{ item.amount }}</td>
                   <td class="font-weight-bod">{{ item.channel }}</td>
 
-                  <td>{{ item.type }}</td>
+                  <td>{{ item.updated_at }}</td>
                   <td class="font-weight-bold">{{ item.balance }}</td>
                 </tr>
               </tbody>
@@ -105,12 +136,12 @@
                   <td class="font-weight-bod">{{ item.amount }}</td>
                   <td class="font-weight-bod">{{ item.channel }}</td>
 
-                  <td>{{ item.type }}</td>
+                  <td>{{ item.updated_at }}</td>
                   <td class="font-weight-bold">{{ item.balance }}</td>
                 </tr>
               </tbody>
-            </table></el-tab-pane
-          >
+            </table>
+          </el-tab-pane>
         </el-tabs>
       </div>
       <div class="col-md-2">
@@ -136,135 +167,108 @@ export default {
   },
   data() {
     return {
-      items: [],
-      credit: false,
-      creditTransactions: [],
-      debitTransactions: [],
-      paymentType: [],
-      loanDetails: "",
-      usersOpened: null,
-      loanUsers: "",
-      loansIssued: false,
-      loanIssuedText: "Show Issued Loans",
-      loan_user: "",
-      loaneeDetails: "",
-
       loading: true,
-      // Transactions
-      transactions: true,
-      amountBorrowed: "",
-      dailyPayment: "",
-      balance: "",
-      success: "danger",
-      paidBy: "",
-      prices: [],
-      transactionDetails: [],
+      items: [],
+      user: "",
+      loaneePersonalDetails: "",
+      loaneeWallet: "",
+      topUps: "",
+      creditTransactions: "",
+      debitTransactions: "",
+      daily_payment: "",
       dailyPaymentDetails: {
         loan_id: "",
         loanee_id: "",
         wallet_id: "",
         amount: "",
       },
-      green_balance: false,
-      red_balance: true,
     };
   },
 
   methods: {
     goBack() {
-      // this.usersOpened
-      //   ? this.$router.go(-1)
-      //   : this.$router.push({ path: "/agentAdmin" });
-      history.back();
-    },
-    pageChange(val) {
-      this.$router.push({ query: { page: val } });
+      this.usersOpened
+        ? this.$router.go(-1)
+        : this.$router.push({ path: "/agentAdmin" });
+      // history.back();
     },
 
     // Get Loanees Data functon
     async getLoanees() {
-      const res = await api.viewAllLoans();
-      // console.log(res);
-      this.items = res;
+      try {
+        // Get response data from endpoint
+        const res = await api.viewAllLoans();
+        this.items = res;
 
-      // defining detail to be route param id
-      const detail = this.$route.params.id;
+        // defining loanee_wallet_id to be route param id
+        const loanee_wallet_id = this.$route.params.id;
 
-      // Find detail, params id in response
-      const user = this.items.find(
-        (item, index) => detail == item.loanee_wallet[0].id
-      );
-      // console.log(user);
+        // Find loanee_wallet_id, params id in response
+        const loanee = this.items.find(
+          (item, index) => loanee_wallet_id == item.loanee_wallet[0].id
+        );
 
-      const userDetails = user ? Object.entries(user) : [["id", "Not found"]];
-      // Formatter
-      const formatPrice = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "NGN",
-        minimumFractionDigits: 2,
-      });
-      //
-      this.loanDetails = userDetails;
+        // Assigning loanee details to user variable
+        this.user = loanee;
 
-      this.prices = this.loanDetails[15][1];
-      // Creating a flat Aarray
-      this.loanUsers = this.loanDetails.flat();
-      console.log(this.loanUsers);
+        console.log(loanee);
 
-      this.prices.forEach((price) => {
-        price.amount = formatPrice.format(+price.amount);
-        price.balance = formatPrice.format(+price.balance);
-        console.log(price.amount);
-      });
-      this.loaneeDetails = this.loanUsers[29];
-      this.loan_user = this.loanUsers[31];
-      this.amountBorrowed = this.loanUsers[11];
-      this.dailyPayment = this.loanUsers[17];
-      this.balance = this.loanUsers[31][0].balance;
-      this.paidBy = this.loanUsers[31][0].paid_by;
-      console.log(this.loanUsers[31][0].balance);
-      console.log(this.balance);
-      if (this.balance == "NGN 0.00") {
-        this.red_balance = false;
-        this.green_balance = true;
-      } else {
+        // Getting Loanee User Details
+        this.loaneePersonalDetails = loanee.loanee;
+
+        // Getting Loanee Wallet Details
+        this.loaneeWallet = this.user.top.data;
+
+        // Getting Loanee Wallet TopUps
+        this.topUps = loanee.loanee_wallet;
+
+        // console.log(this.loaneeWallet);
+
+        // Formatter
+        const formatPrice = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "NGN",
+          minimumFractionDigits: 2,
+        });
+
+        // Find DebitTransactions, params id in response
+        this.debitTransactions = this.loaneeWallet.filter(
+          (item, index) => "Debit" == item.type
+        );
+
+        // Find creditTransactions, params id in response
+        this.creditTransactions = this.loaneeWallet.filter(
+          (item, index) => "Credit" == item.type
+        );
+
+        // Formatting Figures
+        this.user.amount = formatPrice.format(+this.user.amount);
+        this.daily_payment = formatPrice.format(+this.user.daily_payment);
+
+        this.loaneeWallet.forEach((element) => {
+          element.amount = formatPrice.format(+element.amount);
+          element.balance = formatPrice.format(+element.balance);
+        });
+
+        // Getting DailyPayment Details
+        this.dailyPaymentDetails.loan_id = this.user.loanee_wallet[0].loan_id;
+
+        this.dailyPaymentDetails.loanee_id =
+          this.user.loanee_wallet[0].loanee_id;
+
+        this.dailyPaymentDetails.wallet_id = this.user.loanee_wallet[0].id;
+
+        this.dailyPaymentDetails.amount = this.user.daily_payment;
+
+        this.user.loanee_wallet[0].balance = formatPrice.format(
+          +this.user.loanee_wallet[0].balance
+        );
+
+        this.loading = false;
+      } catch (error) {
+        console.log(error);
       }
-
-      // Getting Payment Details
-      // this.dailyPaymentDetails.loan_id = this.loanUsers[29][0].loan_id;
-      // this.dailyPaymentDetails.loanee_id = this.loanUsers[29][0].loanee_id;
-      // this.dailyPaymentDetails.wallet_id = this.loanUsers[29][0].id;
-      // this.dailyPaymentDetails.amount = this.loanUsers[17];
-      this.loading = false;
-
-      console.log(this.loanUsers[31]);
-
-      this.transactionDetails = this.loanUsers[33].data;
-
-      // Formatter
-      const formatter = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "NGN",
-        minimumFractionDigits: 2,
-      });
-      this.amountBorrowed = formatter.format(+this.amountBorrowed);
-      this.dailyPayment = formatter.format(+this.dailyPayment);
-      // this.balance = formatter.format(+this.balance);
-
-      console.log(this.balance);
-
-      this.transactionDetails.forEach((type) => {
-        type.amount = formatter.format(+type.amount);
-        type.balance = formatter.format(+type.balance);
-
-        if (type.type == "Credit") {
-          this.creditTransactions.push(type);
-        } else {
-          this.debitTransactions.push(type);
-        }
-      });
-
-      console.log(this.creditTransactions);
+      //
     },
     // toggletransactions
     toggletransactions() {
@@ -300,10 +304,10 @@ export default {
         });
         this.getLoanees();
       } catch (error) {
-        console.log(response.error);
+        console.log(error.response);
         this.$message({
           type: "error",
-          message: `${response.error}`,
+          message: `${error.response.data.data}`,
         });
       }
     },
@@ -328,18 +332,29 @@ export default {
 
     // Make Part  Payment
     async makePartPayment({ value }) {
-      console.log(value);
-      try {
-        this.dailyPaymentDetails.amount = value;
-        const response = await api.makePartPayment(this.dailyPaymentDetails);
-        console.log(response);
+      if (value) {
+        console.log(value);
+        try {
+          this.dailyPaymentDetails.amount = value;
+          const response = await api.makePartPayment(this.dailyPaymentDetails);
+          console.log(response);
+          this.$message({
+            type: "success",
+            message: "Part Payment of" + " " + value + " " + "made",
+          });
+          this.getLoanees();
+        } catch (error) {
+          console.log(error.response);
+          this.$message({
+            type: "error",
+            message: `${error.response.data.data}`,
+          });
+        }
+      } else {
         this.$message({
-          type: "success",
-          message: "Bulk Payment of" + " " + value + " " + "made",
+          type: "error",
+          message: `Please Input am amount`,
         });
-        this.getLoanees();
-      } catch (error) {
-        console.log(error);
       }
     },
   },
@@ -381,6 +396,7 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none !important;
   margin: 0 !important;
 }
+
 .el-tag {
   width: 100% !important;
   display: block;
@@ -422,7 +438,6 @@ h4 {
 .el-tabs__header {
   background: #3c4b64e7 !important;
 }
-
 .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
   color: red !important;
 }

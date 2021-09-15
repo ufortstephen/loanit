@@ -7,7 +7,7 @@
         <el-card class="box-card">
           <h6 class="mb-3">Total amount disbursed</h6>
           <div class="d-flex justify-content-between">
-            <h4>{{ amount_disbursed.total }}</h4>
+            <h4 v-if="amount_disbursed">{{ amount_disbursed.total }}</h4>
           </div>
         </el-card>
       </div>
@@ -16,21 +16,21 @@
         <el-card class="box-card">
           <h6 class="mb-3">Total Daily Repayment</h6>
           <div class="d-flex justify-content-between">
-            <h4>{{ daily_payment.today.total }}</h4>
+            <h4 v-if="daily_payment">{{ daily_payment.today.total }}</h4>
           </div>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
           <h6 class="mb-3">Total Weekly Repayment</h6>
-          <h4 id="agent_recieved">{{ daily_payment.week.total }}</h4>
+          <h4 v-if="daily_payment">{{ daily_payment.week.total }}</h4>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
           <h6 class="mb-3">Total Monthly Repayment</h6>
           <div class="d-flex justify-content-between">
-            <h4>{{ daily_payment.month.total }}</h4>
+            <h4 v-if="daily_payment">{{ daily_payment.month.total }}</h4>
           </div>
         </el-card>
       </div>
@@ -40,25 +40,25 @@
       <div class="col-md-3">
         <el-card class="box-card">
           <h6>Total Loanees</h6>
-          <h4 id="agent_disburded">{{ loanee.total }}</h4>
+          <h4 v-if="loanee">{{ loanee.total }}</h4>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
           <h6>Active Loans</h6>
-          <h4 id="agent_recieved">{{ active_loan.total }}</h4>
+          <h4 v-if="active_loan">{{ active_loan.total }}</h4>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
           <h6>Settled Loans</h6>
-          <h4 id="interest_recieved">{{ settled_loan.total }}</h4>
+          <h4 v-if="settled_loan">{{ settled_loan.total }}</h4>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
           <h6>Due Loans</h6>
-          <h4 id="loanees">{{active_loan.total}}</h4>
+          <h4 v-if="active_loan">{{ active_loan.total }}</h4>
         </el-card>
       </div>
     </div>
