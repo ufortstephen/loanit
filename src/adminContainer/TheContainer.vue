@@ -54,7 +54,7 @@ export default {
     if (!this.$store.getters.isLoggedIn) {
       this.$router.push("/login");
     }
-    // this.refreshPage();
+    this.refreshPage();
   },
 };
 </script>

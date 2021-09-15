@@ -1,180 +1,115 @@
 <template>
   <div class="user_details" v-loading="loading">
-    <div class="d-sm-flex justify-content-between align-items-center px-0 mb-0">
-      <div>
-        <h4>Loanee Dashboard</h4>
-        <p class="mb-0">{{ paidBy }}</p>
-        <p>john@gmail.com</p>
+    <div class="row el-card mx-0">
+      <div class="col-md-6 border-right">
+        <div class="d-md-flex flex-column py-3">
+          <h6>{{ loaneeDetails.first_name }} {{ loaneeDetails.last_name }}</h6>
+          <h6>{{ loaneeDetails.email }}</h6>
+          <h6>{{ loaneeDetails.mobile }}</h6>
+          <h6>{{ loaneeDetails.address }}</h6>
+        </div>
       </div>
-      <div>
-        <div :class="{ balance__container: red_balance, green: green_balance }">
-          <p class="mb-0">Balance</p>
-          <h4 class="fa-1x">{{ balance }}</h4>
+      <div class="col-md-6">
+        <div class="d-md-flex justify-content-between py-3">
+          <el-tag type="info"> Borrowed- {{ amountBorrowed }}</el-tag>
+          <el-tag type="info"> Due Today- {{ dailyPayment }}</el-tag>
+          <el-tag type="danger">Balance -{{ balance }}</el-tag>
         </div>
       </div>
     </div>
-
-    <div class="row analytics__container">
-      <div class="col-md-10">
-        <div class="scroll">
-          <div class="col-md-4">
-            <el-card class="box-card">
-              <div>
-                <h6 class="mb-3">Amount Borrowed</h6>
-                <h4>{{ amountBorrowed }}</h4>
-              </div>
-            </el-card>
-          </div>
-          <div class="col-md-4">
-            <el-card class="box-card">
-              <div>
-                <h6 class="mb-3">Due Today</h6>
-                <h4>{{ dailyPayment }}</h4>
-              </div>
-            </el-card>
-          </div>
-          <div class="col-md-4">
-            <el-card class="box-card">
-              <div>
-                <h6 class="mb-3">Total Amount Paid</h6>
-                <h4>{{ amountBorrowed }}</h4>
-              </div>
-            </el-card>
-          </div>
-        </div>
-      </div>
-      <div
-        class="col-md-2 align-self-center text-center"
-        style="cursor: pointer"
-      >
-        <!-- <i class="fa fa-plus-circle fa-3x mb-2" aria-hidden="true"></i>
-
-        <h6>Add New Loan</h6> -->
-      </div>
-    </div>
-
-    <!-- <div class="mb-5 payment__buttons px-2">
-      <button @click="confirmDailyPayment">
-        <i class="fa fa-money" aria-hidden="true"></i> Make daily payment</button
-      ><button @click="promptBulkPayment()">
-        <i class="fa fa-paypal" aria-hidden="true"></i>Make bulk payment</button
-      ><button>
-        <i class="fa fa-sign-out" aria-hidden="true"></i>Settle Loan
-      </button>
-    </div> -->
 
     <div class="row transactions">
-      <div class="col-md-10 p-0" style="padding: 0 !important">
+      <div class="col-md-12 p-0" style="padding: 0 !important">
         <el-tabs type="border-card">
-          <el-tab-pane>
+          <el-tab-pane  class="overflow">
             <span slot="label"> All Transactions</span>
             <div class="my-4" v-if="transactions">
-              <div
-                v-for="x in transactionDetails"
-                :key="x.loan_id"
-                class="mb-3"
-              >
-                <div class="d-flex justify-content-between">
-                  <div class="d-flex align-self-center">
-                    <div
-                      class="align-self-center mr-3"
-                      style="border-radius: 50%"
-                    >
-                      <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
-                    </div>
-                    <div class="align-self-center">
-                      <div class="d-flex flex-column">
-                        <div>{{ x.type }}</div>
-
-                        <span
-                          :type="
-                            x.channel === 'Borrowed' ? 'success' : 'danger'
-                          "
-                          disable-transitions
-                          ><h6>{{ x.channel }}</h6>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <span>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Status</th>
+                    <th>Amount</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Balance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, i) in transactionDetails" :key="i">
+                    <th scope="row">
                       <el-tag
-                        :type="x.channel === 'Borrowed' ? 'success' : 'danger'"
+                        :type="item.type === 'Credit' ? 'success' : 'danger'"
                         disable-transitions
-                        >{{ x.amount }}
-                      </el-tag></span
-                    >
-                  </div>
-                </div>
-              </div>
+                        >{{ item.type }}
+                      </el-tag>
+                    </th>
+                    <td class="font-weight-bod">{{ item.amount }}</td>
+                    <td class="font-weight-bod">{{ item.channel }}</td>
+
+                    <td>{{ item.type }}</td>
+                    <td class="font-weight-bold">{{ item.balance }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="Credit">
-            <div v-for="x in creditTransactions" :key="x.wallet_id">
-              <div class="d-flex justify-content-between">
-                <div class="d-flex">
-                  <div
-                    class="align-self-center mr-3"
-                    style="border-radius: 50%"
-                  >
-                    <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
-                  </div>
-                  <div class="d-flex flex-column">
-                    <div>{{ x.type }}</div>
-
-                    <span
-                      :type="x.channel === 'Borrowed' ? 'success' : 'danger'"
-                      disable-transitions
-                      ><h6>{{ x.channel }}</h6>
-                    </span>
-                  </div>
-                </div>
-
-                <div>
-                  <span>
+          <el-tab-pane label="Credit" class="overflow">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Amount</th>
+                  <th>Description</th>
+                  <th>Date</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, i) in creditTransactions" :key="i">
+                  <th scope="row">
                     <el-tag
-                      :type="x.channel === 'Borrowed' ? 'success' : 'danger'"
+                      :type="item.type === 'Credit' ? 'success' : 'danger'"
                       disable-transitions
-                      >{{ x.amount }}
-                    </el-tag></span
-                  >
-                </div>
-              </div>
-            </div>
+                      >{{ item.type }}
+                    </el-tag>
+                  </th>
+                  <td class="font-weight-bod">{{ item.amount }}</td>
+                  <td class="font-weight-bod">{{ item.channel }}</td>
+
+                  <td>{{ item.type }}</td>
+                  <td class="font-weight-bold">{{ item.balance }}</td>
+                </tr>
+              </tbody>
+            </table>
           </el-tab-pane>
-          <el-tab-pane label="Debit">
-            <div v-for="x in debitTransactions" :key="x.id">
-              <div class="d-flex justify-content-between">
-                <div class="d-flex">
-                  <div
-                    class="align-self-center mr-3"
-                    style="border-radius: 50%"
-                  >
-                    <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
-                  </div>
-                  <div class="d-flex flex-column">
-                    <div>{{ x.type }}</div>
-
-                    <span
-                      :type="x.type === 'Credit' ? 'success' : 'danger'"
-                      disable-transitions
-                      ><h6>{{ x.channel }}</h6>
-                    </span>
-                  </div>
-                </div>
-
-                <div>
-                  <span>
+          <el-tab-pane label="Debit" class="overflow">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Amount</th>
+                  <th>Description</th>
+                  <th>Date</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, i) in debitTransactions" :key="i">
+                  <th scope="row">
                     <el-tag
-                      :type="x.type === 'Credit' ? 'success' : 'danger'"
+                      :type="item.type === 'Credit' ? 'success' : 'danger'"
                       disable-transitions
-                      >{{ x.amount }}
-                    </el-tag></span
-                  >
-                </div>
-              </div>
-            </div></el-tab-pane
+                      >{{ item.type }}
+                    </el-tag>
+                  </th>
+                  <td class="font-weight-bod">{{ item.amount }}</td>
+                  <td class="font-weight-bod">{{ item.channel }}</td>
+
+                  <td>{{ item.type }}</td>
+                  <td class="font-weight-bold">{{ item.balance }}</td>
+                </tr>
+              </tbody>
+            </table></el-tab-pane
           >
         </el-tabs>
       </div>
@@ -212,6 +147,8 @@ export default {
       loansIssued: false,
       loanIssuedText: "Show Issued Loans",
       loan_user: "",
+      loaneeDetails: "",
+
       loading: true,
       // Transactions
       transactions: true,
@@ -239,6 +176,9 @@ export default {
       //   ? this.$router.go(-1)
       //   : this.$router.push({ path: "/agentAdmin" });
       history.back();
+    },
+    pageChange(val) {
+      this.$router.push({ query: { page: val } });
     },
 
     // Get Loanees Data functon
@@ -271,12 +211,12 @@ export default {
       this.loanUsers = this.loanDetails.flat();
       console.log(this.loanUsers);
 
-      // this.prices.forEach((price) => {
-      //   price.amount = formatPrice.format(+price.amount);
-      //   price.balance = formatPrice.format(+price.balance);
-      //   console.log(price.amount);
-      // });
-
+      this.prices.forEach((price) => {
+        price.amount = formatPrice.format(+price.amount);
+        price.balance = formatPrice.format(+price.balance);
+        console.log(price.amount);
+      });
+      this.loaneeDetails = this.loanUsers[29];
       this.loan_user = this.loanUsers[31];
       this.amountBorrowed = this.loanUsers[11];
       this.dailyPayment = this.loanUsers[17];
@@ -315,6 +255,7 @@ export default {
 
       this.transactionDetails.forEach((type) => {
         type.amount = formatter.format(+type.amount);
+        type.balance = formatter.format(+type.balance);
 
         if (type.type == "Credit") {
           this.creditTransactions.push(type);
@@ -445,6 +386,7 @@ input::-webkit-inner-spin-button {
   display: block;
   text-align: left !important;
   margin-bottom: 0.5rem;
+  width: max-content !important;
 }
 .balance__container {
   background-color: #f56c6c;
@@ -470,7 +412,7 @@ h4 {
   color: green !important;
 }
 .transactions {
-  margin: 5rem 0;
+  margin: 1rem 0;
 }
 
 .el-tag {
@@ -480,8 +422,12 @@ h4 {
 .el-tabs__header {
   background: #3c4b64e7 !important;
 }
+
 .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
   color: red !important;
+}
+.overflow {
+  overflow: scroll !important;
 }
 @media (max-width: 768px) {
   .analytics__container .scroll {
@@ -510,6 +456,9 @@ h4 {
   .analytics__container .scroll {
     display: flex;
     flex-wrap: wrap;
+  }
+  .overflow::-webkit-scrollbar {
+    display: none;
   }
 }
 @media (min-width: 968px) {

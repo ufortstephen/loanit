@@ -1,22 +1,22 @@
 <template>
   <div class="user_details" v-loading="loading">
-    <div class="d-sm-flex justify-content-between px-3 mb-5">
+    <div class="d-sm-flex justify-content-between align-items-center px-0 mb-0">
       <div>
-        <h4>Loanee Dashboard</h4>
-        <p class="mb-0">{{ paidBy }}</p>
+        <h4>{{ paidBy }}</h4>
+        <!-- <p class="mb-0">{{ paidBy }}</p> -->
         <p>john@gmail.com</p>
       </div>
       <div>
-        <div class="balance__container">
-          <p class="mb-0">&nbsp; Balance</p>
-          <h4 class="fa-1x">- {{ balance }}</h4>
+        <div :class="{ balance__container: red_balance, green: green_balance }">
+          <p class="mb-0">Balance</p>
+          <h4 class="fa-1x">{{ balance }}</h4>
         </div>
       </div>
     </div>
 
     <div class="row analytics__container">
-      <div class="col-md-10">
-        <div class="row">
+      <div class="col-md-10 px-0">
+        <div class="scroll">
           <div class="col-md-4">
             <el-card class="box-card">
               <div>
@@ -53,41 +53,51 @@
       </div>
     </div>
 
-    <div class="mb-5 payment__buttons px-2">
+    <div class="mb-5 payment__buttons px-0">
       <button @click="confirmDailyPayment">
-        <i class="fa fa-money" aria-hidden="true"></i> Make daily payment</button
-      ><button @click="promptBulkPayment()">
-        <i class="fa fa-paypal" aria-hidden="true"></i>Make bulk payment</button
-      ><button>
-        <i class="fa fa-sign-out" aria-hidden="true"></i>Settle Loan
+        <i class="fa fa-money" aria-hidden="true"></i> Make daily payment
       </button>
+      <button @click="promptBulkPayment()">
+        <i class="fa fa-paypal" aria-hidden="true"></i>Make part payment
+      </button>
+      <!-- <button>
+        <i class="fa fa-sign-out" aria-hidden="true"></i>Settle Loan
+      </button> -->
     </div>
 
     <div class="row transactions">
-      <div class="col-md-10">
+      <div class="col-md-10 p-0" style="padding: 0 !important">
         <el-tabs type="border-card">
           <el-tab-pane>
             <span slot="label"> All Transactions</span>
             <div class="my-4" v-if="transactions">
-              <p>Transactions</p>
+              <!-- <p>Transactions</p> -->
 
-              <div v-for="x in transactionDetails" :key="x.loan_id">
+              <div
+                v-for="(x, index) in transactionDetails"
+                :key="index.loan_id"
+                class="mb-3"
+              >
                 <div class="d-flex justify-content-between">
-                  <div class="d-flex">
+                  <div class="d-flex align-self-center">
                     <div
                       class="align-self-center mr-3"
                       style="border-radius: 50%"
                     >
                       <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
                     </div>
-                    <div class="d-flex flex-column">
-                      <div>{{ x.type }}</div>
+                    <div class="align-self-center">
+                      <div class="d-flex flex-column">
+                        <div>{{ x.type }}</div>
 
-                      <span
-                        :type="x.channel === 'Borrowed' ? 'success' : 'danger'"
-                        disable-transitions
-                        ><h6>{{ x.channel }}</h6>
-                      </span>
+                        <span
+                          :type="
+                            x.channel === 'Borrowed' ? 'success' : 'danger'
+                          "
+                          disable-transitions
+                          ><h6>{{ x.channel }}</h6>
+                        </span>
+                      </div>
                     </div>
                   </div>
 
@@ -105,7 +115,11 @@
             </div>
           </el-tab-pane>
           <el-tab-pane label="Credit">
-            <div v-for="x in creditTransactions" :key="x.wallet_id">
+            <div
+              v-for="x in creditTransactions"
+              :key="x.wallet_id"
+              class="mb-3"
+            >
               <div class="d-flex justify-content-between">
                 <div class="d-flex">
                   <div
@@ -138,7 +152,7 @@
             </div>
           </el-tab-pane>
           <el-tab-pane label="Debit">
-            <div v-for="x in debitTransactions" :key="x.id">
+            <div v-for="x in debitTransactions" :key="x.id" class="mb-3">
               <div class="d-flex justify-content-between">
                 <div class="d-flex">
                   <div
@@ -151,7 +165,7 @@
                     <div>{{ x.type }}</div>
 
                     <span
-                      :type="x.channel === 'Borrowed' ? 'success' : 'danger'"
+                      :type="x.type === 'Credit' ? 'success' : 'danger'"
                       disable-transitions
                       ><h6>{{ x.channel }}</h6>
                     </span>
@@ -161,7 +175,7 @@
                 <div>
                   <span>
                     <el-tag
-                      :type="x.channel === 'Borrowed' ? 'success' : 'danger'"
+                      :type="x.type === 'Credit' ? 'success' : 'danger'"
                       disable-transitions
                       >{{ x.amount }}
                     </el-tag></span
@@ -222,19 +236,22 @@ export default {
         wallet_id: "",
         amount: "",
       },
+      green_balance: false,
+      red_balance: true,
     };
   },
 
   methods: {
     goBack() {
-      this.usersOpened
-        ? this.$router.go(-1)
-        : this.$router.push({ path: "/agentAdmin" });
+      // this.usersOpened
+      //   ? this.$router.go(-1)
+      //   : this.$router.push({ path: "/agentAdmin" });
+      history.back();
     },
 
     // Get Loanees Data functon
     async getLoanees() {
-      const res = await api.getLoans();
+      const res = await api.getMyLoans();
       // console.log(res);
       this.items = res;
 
@@ -256,34 +273,52 @@ export default {
       });
       //
       this.loanDetails = userDetails;
-      this.prices = this.loanDetails[15][1].data;
-      this.prices.forEach((price) => {
-        console.log(price.amount);
-        price.amount = formatPrice.format(+price.amount);
-        console.log(price.amount);
-      });
 
+      this.prices = this.loanDetails[15][1];
       // Creating a flat Aarray
       this.loanUsers = this.loanDetails.flat();
+      console.log(this.loanUsers);
+
+      this.prices.forEach((price) => {
+        price.amount = formatPrice.format(+price.amount);
+        price.balance = formatPrice.format(+price.balance);
+        console.log(price.amount);
+      });
 
       this.loan_user = this.loanUsers[31];
       this.amountBorrowed = this.loanUsers[11];
       this.dailyPayment = this.loanUsers[17];
-      this.balance = this.loanUsers[29][0].balance;
-      this.paidBy = this.loanUsers[29][0].paid_by;
+      this.balance = this.loanUsers[31][0].balance;
+      this.paidBy = this.loanUsers[31][0].paid_by;
+      console.log(this.loanUsers[31][0].balance);
+      console.log(this.balance);
+      console.log(typeof this.loanUsers[31][0].balance);
+      if (this.balance == "NGN 0.00") {
+        this.red_balance = false;
+        this.green_balance = true;
+      } else {
+      }
 
       // Getting Payment Details
-      this.dailyPaymentDetails.loan_id = this.loanUsers[29][0].loan_id;
-      this.dailyPaymentDetails.loanee_id = this.loanUsers[29][0].loanee_id;
-      this.dailyPaymentDetails.wallet_id = this.loanUsers[29][0].id;
+      // console.log(this.loanUsers);
+      this.dailyPaymentDetails.loan_id = this.loanUsers[31][0].loan_id;
+      this.dailyPaymentDetails.loanee_id = this.loanUsers[31][0].loanee_id;
+      this.dailyPaymentDetails.wallet_id = this.loanUsers[31][0].id;
       this.dailyPaymentDetails.amount = this.loanUsers[17];
       this.loading = false;
 
       console.log(this.loanUsers[31]);
 
-      this.transactionDetails = this.loanUsers[31].data;
+      // Formatter
+      const formatter = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "NGN",
+        minimumFractionDigits: 2,
+      });
+
+      this.transactionDetails = this.loanUsers[33].data;
       this.transactionDetails.forEach((type) => {
-        console.log(type);
+        type.amount = formatter.format(+type.amount);
         if (type.type == "Credit") {
           this.creditTransactions.push(type);
         } else {
@@ -293,16 +328,10 @@ export default {
 
       console.log(this.creditTransactions);
 
-      // Formatter
-      const formatter = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "NGN",
-        minimumFractionDigits: 2,
-      });
-
       this.amountBorrowed = formatter.format(+this.amountBorrowed);
       this.dailyPayment = formatter.format(+this.dailyPayment);
-      this.balance = formatter.format(+this.balance);
+      // this.balance = formatter.format(+this.balance);
+      console.log(this.balance);
     },
     // toggletransactions
     toggletransactions() {
@@ -348,10 +377,10 @@ export default {
         });
         this.getLoanees();
       } catch (error) {
-        console.log(response.error);
+        console.log(error.response);
         this.$message({
           type: "error",
-          message: `${response.error}`,
+          message: `${error.response.data.data}`,
         });
       }
     },
@@ -376,18 +405,29 @@ export default {
 
     // Make Part  Payment
     async makePartPayment({ value }) {
-      console.log(value);
-      try {
-        this.dailyPaymentDetails.amount = value;
-        const response = await api.makePartPayment(this.dailyPaymentDetails);
-        console.log(response);
+      if (value) {
+        console.log(value);
+        try {
+          this.dailyPaymentDetails.amount = value;
+          const response = await api.makePartPayment(this.dailyPaymentDetails);
+          console.log(response);
+          this.$message({
+            type: "success",
+            message: "Part Payment of" + " " + value + " " + "made",
+          });
+          this.getLoanees();
+        } catch (error) {
+          console.log(error.response);
+          this.$message({
+            type: "error",
+            message: `${error.response.data.data}`,
+          });
+        }
+      } else {
         this.$message({
-          type: "success",
-          message: "Bulk Payment of" + " " + value + " " + "made",
+          type: "error",
+          message: `Please Input am amount`,
         });
-        this.getLoanees();
-      } catch (error) {
-        console.log(error);
       }
     },
   },
@@ -406,9 +446,7 @@ button:focus {
   border: none;
   outline: none;
 }
-.d-flex {
-  margin-bottom: 1rem;
-}
+
 .payment__buttons {
   display: flex;
   flex-direction: column;
@@ -438,16 +476,23 @@ input::-webkit-inner-spin-button {
   display: block;
   text-align: left !important;
   margin-bottom: 0.5rem;
-  color: black I !important;
+  /* color: black !important; */
 }
 .balance__container {
   /* background-blend-mode: overlay; */
-  background-color: #3c4b64e7;
+  background-color: transparent;
   padding: 1rem 1.6rem;
-  color: #fff;
+  color: #f56c6c;
   border-radius: 10px;
   margin: 2rem 0;
   /* opacity: 0.5; */
+}
+.green {
+  background-color: transparent;
+  padding: 1rem 1.6rem;
+  color: #50ae20;
+  border-radius: 10px;
+  margin: 2rem 0;
 }
 .col-md-4 .box-card {
   margin-bottom: 1rem;
@@ -459,11 +504,11 @@ h4 {
   color: green !important;
 }
 .transactions {
-  margin: 8rem 0;
+  margin: 5rem 0;
 }
 
 .el-tag {
-  font-size: 1rem !important;
+  font-size: 0.8rem !important;
   font-weight: bold;
 }
 .el-tabs__header {
@@ -473,24 +518,38 @@ h4 {
   color: red !important;
 }
 
+@media (max-width: 768px) {
+  .analytics__container .scroll {
+    display: flex;
+    flex-direction: row;
+    overflow: scroll;
+    margin: 3rem 0;
+  }
+  .payment__buttons {
+    margin-top: 4rem;
+  }
+  .payment__buttons > * {
+    margin-bottom: 1.4rem;
+  }
+  .wallet {
+    padding: 0 !important;
+  }
+}
 @media (min-width: 768px) {
   .payment__buttons {
     flex-direction: row;
   }
   .analytics__container {
-    margin-top: 8rem;
+    margin-top: 4rem;
     margin-bottom: 2rem;
+  }
+  .analytics__container .scroll {
+    display: flex;
+    flex-wrap: wrap;
   }
 }
 @media (min-width: 968px) {
-  /* .user_details {
-    width: 50%;
-    margin: 0px auto;
-  } */
-
   .balance__container {
-    /* background-blend-mode: overlay; */
-
     margin: 0;
   }
   .col-md-4 .box-card {

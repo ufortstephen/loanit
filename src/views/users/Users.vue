@@ -1,6 +1,6 @@
 <template>
   <div class="all__users all mb-5" v-loading="loading">
-    <h3 class="p-3">All Loanees {{ tableData.length }}</h3>
+    <!-- <h3 class="p-3">All Loanees {{ tableData.length }}</h3> -->
     <el-table class="search__table">
       <el-table-column align="right">
         <template slot="header" slot-scope="scope">
