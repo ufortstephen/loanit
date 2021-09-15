@@ -26,7 +26,7 @@
           </div>
         </div>
         <div class="col-md-6">
-          <div class="d-md-flex justify-content-between py-3">
+          <div class="d-md-flex flex-column justify-content-between py-3">
             <el-tag type="info"> Borrowed- {{ user.amount }}</el-tag>
             <el-tag type="info"> Due Today- {{ daily_payment }}</el-tag>
 

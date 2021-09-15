@@ -28,14 +28,14 @@
         <div class="col-md-6">
           <div class="d-md-flex justify-content-between py-3">
             <el-tag type="info"> Borrowed- {{ user.amount }}</el-tag>
-            <el-tag type="info"> Due Today- {{ daily_payment }}</el-tag>
+            <!-- <el-tag type="info"> Due Today- {{ daily_payment }}</el-tag> -->
 
             <el-tag type="danger" v-if="user.loanee_wallet"
               >Balance -{{ user.loanee_wallet[0].balance }}</el-tag
             >
           </div>
           <div class="mb-0 payment__buttons px-0">
-            <el-tag type="success" @click="confirmDailyPayment">
+            <el-tag type="success" @click="confirmDailyPayment()">
               <i class="fa fa-money" aria-hidden="true"></i> Make daily
               payment</el-tag
             >
