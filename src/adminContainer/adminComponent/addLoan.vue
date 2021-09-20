@@ -390,7 +390,7 @@ export default {
       // Disable Weekends Function
       datePickerOptions1: {
         disabledDate(date) {
-          return new Date("1999-1-1") < date;
+          return new Date("2002-1-1") < date;
         },
       },
       pickerOptions: {
