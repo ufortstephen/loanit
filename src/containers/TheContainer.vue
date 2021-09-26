@@ -1,6 +1,10 @@
 <template>
   <div class="c-app">
-  
+    <!-- Page Preloder -->
+    <div id="preloder" v-if="loader">
+      <div class="loader"></div>
+    </div>
+    <!-- Page Preloder -->
     <TheSidebar />
     <CWrapper>
       <TheHeader />
@@ -31,6 +35,7 @@ export default {
     return {
       userDetails: {},
       userToken: {},
+      loader: true,
     };
   },
   methods: {
@@ -48,6 +53,11 @@ export default {
         location.reload();
       }
     },
+  },
+  created() {
+    setTimeout(() => {
+      this.loader = false;
+    }, 2000);
   },
 
   beforeCreate() {

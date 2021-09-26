@@ -5,13 +5,12 @@
     :show="show"
     @update:show="(value) => $store.commit('set', ['sidebarShow', value])"
   >
-    <!-- <CSidebarBrand class="d-md-down-none" to="/">
-      <CIcon
-        class="c-sidebar-brand-full"
-        name="logo"
-        size="custom-size"
-        :height="35"
-        viewBox="0 0 556 134"
+    <CSidebarBrand class="d-m-none" to="/">
+      <img
+        src="@/assets/img/loanit.png"
+        alt=""
+        style="width: 40%"
+        class="py-3"
       />
       <CIcon
         class="c-sidebar-brand-minimized"
@@ -20,19 +19,14 @@
         :height="35"
         viewBox="0 0 110 134"
       />
-    </CSidebarBrand> -->
-
-    <h6
-      class="p-4"
-      @click="signOut"
-      style="display: flex; justify-content: space-between"
-    >
-      <span class="d-none d-md-block">Loan History</span>
-      <span class="d-block d-md-none">Sign Out</span>
-      <span class="float-right d-md-none"
-        ><i class="fa fa-sign-out d-md-none" aria-hidden="true"></i
-      ></span>
-    </h6>
+      <CIcon
+        class="c-sidebar-brand-minimized"
+        name="logo"
+        size="custom-size"
+        :height="35"
+        viewBox="0 0 110 134"
+      />
+    </CSidebarBrand>
 
     <CRenderFunction flat :content-to-render="$options.nav" />
     <CSidebarMinimizer

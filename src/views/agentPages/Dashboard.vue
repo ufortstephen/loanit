@@ -14,7 +14,7 @@
 
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6 class="mb-3">Total Daily Repayment</h6>
+          <h6 class="mb-3">Amount Recieved Today</h6>
           <div class="d-flex justify-content-between">
             <h4 v-if="daily_payment">{{ daily_payment.today.total }}</h4>
           </div>
@@ -22,13 +22,46 @@
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6 class="mb-3">Total Weekly Repayment</h6>
+          <h6 class="mb-3">Amount Recieved This Week</h6>
           <h4 v-if="daily_payment">{{ daily_payment.week.total }}</h4>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6 class="mb-3">Total Monthly Repayment</h6>
+          <h6 class="mb-3">Amount Recieved This Month</h6>
+          <div class="d-flex justify-content-between">
+            <h4 v-if="daily_payment">{{ daily_payment.month.total }}</h4>
+          </div>
+        </el-card>
+      </div>
+    </div>
+    <div class="row mb-5">
+      <div class="col-md-3">
+        <el-card class="box-card">
+          <h6 class="mb-3">Total Amount Expected</h6>
+          <div class="d-flex justify-content-between">
+            <h4 v-if="amount_disbursed">{{ amount_disbursed.total }}</h4>
+          </div>
+        </el-card>
+      </div>
+
+      <div class="col-md-3">
+        <el-card class="box-card">
+          <h6 class="mb-3">Amount Expected Today</h6>
+          <div class="d-flex justify-content-between">
+            <h4 v-if="daily_payment">{{ daily_payment.today.total }}</h4>
+          </div>
+        </el-card>
+      </div>
+      <div class="col-md-3">
+        <el-card class="box-card">
+          <h6 class="mb-3">Amount Expected This Week</h6>
+          <h4 v-if="daily_payment">{{ daily_payment.week.total }}</h4>
+        </el-card>
+      </div>
+      <div class="col-md-3">
+        <el-card class="box-card">
+          <h6 class="mb-3">Amount Expected This Month</h6>
           <div class="d-flex justify-content-between">
             <h4 v-if="daily_payment">{{ daily_payment.month.total }}</h4>
           </div>
@@ -57,7 +90,7 @@
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6>Due Loans</h6>
+          <h6>Default Loans</h6>
           <h4 v-if="active_loan">{{ active_loan.total }}</h4>
         </el-card>
       </div>

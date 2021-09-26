@@ -11,13 +11,39 @@ export default [{
             icon: 'cil-chart-pie',
 
         },
-        // {
-        //     _name: 'CSidebarNavItem',
-        //     name: 'Transactions',
-        //     to: '/agentAdmin/agent_transactions',
-        //     icon: 'cil-spreadsheet',
 
-        // },
+
+        {
+            _name: 'CSidebarNavDropdown',
+            name: 'Loanees',
+            route: '/superAdmin/users',
+            icon: 'cil-user',
+            items: [{
+                    _name: 'CSidebarNavItem',
+                    name: 'All Loanees',
+                    to: '/agentAdmin/loanees',
+                    icon: ''
+                },
+                {
+                    _name: 'CSidebarNavItem',
+                    name: 'Active Loans',
+                    to: '/agentAdmin/active_loanees',
+                    icon: ''
+                },
+                {
+                    _name: 'CSidebarNavItem',
+                    name: 'Due Payments',
+                    to: '/agentAdmin/due_loanees',
+                    icon: ''
+                },
+                {
+                    _name: 'CSidebarNavItem',
+                    name: 'Settled Loans',
+                    to: '/agentAdmin/settled_loans',
+                    icon: ''
+                },
+            ]
+        },
         {
             _name: 'CSidebarNavItem',
             name: 'Add Loan',
@@ -26,35 +52,12 @@ export default [{
 
         },
 
-        // {
-        //     _name: 'CSidebarNavTitle',
-        //     _children: ['Loanees']
-        // },
-        {
-            _name: 'CSidebarNavItem',
-            name: 'Loanees',
-            to: '/agentAdmin/loanees',
-            icon: 'cil-user'
-        },
 
-        {
-            _name: 'CSidebarNavItem',
-            name: 'Active Loans',
-            to: '/agentAdmin/active_loanees',
-            icon: 'cil-pencil'
-        },
-        {
-            _name: 'CSidebarNavItem',
-            name: 'Due Payments',
-            to: '/agentAdmin/due_loanees',
-            icon: 'cil-ban'
-        },
-        {
-            _name: 'CSidebarNavItem',
-            name: 'Settled Loans',
-            to: '/agentAdmin/settled_loans',
-            icon: 'cil-pencil'
-        },
+
+
+
+
+
         {
             _name: 'CSidebarNavTitle',
             _children: ['Utilities']

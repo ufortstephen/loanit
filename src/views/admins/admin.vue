@@ -75,7 +75,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.usersOpened = from.fullPath.includes("admins");
-    });
+    }); 
   },
   data() {
     return {

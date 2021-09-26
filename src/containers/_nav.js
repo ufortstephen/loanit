@@ -19,41 +19,74 @@ export default [{
 
         // },
 
+
         {
             _name: 'CSidebarNavItem',
             name: 'Administrators',
             to: '/superAdmin/admins',
             icon: 'cil-drop'
         },
+
+        {
+            _name: 'CSidebarNavDropdown',
+            name: 'Loanees',
+            route: '/superAdmin/users',
+            icon: 'cil-user',
+            items: [{
+                    _name: 'CSidebarNavItem',
+                    name: 'All Loanees',
+                    to: '/superAdmin/users',
+                    icon: ''
+                },
+                {
+                    _name: 'CSidebarNavItem',
+                    name: 'Active Loanees',
+                    to: '/superAdmin/active_loans',
+                    icon: ''
+                },
+                {
+                    _name: 'CSidebarNavItem',
+                    name: 'Due Payments',
+                    to: '/superAdmin/due_payments',
+                    icon: ''
+                },
+                {
+                    _name: 'CSidebarNavItem',
+                    name: 'Settled Loans',
+                    to: '/superAdmin/settled_loans',
+                    icon: ''
+                },
+            ]
+        },
         // {
         //     _name: 'CSidebarNavTitle',
         //     _children: ['Loanees']
         // },
-        {
-            _name: 'CSidebarNavItem',
-            name: 'All Loanees',
-            to: '/superAdmin/users',
-            icon: 'cil-user'
-        },
+        // {
+        //     _name: 'CSidebarNavItem',
+        //     name: 'All Loanees',
+        //     to: '/superAdmin/users',
+        //     icon: 'cil-user'
+        // },
 
-        {
-            _name: 'CSidebarNavItem',
-            name: 'Active Loanees',
-            to: '/superAdmin/active_loans',
-            icon: 'cil-pencil'
-        },
-        {
-            _name: 'CSidebarNavItem',
-            name: 'Due Payments',
-            to: '/superAdmin/due_payments',
-            icon: 'cil-ban'
-        },
-        {
-            _name: 'CSidebarNavItem',
-            name: 'Settled Loans',
-            to: '/superAdmin/settled_loans',
-            icon: 'cil-pencil'
-        },
+        // {
+        //     _name: 'CSidebarNavItem',
+        //     name: 'Active Loanees',
+        //     to: '/superAdmin/active_loans',
+        //     icon: 'cil-pencil'
+        // },
+        // {
+        //     _name: 'CSidebarNavItem',
+        //     name: 'Due Payments',
+        //     to: '/superAdmin/due_payments',
+        //     icon: 'cil-ban'
+        // },
+        // {
+        //     _name: 'CSidebarNavItem',
+        //     name: 'Settled Loans',
+        //     to: '/superAdmin/settled_loans',
+        //     icon: 'cil-pencil'
+        // },
         {
             _name: 'CSidebarNavTitle',
             _children: ['Utilities']
@@ -137,29 +170,7 @@ export default [{
         //         }
         //     ]
         // },
-        // {
-        //     _name: 'CSidebarNavDropdown',
-        //     name: 'Buttons',
-        //     route: '/buttons',
-        //     icon: 'cil-cursor',
-        //     items: [{
-        //             name: 'Buttons',
-        //             to: '/buttons/standard-buttons'
-        //         },
-        //         {
-        //             name: 'Button Dropdowns',
-        //             to: '/buttons/dropdowns'
-        //         },
-        //         {
-        //             name: 'Button Groups',
-        //             to: '/buttons/button-groups'
-        //         },
-        //         {
-        //             name: 'Brand Buttons',
-        //             to: '/buttons/brand-buttons'
-        //         }
-        //     ]
-        // },
+
         // {
         //     _name: 'CSidebarNavItem',
         //     name: 'Analytics',

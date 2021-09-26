@@ -13,7 +13,7 @@
 
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6 class="mb-3">Total Daily Repayment</h6>
+          <h6 class="mb-3">Amount Recieved Today</h6>
           <div class="d-flex justify-content-between">
             <h4 v-if="daily_payment.today">{{ daily_payment.today.total }}</h4>
           </div>
@@ -21,13 +21,52 @@
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6 class="mb-3">Total Weekly Repayment</h6>
-          <h4 v-if="daily_payment.week" id="agent_recieved">{{ daily_payment.week.total }}</h4>
+          <h6 class="mb-3">Amount Recieved This Week</h6>
+          <h4 v-if="daily_payment.week" id="agent_recieved">
+            {{ daily_payment.week.total }}
+          </h4>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6 class="mb-3">Total Monthly Repayment</h6>
+          <h6 class="mb-3">Amount Recieved This Month</h6>
+          <div class="d-flex justify-content-between">
+            <h4 v-if="daily_payment.month">{{ daily_payment.month.total }}</h4>
+          </div>
+        </el-card>
+      </div>
+    </div>
+    <div class="row mb-5">
+      <div class="col-md-3">
+        <el-card class="box-card">
+          <h6 class="mb-3">Total Amount Expected</h6>
+          <div class="d-flex justify-content-between">
+            <h4>{{ amountDisburded.total }}</h4>
+          </div>
+        </el-card>
+      </div>
+
+      <div class="col-md-3">
+        <el-card class="box-card">
+          <h6 class="mb-3 analytics__header__tet">
+            Amount Expected  Today
+          </h6>
+          <div class="d-flex justify-content-between">
+            <h4 v-if="daily_payment.today">{{ daily_payment.today.total }}</h4>
+          </div>
+        </el-card>
+      </div>
+      <div class="col-md-3">
+        <el-card class="box-card">
+          <h6 class="mb-3">Amount Expected This Week</h6>
+          <h4 v-if="daily_payment.week" id="agent_recieved">
+            {{ daily_payment.week.total }}
+          </h4>
+        </el-card>
+      </div>
+      <div class="col-md-3">
+        <el-card class="box-card">
+          <h6 class="mb-3">Amount Expected This Month</h6>
           <div class="d-flex justify-content-between">
             <h4 v-if="daily_payment.month">{{ daily_payment.month.total }}</h4>
           </div>
@@ -38,13 +77,13 @@
     <div class="row mb-5">
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6>Administrators</h6>
-          <h4 id="agent_disburded">{{ admins.count }}</h4>
+          <h6 class="">Administrators</h6>
+          <h4 id="agent_disburded" class="">{{ admins.count }}</h4>
         </el-card>
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6>Active Loans</h6>
+          <h6>Users</h6>
           <h4 id="agent_recieved">{{ active_loan.total }}</h4>
         </el-card>
       </div>
@@ -56,7 +95,7 @@
       </div>
       <div class="col-md-3">
         <el-card class="box-card">
-          <h6>Due Loans</h6>
+          <h6>Default Loans</h6>
           <h4 id="loanees">{{ active_loan.total }}</h4>
         </el-card>
       </div>
@@ -145,29 +184,27 @@ export default {
         localStorage.removeItem("reloaded");
       } else {
         localStorage.setItem("reloaded", "1");
-        location.reload();
+        // location.reload();
       }
     },
   },
-  async created() {
+  created() {
     if (!this.userDetails.first_name === "Super") {
       this.$router.push("/agentAdmin");
     }
     this.getDashboardAnalytics();
     let getToken = this.$store.getters.isLoggedIn;
     this.userDetails = this.$store.getters.userData;
-    // this.token = getToken;
-    console.log(getToken);
   },
-  mounted() {
-    // let getToken = this.$store.getters.isLoggedIn;
-    // this.userDetails = this.$store.getters.userData;
-    // this.token = getToken;
-  },
+  mounted() {},
 };
 </script>
 
 <style scoped>
+.analytics__header__text {
+  color: #182143;
+  font-weight: 600;
+}
 @media (max-width: 768px) {
   .col-md-3 {
     margin-bottom: 2rem;

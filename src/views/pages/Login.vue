@@ -1,67 +1,84 @@
 <template>
-  <div class="home">
-    <div class="form">
-      <!-- Login Form -->
-      <el-form
-        :model="dynamicValidateForm"
-        ref="dynamicValidateForm"
-        label-width="120px"
-        class="demo-dynamic"
-        :rules="rules"
-      >
-        <!-- Form Email -->
-        <el-form-item
-          prop="email"
-          label="Email"
-          :rules="[
-            {
-              required: true,
-              message: 'Please input email address',
-              trigger: 'blur',
-            },
-            {
-              type: 'email',
-              message: 'Please input correct email address',
-              trigger: ['blur', 'change'],
-            },
-          ]"
-        >
-          <el-input
-            v-model="dynamicValidateForm.email"
-            placeholder="Email"
-          ></el-input>
-        </el-form-item>
-
-        <!-- FormPassword -->
-        <el-form-item label="Password" prop="pass">
-          <el-input
-            type="password"
-            v-model="dynamicValidateForm.pass"
-            autocomplete="off"
-            placeholder="Password"
-            class="my-2"
-          ></el-input>
-        </el-form-item>
-
-        <!-- Form Login Button -->
-        <el-form-item>
-          <el-button
-            type="primary"
-            @click="submitForm('dynamicValidateForm')"
-            class="sign__in--btn w-100"
-            :class="{ loading: loading }"
-            :disabled="disabled"
-            >{{ login_text }}</el-button
-          >
-        </el-form-item>
-      </el-form>
+  <div>
+    <!-- Page Preloder -->
+    <div id="preloder" v-if="loader">
+      <!-- <h3 class="login__text__loader">Logging In ......</h3> -->
+      <div class="loader"></div>
     </div>
+    <!-- Page Preloder -->
+
+    <appHeader />
+    <div class="home">
+      <div class="form">
+        <!-- Login Form -->
+        <el-form
+          :model="dynamicValidateForm"
+          ref="dynamicValidateForm"
+          label-width="120px"
+          class="demo-dynamic"
+          :rules="rules"
+        >
+          <!-- Form Email -->
+          <el-form-item
+            prop="email"
+            label="Email"
+            :rules="[
+              {
+                required: true,
+                message: 'Please input email address',
+                trigger: 'blur',
+              },
+              {
+                type: 'email',
+                message: 'Please input correct email address',
+                trigger: ['blur', 'change'],
+              },
+            ]"
+          >
+            <el-input
+              v-model="dynamicValidateForm.email"
+              placeholder="Email"
+            ></el-input>
+          </el-form-item>
+
+          <!-- FormPassword -->
+          <el-form-item label="Password" prop="pass">
+            <el-input
+              type="password"
+              v-model="dynamicValidateForm.pass"
+              autocomplete="off"
+              placeholder="Password"
+              class="my-2"
+            ></el-input>
+          </el-form-item>
+
+          <!-- Form Login Button -->
+          <el-form-item>
+            <el-button
+              type="primary"
+              @click="submitForm('dynamicValidateForm')"
+              class="sign__in--btn w-100"
+              :class="{ loading: loading }"
+              :disabled="disabled"
+              >{{ login_text }}</el-button
+            >
+          </el-form-item>
+        </el-form>
+      </div>
+    </div>
+    <!-- <appFooter /> -->
   </div>
 </template>
 
 <script>
 import api from "@/helpers/api.js";
+import appHeader from "../../pages/headerComponent.vue";
+import appFooter from "../../pages/footerComponent.vue";
 export default {
+  components: {
+    appHeader,
+    appFooter,
+  },
   data() {
     var validatePass = (rule, value, callback) => {
       if (value === "") {
@@ -75,6 +92,7 @@ export default {
     };
 
     return {
+      loader: true,
       disabled: false,
       loading: false,
       login_text: "Login",
@@ -106,6 +124,7 @@ export default {
     async login() {
       try {
         // making api call with defined parameters
+        this.loader = true;
         this.login_text = "Verifying......";
         this.loading = true;
         this.disabled = true;
@@ -137,9 +156,9 @@ export default {
         // Successful alert
         // this.open2();
       } catch (err) {
+        this.loader = false;
         // Show error message
         this.open4();
-        this.$router.push("/");
 
         // Reset Input fields
         this.dynamicValidateForm.email = "";
@@ -163,10 +182,26 @@ export default {
       });
     },
   },
+
+  created() {
+    setTimeout(() => {
+      this.loader = false;
+    }, 2000);
+  },
 };
 </script>
 
 
 <style>
 @import "./login.css";
+.login__text__loader {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  margin-top: -13px;
+  margin-left: -13px;
+  border-radius: 60px;
+}
 </style>

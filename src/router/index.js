@@ -60,9 +60,7 @@ const Settled_Loans = () =>
 const Agent_Dashboard = () =>
     import ('@/views/agentPages/Dashboard')
 
-// Agent Transactions
-const agent_transactions = () =>
-    import ('@/views/agentPages/agent_transactions')
+
 
 // Add Loan
 const add_loan = () =>
@@ -106,6 +104,25 @@ const change__password = () =>
 const change_password_agent = () =>
     import ('@/views/agentPages/changePassword')
 
+
+//Landing Page
+const home_page = () =>
+    import ('@/pages/homePage.vue')
+
+
+//About Us Page
+const about_us = () =>
+    import ('@/pages/aboutUs.vue')
+
+
+//Services Page
+const our_services = () =>
+    import ('@/pages/services.vue')
+
+
+//Contact Page
+const contact_us = () =>
+    import ('@/pages/contactUs.vue')
 
 
 Vue.use(Router)
@@ -275,7 +292,7 @@ function configRoutes() {
         },
         {
             path: '/',
-            redirect: '/login',
+            redirect: '/',
             name: 'Homepage',
             component: {
                 render(c) { return c('router-view') }
@@ -299,7 +316,27 @@ function configRoutes() {
                     path: 'register',
                     name: 'Register',
                     component: Register
-                }
+                },
+                {
+                    path: '/',
+                    name: 'home_page',
+                    component: home_page
+                },
+                {
+                    path: '/about',
+                    name: 'about_us',
+                    component: about_us
+                },
+                {
+                    path: '/services',
+                    name: 'services',
+                    component: our_services
+                },
+                {
+                    path: '/contact_us',
+                    name: 'contact us',
+                    component: contact_us
+                },
             ]
         },
         {
@@ -312,11 +349,7 @@ function configRoutes() {
                     name: 'Agent_Dashboard',
                     component: Agent_Dashboard
                 },
-                {
-                    path: 'agent_transactions',
-                    name: 'agent_transactions',
-                    component: agent_transactions
-                },
+
                 {
                     path: 'add_loan',
                     name: 'add_loan',
@@ -378,6 +411,7 @@ function configRoutes() {
                     name: 'change_password_agent',
                     component: change_password_agent
                 },
+
 
 
 
