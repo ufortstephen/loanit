@@ -20,20 +20,20 @@
     >
       <div class="container">
         <div class="row">
-          <div class="col-lg-5">
+          <div class="col-lg-6">
             <div class="hero__text">
-              <h2>Find The Best Monthly Payment</h2>
-              <h4>
-                Apply for our loans in minutes, without any stress and hassle.
-                Loan-It!
-              </h4>
+              <h2>
+                Loan management system that automates your entire lending
+                process
+              </h2>
+              <h4>Take full control of your lending business.</h4>
               <button class="primary-btn mb-5 mb-lg-3">Get Started</button>
               <button class="primary-btn howit-btn">How It Works</button>
             </div>
           </div>
-          <div class="col-lg-5 offset-lg-2">
+          <div class="col-lg-5 offset-lg-1">
             <div class="hero__form">
-              <h3>How much do you need</h3>
+              <h3>Automate your lending process.</h3>
               <form action="#">
                 <div class="input-list">
                   <div class="input-list-item">
@@ -63,9 +63,7 @@
                   <p>Email:</p>
                   <input type="email" required />
                 </div>
-                <button type="submit" class="site-btn">
-                  Get Your Loan Now!
-                </button>
+                <button type="submit" class="site-btn">Issue Loan!</button>
               </form>
             </div>
           </div>
