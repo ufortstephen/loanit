@@ -1,8 +1,6 @@
 <template>
   <div class="all__users all mb-5">
-    <h3 class="p-3">Active Loans</h3>
-
-    
+    <h3 class="p-3">Pending Loans</h3>
     <el-table class="search__table">
       <el-table-column align="right">
         <template slot="header" slot-scope="scope">
@@ -50,8 +48,8 @@
         label="Status"
         width="100"
         :filters="[
-          { text: 'approved', value: 'approved' },
-          { text: 'pending', value: 'pending' },
+          { text: 'active', value: 'active' },
+          { text: 'due', value: 'due' },
           { text: 'settled', value: 'settled' },
         ]"
         :filter-method="filterTag"
@@ -59,7 +57,7 @@
       >
         <template slot-scope="scope" class="p-0" prop="status">
           <el-tag
-            :type="scope.row.status === 'pending' ? 'approved' : 'success'"
+            :type="scope.row.status === 'active' ? 'success' : 'warning'"
             style="width:100% !important"
             disable-transitions
             >{{ scope.row.status }}
@@ -108,27 +106,27 @@ export default {
     let token = this.$store.getters.isLoggedIn;
 
     try {
-      const response = await api.getActiveLoans({
+      const response = await api.getPendingLoans({
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       console.log(response);
 
-      this.tableData = response.data.active;
-      // this.tableData.forEach((data) => {
-
-      //   const formatter = new Intl.NumberFormat("en-US", {
-      //     style: "currency",
-      //     currency: "NGN",
-      //     minimumFractionDigits: 2,
-      //   });
-      //   data.amount = formatter.format(+data.amount);
-      //   data.daily_payment = formatter.format(+data.daily_payment);
-      //   data.loanee_wallet[0].balance = formatter.format(
-      //     +data.loanee_wallet[0].balance
-      //   );
-      // });
+      this.tableData = response.data.pending;
+      this.tableData.forEach((data) => {
+        // Formatter
+        const formatter = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "NGN",
+          minimumFractionDigits: 2,
+        });
+        data.amount = formatter.format(+data.amount);
+        data.daily_payment = formatter.format(+data.daily_payment);
+        data.loanee_wallet[0].balance = formatter.format(
+          +data.loanee_wallet[0].balance
+        );
+      });
 
       this.loading = false;
     } catch (error) {}

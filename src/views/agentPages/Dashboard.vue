@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading">
+  <div v-loading="false">
     <!-- <WidgetsDropdown /> -->
 
     <div class="row mb-5">

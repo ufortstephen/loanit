@@ -1,48 +1,68 @@
 <template>
   <div>
-    <div class="mb-5">
-      <!-- {{ user.amount }} <br />
-      <br />
-      {{ loaneePersonalDetails }} <br />
-      <br />
-      {{ loaneeWallet }} <br />
-      <br />
-      {{ topUps }} <br />
-      <br />
-      <br />
-      {{ user }} -->
-    </div>
-    <div class="user_details" v-loading="loading">
-      <div class="row el-card mx-0">
-        <div class="col-md-6 border-right">
-          <div class="d-md-flex flex-column py-3">
-            <h6>
-              {{ loaneePersonalDetails.first_name }}
-              {{ loaneePersonalDetails.last_name }}
-            </h6>
-            <h6>{{ loaneePersonalDetails.email }}</h6>
-            <h6>{{ loaneePersonalDetails.mobile }}</h6>
-            <h6>{{ loaneePersonalDetails.address }}</h6>
+    <!-- profile -->
+    <div class="row">
+      <div class="col-md-12 grid-margin stretch-card mb-0">
+        <div class="card">
+          <div class="card-body d-flex justify-content-between">
+            <h5 class="card-title mb-0">
+              {{ user.loanee.first_name }} {{ user.loanee.last_name }}
+            </h5>
+
+            <div class="d-flex" style="gap: 8px">
+              <el-tag type="success" @click="makeDailyPayment()"
+                >Make daily payment</el-tag
+              >
+              <el-tag type="info" @click="promptBulkPayment()"
+                >Make bulk payment</el-tag
+              >
+
+              <el-tag type="danger">
+                Bal: {{ loaneeWallet[loaneeWallet.length - 1].balance }}</el-tag
+              >
+            </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="d-md-flex justify-content-between py-3">
-            <el-tag type="info"> Borrowed- {{ user.amount }}</el-tag>
-            <!-- <el-tag type="info"> Due Today- {{ daily_payment }}</el-tag> -->
-
-            <el-tag type="danger" v-if="user.loanee_wallet"
-              >Balance -{{ user.loanee_wallet[0].balance }}</el-tag
-            >
+      </div>
+      <div class="bg-dark mx-3 p-2 p-lg-5 w-100">
+        <div class="row text-center text-md-left">
+          <div class="col-md-6 text-center my-3 my-md-0">
+            <div>
+              <el-avatar :src="preview" class="avatar"></el-avatar>
+            </div>
           </div>
-          <div class="mb-0 payment__buttons px-0">
-            <el-tag type="success" @click="confirmDailyPayment()">
-              <i class="fa fa-money" aria-hidden="true"></i> Make daily
-              payment</el-tag
-            >
-            <el-tag type="success" @click="promptBulkPayment()">
-              <i class="fa fa-paypal" aria-hidden="true"></i>Make part
-              payment</el-tag
-            >
+          <div class="col-md-6 d-lg-flex justify-content-between">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="">
+                  <p class="text-white">Name:</p>
+                  <p class="text-white">Email:</p>
+
+                  <p class="text-white">Daily payment:</p>
+                  <p class="text-white">Status:</p>
+                  <p class="text-white">Balance:</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="">
+                  <p class="text-white">
+                    {{ user.loanee.first_name }}
+                    {{ user.loanee.last_name }}
+                  </p>
+                  <p class="text-white">{{ user.loanee.email }}</p>
+
+                  <p class="text-white">
+                    {{ user.amount }}
+                  </p>
+                  <p class="text-white">
+                    {{ user.status }}
+                  </p>
+                  <p class="text-white">
+                    {{ user.total_payment }}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -169,7 +189,9 @@ export default {
     return {
       loading: true,
       items: [],
-      user: "",
+      user: [],
+      preview:
+        "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
       loaneePersonalDetails: "",
       loaneeWallet: "",
       topUps: "",
@@ -198,31 +220,32 @@ export default {
       try {
         // Get response data from endpoint
         const res = await api.getMyLoans();
-        this.items = res;
+        this.items = res.data.loans;
 
         // defining loanee_wallet_id to be route param id
-        const loanee_wallet_id = this.$route.params.id;
+        let user_id = this.$route.params.id;
 
         // Find loanee_wallet_id, params id in response
-        const loanee = this.items.find(
-          (item, index) => loanee_wallet_id == item.loanee_wallet[0].id
-        );
+        // const loanee = this.items.find(
+        //   (item, index) => user_id == item.id
+        // );
 
         // Assigning loanee details to user variable
-        this.user = loanee;
+        this.user = this.items.find((item, index) => user_id == item.id);
 
-        console.log(loanee);
+        console.log(this.items);
+        console.log(this.user);
 
         // Getting Loanee User Details
-        this.loaneePersonalDetails = loanee.loanee;
+        this.loaneePersonalDetails = this.user.loanee;
 
         // Getting Loanee Wallet Details
         this.loaneeWallet = this.user.top.data;
 
         // Getting Loanee Wallet TopUps
-        this.topUps = loanee.loanee_wallet;
+        this.topUps = this.user.loanee_wallet;
 
-        // console.log(this.loaneeWallet);
+        console.log(this.loaneeWallet);
 
         // Formatter
         const formatPrice = new Intl.NumberFormat("en-US", {
@@ -230,6 +253,8 @@ export default {
           currency: "NGN",
           minimumFractionDigits: 2,
         });
+
+        this.user.total_payment = formatPrice.format(+this.user.total_payment);
 
         // Find DebitTransactions, params id in response
         this.debitTransactions = this.loaneeWallet.filter(
@@ -264,7 +289,7 @@ export default {
           +this.user.loanee_wallet[0].balance
         );
 
-        this.loading = false;
+        // this.loading = false;
       } catch (error) {
         console.log(error);
       }
@@ -476,6 +501,22 @@ h4 {
     display: none;
   }
 }
+
+.avatar {
+  width: 150px;
+  height: 150px;
+}
+.right {
+  right: 0px;
+}
+
+@media (min-width: 768px) {
+  .avatar {
+    width: 200px;
+    height: 200px;
+  }
+}
+
 @media (min-width: 968px) {
   /* .user_details {
     width: 50%;

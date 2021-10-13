@@ -38,6 +38,12 @@ export default [{
                 },
                 {
                     _name: 'CSidebarNavItem',
+                    name: 'Pending Loans',
+                    to: '/agentAdmin/pending',
+                    icon: ''
+                },
+                {
+                    _name: 'CSidebarNavItem',
                     name: 'Settled Loans',
                     to: '/agentAdmin/settled_loans',
                     icon: ''
@@ -46,11 +52,18 @@ export default [{
         },
         {
             _name: 'CSidebarNavItem',
-            name: 'Add Loan',
-            to: '/agentAdmin/add_loan',
+            name: 'Users',
+            to: '/agentAdmin/active_loanees',
             icon: 'cil-pencil'
 
         },
+        // {
+        //     _name: 'CSidebarNavItem',
+        //     name: 'Add User',
+        //     to: '/agentAdmin/add_loan',
+        //     icon: 'cil-pencil'
+
+        // },
 
 
 

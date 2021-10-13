@@ -20,51 +20,17 @@
     >
       <div class="container">
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-12 text-center">
             <div class="hero__text">
               <h2>
                 Loan management system that automates your entire lending
                 process
               </h2>
               <h4>Take full control of your lending business.</h4>
-              <button class="primary-btn mb-5 mb-lg-3">Get Started</button>
+              <button class="primary-btn mb-5 mb-lg-3" @click="goToLogin()">
+                Get Started
+              </button>
               <button class="primary-btn howit-btn">How It Works</button>
-            </div>
-          </div>
-          <div class="col-lg-5 offset-lg-1">
-            <div class="hero__form">
-              <h3>Automate your lending process.</h3>
-              <form action="#">
-                <div class="input-list">
-                  <div class="input-list-item">
-                    <p>Amount of money :</p>
-                    <input type="number" required />
-                  </div>
-                  <div class="input-list-item">
-                    <p>How long for (day):</p>
-                    <input type="number" required />
-                  </div>
-                </div>
-                <div class="input-full-width">
-                  <p>Repayment:</p>
-                  <input type="text" required />
-                </div>
-                <div class="input-list last">
-                  <div class="input-list-item">
-                    <p>Name:</p>
-                    <input type="text" required />
-                  </div>
-                  <div class="input-list-item">
-                    <p>Phone:</p>
-                    <input type="number" required />
-                  </div>
-                </div>
-                <div class="input-full-width">
-                  <p>Email:</p>
-                  <input type="email" required />
-                </div>
-                <button type="submit" class="site-btn">Issue Loan!</button>
-              </form>
             </div>
           </div>
         </div>
@@ -110,7 +76,10 @@
           </div>
           <div class="col-lg-5 offset-lg-1">
             <div class="home__about__img">
-              <img src="@/assets/img/about/home-about.jpg" alt="" />
+              <img
+                src="https://us.123rf.com/450wm/fizkes/fizkes1904/fizkes190401506/122246323-happy-black-couple-satisfied-clients-customers-handshake-bank-manager-insurer-broker-take-loan-buy-i.jpg?ver=6"
+                alt=""
+              />
             </div>
           </div>
         </div>
@@ -441,7 +410,11 @@ export default {
     };
   },
 
-  methods: {},
+  methods: {
+    goToLogin() {
+      this.$router.push("/login");
+    },
+  },
   created() {
     setTimeout(() => {
       this.loader = false;

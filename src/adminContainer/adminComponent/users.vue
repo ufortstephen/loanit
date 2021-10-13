@@ -1,8 +1,6 @@
 <template>
   <div class="all__users all mb-5">
-    <h3 class="p-3">Active Loans</h3>
-
-    
+    <h3 class="p-3">All Users</h3>
     <el-table class="search__table">
       <el-table-column align="right">
         <template slot="header" slot-scope="scope">
@@ -28,44 +26,40 @@
       "
       style="width: 100%"
     >
-      <el-table-column label="First Name" prop="loanee.first_name"> </el-table-column>
-      <el-table-column label="Last Name" prop="loanee.last_name"> </el-table-column>
-      
-      <el-table-column label="Email" prop="loanee.email"> </el-table-column>
-      <el-table-column label="Occupation" prop="loanee.occupation"> </el-table-column>
-      <el-table-column label="Amount" prop="amount"> </el-table-column>
-      <el-table-column label="Start date" prop="start_date"> </el-table-column>
-      <el-table-column label="End Date" prop="end_date"> </el-table-column>
-      <el-table-column label="Category" prop="category"> </el-table-column>
+      <el-table-column label="First Name" prop="first_name"> </el-table-column>
+      <el-table-column label="Last Name" prop="last_name"> </el-table-column>
+      <el-table-column label="Email" prop="email"> </el-table-column>
 
-      <el-table-column label="Phone" prop=loanee."mobile">
+      <el-table-column label="Phone" prop="mobile">
       </el-table-column>
 
-      
-    
+      <el-table-column label="Occupation" prop="occupation"> </el-table-column>
+      <el-table-column label="Address" prop="address">
+      </el-table-column>
+      <el-table-column label="M/Status" prop="marital_status">
+      </el-table-column>
   
 
-      <el-table-column
+      <!-- <el-table-column
         prop="status"
         label="Status"
         width="100"
         :filters="[
-          { text: 'approved', value: 'approved' },
-          { text: 'pending', value: 'pending' },
+          { text: 'active', value: 'active' },
+          { text: 'due', value: 'due' },
           { text: 'settled', value: 'settled' },
         ]"
         :filter-method="filterTag"
         filter-placement="bottom-end"
       >
-        <template slot-scope="scope" class="p-0" prop="status">
+        <template slot-scope="scope" class="p-0" prop="loanee_wallet[0].id">
           <el-tag
-            :type="scope.row.status === 'pending' ? 'approved' : 'success'"
-            style="width:100% !important"
+            :type="scope.row.status === 'active' ? 'success' : 'warning'"
             disable-transitions
             >{{ scope.row.status }}
           </el-tag>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="History" prop="">
         <template slot-scope="scope" class="p-0" prop="id">
           <el-tag
@@ -108,27 +102,27 @@ export default {
     let token = this.$store.getters.isLoggedIn;
 
     try {
-      const response = await api.getActiveLoans({
+      const response = await api.getMyLoans({
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       console.log(response);
 
-      this.tableData = response.data.active;
-      // this.tableData.forEach((data) => {
-
-      //   const formatter = new Intl.NumberFormat("en-US", {
-      //     style: "currency",
-      //     currency: "NGN",
-      //     minimumFractionDigits: 2,
-      //   });
-      //   data.amount = formatter.format(+data.amount);
-      //   data.daily_payment = formatter.format(+data.daily_payment);
-      //   data.loanee_wallet[0].balance = formatter.format(
-      //     +data.loanee_wallet[0].balance
-      //   );
-      // });
+      this.tableData = response.data.loanee;
+      this.tableData.forEach((data) => {
+        // Formatter
+        const formatter = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "NGN",
+          minimumFractionDigits: 2,
+        });
+        data.amount = formatter.format(+data.amount);
+        data.daily_payment = formatter.format(+data.daily_payment);
+        data.loanee_wallet[0].balance = formatter.format(
+          +data.loanee_wallet[0].balance
+        );
+      });
 
       this.loading = false;
     } catch (error) {}

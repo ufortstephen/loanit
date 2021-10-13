@@ -1,13 +1,13 @@
 <template>
-  <div class="all__users" v-loading="loading">
-    <!-- <h4 class="pl-2 pb-3">Active Loans</h4> -->
+  <div class="all__users all mb-5">
+    <h3 class="p-3">All Users</h3>
     <el-table class="search__table">
       <el-table-column align="right">
         <template slot="header" slot-scope="scope">
           <el-input
             v-model="search"
             size="mini"
-            placeholder="Search loanee by name"
+            placeholder="Search user by name"
           />
         </template>
       </el-table-column>
@@ -19,42 +19,50 @@
         tableData.filter(
           (data) =>
             !search ||
-            data.loanee_wallet[0].paid_by
-              .toLowerCase()
-              .includes(search.toLowerCase())
+            data.loanee.first_name.toLowerCase().includes(search.toLowerCase())
         )
       "
       style="width: 100%"
     >
-      <el-table-column label="Name" prop="loanee_wallet[0].paid_by">
+      <el-table-column label="First Name" prop="loanee.first_name">
+      </el-table-column>
+      <el-table-column label="Last Name" prop="loanee.last_name">
       </el-table-column>
 
-      <el-table-column label="Date Issued" prop="date_issued">
+      <el-table-column label="Email" prop="loanee.email"> </el-table-column>
+      <el-table-column label="Occupation" prop="loanee.occupation">
       </el-table-column>
-
       <el-table-column label="Amount" prop="amount"> </el-table-column>
-      <el-table-column label="Daily Payment" prop="daily_payment">
-      </el-table-column>
-      <el-table-column label="Balance" prop="loanee_wallet[0].balance">
-      </el-table-column>
-      <!-- <el-table-column label="Status" prop="status"> </el-table-column> -->
+      <el-table-column label="Start date" prop="start_date"> </el-table-column>
+      <el-table-column label="End Date" prop="end_date"> </el-table-column>
+      <el-table-column label="Category" prop="category"> </el-table-column>
 
-      <el-table-column prop="status" label="Status" width="100">
-        <template slot-scope="scope" class="p-0" prop="loanee_wallet[0].id">
+      <el-table-column
+        prop="status"
+        label="Status"
+        width="100"
+        :filters="[
+          { text: 'approved', value: 'approved' },
+          { text: 'pending', value: 'pending' },
+          { text: 'settled', value: 'settled' },
+        ]"
+        :filter-method="filterTag"
+        filter-placement="bottom-end"
+      >
+        <template slot-scope="scope" class="p-0" prop="status">
           <el-tag
-            :type="scope.row.status === 'active' ? 'success' : 'warning'"
+            :type="scope.row.status === 'pending' ? 'approved' : 'success'"
+            style="width: 100% !important"
             disable-transitions
             >{{ scope.row.status }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="Transactions" prop="">
-        <template slot-scope="scope" class="p-0" prop="loanee_wallet[0].id">
+      <el-table-column label="History" prop="">
+        <template slot-scope="scope" class="p-0" prop="id">
           <el-tag
             class="wallet btn d-flex align-items-center"
-            @click.native.prevent="
-              rowClicked(tableData[scope.$index].loanee_wallet[0].id)
-            "
+            @click.native.prevent="rowClicked(tableData[scope.$index].id)"
             disable-transitions
             >View
           </el-tag>
@@ -77,61 +85,67 @@ export default {
     };
   },
   methods: {
+    filterTag(value, row) {
+      return row.status === value;
+    },
     rowClicked(e) {
-      // console.log(e);
       this.$router.push({
         path: `users/${e}`,
       });
     },
-
-    handleEdit(index, row) {
-      // console.log(index, row);
-    },
-    handleDelete(index, row) {
-      // console.log(index, row);
-    },
-    async getallLoanees() {
-      //get all users from api
-      try {
-        const response = await api.viewAllActiveLoans();
-        // console.log(response);
-        this.tableData = response;
-        this.tableData.forEach((data) => {
-          // Formatter
-          const formatter = new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "NGN",
-            minimumFractionDigits: 2,
-          });
-          data.amount = formatter.format(+data.amount);
-          data.daily_payment = formatter.format(+data.daily_payment);
-          data.loanee_wallet[0].balance = formatter.format(
-            +data.loanee_wallet[0].balance
-          );
-        });
-        this.loading = false;
-      } catch (error) {
-        // console.log(error.response);
-      }
-    },
-    filterTag(value, row) {
-      return row.status === value;
-    },
   },
-  created() {
-    this.getallLoanees();
+  async created() {
+    let token = this.$store.getters.isLoggedIn;
+
+    try {
+      const response = await api.listAllLoans({
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response);
+
+      this.tableData = response.data.loans;
+      this.tableData.forEach((data) => {
+        // Formatter
+        const formatter = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "NGN",
+          minimumFractionDigits: 2,
+        });
+        data.amount = formatter.format(+data.amount);
+        data.daily_payment = formatter.format(+data.daily_payment);
+        data.loanee_wallet[0].balance = formatter.format(
+          +data.loanee_wallet[0].balance
+        );
+      });
+
+      this.loading = false;
+    } catch (error) {}
   },
 };
 </script>
 
 
-<style>
+<style >
 .search__table .el-table__empty-block {
   display: none !important;
 }
 .search__table input {
   height: 40px !important;
 }
+/* tr {
+  cursor: pointer !important;
+} */
+.all .el-tag--successs {
+  background-color: green !important;
+  color: #fff !important;
+}
+.all .el-tag--warning {
+  background-color: #ffc107c1 !important;
+  color: #fff !important;
+}
+
 .wallet {
   background-color: transparent !important;
   border: 1px solid #3c4b64;
@@ -140,6 +154,11 @@ export default {
   padding: 0px 24px !important ;
   width: max-content !important;
   cursor: pointer;
+}
+@media (max-width: 768px) {
+  .wallet {
+    padding: 5px 10px !important;
+  }
 }
 
 @media (min-width: 768px) {

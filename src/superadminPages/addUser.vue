@@ -112,7 +112,7 @@
             </div>
             <div class="col-md-6">
               <!-- Occupation -->
-            <div class="form-group">
+              <div class="form-group">
                 <!-- Gender -->
                 <label for="">Gender</label>
 
@@ -172,12 +172,11 @@
           </div>
           <div class="row">
             <div class="col-md-6">
-             <div class="form-group">
+              <div class="form-group">
                 <label for="">Occupation</label>
 
                 <input
                   type="text"
-                  
                   class="form-control"
                   name=""
                   required
@@ -190,7 +189,7 @@
             </div>
             <div class="col-md-6">
               <!-- Address -->
-               <div class="form-group">
+              <div class="form-group">
                 <label for="">Dependants</label>
 
                 <input
@@ -210,8 +209,6 @@
           </div>
         </div>
         <!-- Other Information Ends Here -->
-
-    
 
         <!-- Preview Loan -->
         <div v-if="preview_loan">
@@ -242,7 +239,7 @@
                 <div class="row">
                   <div class="col-6">
                     <h6>Address</h6>
-                    <p> {{ addLoan.address }}</p>
+                    <p>{{ addLoan.address }}</p>
                   </div>
                   <div class="col-6">
                     <h6>Loan Interest</h6>
@@ -290,7 +287,7 @@
 </template>
 
 <script>
-import api from "../../helpers/api";
+import api from "@/helpers/api";
 export default {
   data() {
     return {
@@ -334,7 +331,6 @@ export default {
         marital_status: "",
         occupation: "",
         dependants: "",
-        
       },
     };
   },
@@ -362,7 +358,7 @@ export default {
         this.loan_buttons = true;
         this.stepText = "Next";
         this.back_text = "Back";
-      }  else if (this.active == 2) {
+      } else if (this.active == 2) {
         this.preview_loan = true;
         // this.addNewLoan();
         // this.personal = true;

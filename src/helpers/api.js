@@ -28,11 +28,11 @@ export default {
 
     // 2. View All Loans
     async viewAllLoans() {
-        return axios.get(baseUrl + 'project/all-loan', {
+        return axios.get(baseUrl + 'loan/index', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
-        }).then(response => response.data.data.loans)
+        }).then(response => response.data)
     },
 
     // 3. View All Active Loans
@@ -77,6 +77,24 @@ export default {
         }).then(response => response.data.data.admin)
     },
 
+    // Add User
+    async addUser(loanDetails) {
+        return axios.post(baseUrl + 'loanee/add', loanDetails, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data)
+    },
+
+    // Approve User Loan
+    async approveLoan(loanDetails) {
+        return axios.post(baseUrl + 'loan/option', loanDetails, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data)
+    },
+
     // Add Loan
     async addLoan(loanDetails) {
         return axios.post(baseUrl + 'project/loan', loanDetails, {
@@ -86,13 +104,47 @@ export default {
         }).then(response => response.data)
     },
 
-    // Get My Loans Issued
-    async getMyLoans() {
-        return axios.get(baseUrl + 'project/my-loan', {
+    // Get My Users
+    async getUsers() {
+        return axios.get(baseUrl + 'loanee/myloanee', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
-        }).then(response => response.data.data.loans)
+        }).then(response => response.data)
+    },
+
+    // Get My Loans Issued
+    async getMyLoans() {
+        return axios.get(baseUrl + 'loan/my-loan', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data)
+    },
+
+    // Get Active Loans Issued
+    async getActiveLoans() {
+        return axios.get(baseUrl + 'loan/active', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data)
+    },
+    // Get Pending Loans Issued
+    async getPendingLoans() {
+        return axios.get(baseUrl + 'loan/pending', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data)
+    },
+    // Get Settled Loans Issued
+    async getSettledLoans() {
+        return axios.get(baseUrl + 'loan/settled', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data)
     },
 
     // ADMIN DASHBOARD ANALYTICS
@@ -106,11 +158,11 @@ export default {
 
     // Get All Active Loans
     async getActiveLoans() {
-        return axios.get(baseUrl + 'project/active', {
+        return axios.get(baseUrl + 'loan/active', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
-        }).then(response => response.data.data.active)
+        }).then(response => response.data)
     },
 
     // Due Loans
@@ -133,11 +185,11 @@ export default {
 
     // List All Loans
     async listAllLoans() {
-        return axios.get(baseUrl + 'project/list-loan', {
+        return axios.get(baseUrl + 'loan/index', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
-        }).then(response => response.data.data.loans)
+        }).then(response => response.data)
     },
 
     // List Due Loans
@@ -169,7 +221,7 @@ export default {
 
     // Make Daily Payment
     async makeDailyPayment(payment_details) {
-        return axios.post(baseUrl + 'project/daily-payment', payment_details, {
+        return axios.post(baseUrl + 'loan/daily-payment', payment_details, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -178,7 +230,7 @@ export default {
 
     // Make Part Payment
     async makePartPayment(payment_details) {
-        return axios.post(baseUrl + 'project/part-payment', payment_details, {
+        return axios.post(baseUrl + 'loan/part-payment', payment_details, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

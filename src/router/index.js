@@ -27,6 +27,12 @@ const Register = () =>
 // Users
 const Users = () =>
     import ('@/views/users/Users')
+
+// Users
+const agentAdminUsers = () =>
+    import ('@/adminContainer/adminComponent/users');
+
+
 const User = () =>
     import ('@/views/users/User')
 
@@ -96,10 +102,16 @@ const loan_calculator = () =>
 const update_status = () =>
     import ('@/adminContainer/adminComponent/updateStatus')
 
+//Update status
+const pending = () =>
+    import ('@/adminContainer/adminComponent/pendingLoans')
+
 
 //Change Password
 const change__password = () =>
     import ('@/superadminPages/changePassword')
+const add_users = () =>
+    import ('@/superadminPages/addUser')
 
 const change_password_agent = () =>
     import ('@/views/agentPages/changePassword')
@@ -197,6 +209,7 @@ function configRoutes() {
                     ]
                 },
 
+
                 {
                     path: 'loan_calculator',
                     meta: {
@@ -229,6 +242,24 @@ function configRoutes() {
                             path: '',
                             name: 'Active Loans',
                             component: Active_Loans
+                        },
+
+                    ]
+                },
+                {
+                    path: 'add_user',
+                    meta: {
+                        label: 'Add User'
+                    },
+                    component: {
+                        render(c) {
+                            return c('router-view')
+                        }
+                    },
+                    children: [{
+                            path: '',
+                            name: 'Add Users',
+                            component: add_users
                         },
 
                     ]
@@ -387,6 +418,31 @@ function configRoutes() {
                     component: active_loanees
                 },
                 {
+                    path: 'users',
+                    meta: {
+                        label: 'Users'
+                    },
+                    component: {
+                        render(c) {
+                            return c('router-view')
+                        }
+                    },
+                    children: [{
+                            path: '',
+                            name: 'Users',
+                            component: agentAdminUsers
+                        },
+                        {
+                            path: ':id',
+                            meta: {
+                                label: 'User Details'
+                            },
+                            name: 'Admin',
+                            component: agentAdminUsers
+                        }
+                    ]
+                },
+                {
                     path: 'due_loanees',
                     name: 'due_loanees',
                     component: due_loanees
@@ -405,6 +461,11 @@ function configRoutes() {
                     path: 'update_status',
                     name: 'update_status',
                     component: update_status
+                },
+                {
+                    path: 'pending',
+                    name: 'pending',
+                    component: pending
                 },
                 {
                     path: 'change_password_agent',
