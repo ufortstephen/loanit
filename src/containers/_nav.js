@@ -20,12 +20,12 @@ export default [{
         // },
 
 
-        // {
-        //     _name: 'CSidebarNavItem',
-        //     name: 'Administrators',
-        //     to: '/superAdmin/admins',
-        //     icon: 'cil-drop'
-        // },
+        {
+            _name: 'CSidebarNavItem',
+            name: 'Administrators',
+            to: '/superAdmin/admins',
+            icon: 'cil-drop'
+        },
 
         {
             _name: 'CSidebarNavDropdown',
@@ -44,27 +44,27 @@ export default [{
                     to: '/superAdmin/active_loans',
                     icon: ''
                 },
-                // {
-                //     _name: 'CSidebarNavItem',
-                //     name: 'Due Payments',
-                //     to: '/superAdmin/due_payments',
-                //     icon: ''
-                // },
-                // {
-                //     _name: 'CSidebarNavItem',
-                //     name: 'Pending Loans',
-                //     to: '/superAdmin/settled_loans',
-                //     icon: ''
-                // },
+                {
+                    _name: 'CSidebarNavItem',
+                    name: 'Due Payments',
+                    to: '/superAdmin/due_payments',
+                    icon: ''
+                },
+                {
+                    _name: 'CSidebarNavItem',
+                    name: 'Pending Loans',
+                    to: '/superAdmin/settled_loans',
+                    icon: ''
+                },
             ]
         },
-        {
-            _name: 'CSidebarNavItem',
-            name: 'Add User',
-            to: '/superAdmin/add_user',
-            icon: 'cil-pencil'
+        // {
+        //     _name: 'CSidebarNavItem',
+        //     name: 'Add User',
+        //     to: '/superAdmin/add_user',
+        //     icon: 'cil-pencil'
 
-        },
+        // },
         // {
         //     _name: 'CSidebarNavTitle',
         //     _children: ['Loanees']

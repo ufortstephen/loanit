@@ -1,6 +1,6 @@
 <template>
   <div class="all__users all mb-5">
-    <h3 class="p-3">All Users</h3>
+    <h3 class="p-3">All Loanees</h3>
     <el-table class="search__table">
       <el-table-column align="right">
         <template slot="header" slot-scope="scope">
@@ -114,10 +114,10 @@ export default {
           minimumFractionDigits: 2,
         });
         data.amount = formatter.format(+data.amount);
-        data.daily_payment = formatter.format(+data.daily_payment);
-        data.loanee_wallet[0].balance = formatter.format(
-          +data.loanee_wallet[0].balance
-        );
+        // data.daily_payment = formatter.format(+data.daily_payment);
+        // data.loanee_wallet[0].balance = formatter.format(
+        //   +data.loanee_wallet[0].balance
+        // );
       });
 
       this.loading = false;

@@ -4,15 +4,22 @@
     <div class="row">
       <div class="col-md-12 grid-margin stretch-card mb-0">
         <div class="card">
-          <div class="card-body d-flex justify-content-between">
-            <h5 class="card-title mb-0">
+          <div
+            class="card-body d-flex justify-content-between align-items-center"
+          >
+            <h5 class="card-title mb-0" v-if="user.loanee">
               {{ user.loanee.first_name }} {{ user.loanee.last_name }}
             </h5>
 
-            <div class="d-flex" style="gap: 8px">
-              <el-tag type="success" @click="makeDailyPayment()"
+            <div
+              class="d-md-flex"
+              style="gap: 8px"
+              v-if="loaneeWallet.length >= 1"
+            >
+              <el-tag type="success" @click="confirmDailyPayment()"
                 >Make daily payment</el-tag
               >
+
               <el-tag type="info" @click="promptBulkPayment()"
                 >Make bulk payment</el-tag
               >
@@ -32,33 +39,43 @@
             </div>
           </div>
           <div class="col-md-6 d-lg-flex justify-content-between">
-            <div class="row">
-              <div class="col-md-6">
+            <div class="row w-100">
+              <div class="col-6 text-left">
                 <div class="">
                   <p class="text-white">Name:</p>
+
                   <p class="text-white">Email:</p>
 
-                  <p class="text-white">Daily payment:</p>
+                  <p class="text-white">Amount Borrowed:</p>
                   <p class="text-white">Status:</p>
                   <p class="text-white">Balance:</p>
+                  <p class="text-white">End Date:</p>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-6 text-right">
                 <div class="">
-                  <p class="text-white">
+                  <p class="text-white" v-if="user.loanee">
                     {{ user.loanee.first_name }}
                     {{ user.loanee.last_name }}
                   </p>
-                  <p class="text-white">{{ user.loanee.email }}</p>
+                  <p class="text-white" v-if="user.loanee">
+                    {{ user.loanee.email }}
+                  </p>
 
-                  <p class="text-white">
+                  <p class="text-white" v-if="user.loanee">
                     {{ user.amount }}
                   </p>
-                  <p class="text-white">
+                  <p class="text-white" v-if="user.loanee">
                     {{ user.status }}
                   </p>
-                  <p class="text-white">
-                    {{ user.total_payment }}
+                  <p class="text-white" v-if="loaneeWallet.length >= 1">
+                    {{ loaneeWallet[loaneeWallet.length - 1].balance }}
+                  </p>
+                  <p class="text-white" v-if="!loaneeWallet.length >= 1">
+                    &nbsp;
+                  </p>
+                  <p class="text-white" v-if="user.loanee">
+                    {{ user.end_date }}
                   </p>
                 </div>
               </div>

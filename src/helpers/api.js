@@ -18,7 +18,7 @@ export default {
     // 1. Add Admins
     async addAdmin(adminDetails) {
 
-        return axios.post(baseUrl + 'auth/add', adminDetails, {
+        return axios.post(baseUrl + 'user/add', adminDetails, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -61,6 +61,15 @@ export default {
         }).then(response => response.data.data.analytics)
     },
 
+    // View Admins
+    async viewAdmins() {
+        return axios.get(baseUrl + 'user/index', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => response.data.data.admin)
+    },
+
 
     // SUPER ADMIN ENDPOINTS END
 
@@ -68,14 +77,7 @@ export default {
 
     // AGENT ADMIN ENDPOINTS STARTS HERE
 
-    // View Admins
-    async viewAdmins() {
-        return axios.get(baseUrl + 'auth/list-user', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        }).then(response => response.data.data.admin)
-    },
+
 
     // Add User
     async addUser(loanDetails) {
@@ -97,7 +99,7 @@ export default {
 
     // Add Loan
     async addLoan(loanDetails) {
-        return axios.post(baseUrl + 'project/loan', loanDetails, {
+        return axios.post(baseUrl + 'loan/add', loanDetails, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

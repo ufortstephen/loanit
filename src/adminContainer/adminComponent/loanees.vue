@@ -1,6 +1,6 @@
 <template>
   <div class="all__users all mb-5">
-    <h3 class="p-3">All Users</h3>
+    <h3 class="p-3">All Loanees</h3>
     <el-table class="search__table">
       <el-table-column align="right">
         <template slot="header" slot-scope="scope">
@@ -19,29 +19,25 @@
         tableData.filter(
           (data) =>
             !search ||
-            data.first_name
-              .toLowerCase()
-              .includes(search.toLowerCase())
+            data.loanee.first_name.toLowerCase().includes(search.toLowerCase())
         )
       "
       style="width: 100%"
     >
-      <el-table-column label="First Name" prop="loanee.first_name"> </el-table-column>
-      <el-table-column label="Last Name" prop="loanee.last_name"> </el-table-column>
-      
+      <el-table-column label="First Name" prop="loanee.first_name">
+      </el-table-column>
+      <el-table-column label="Last Name" prop="loanee.last_name">
+      </el-table-column>
+
       <el-table-column label="Email" prop="loanee.email"> </el-table-column>
-      <el-table-column label="Occupation" prop="loanee.occupation"> </el-table-column>
+      <el-table-column label="Occupation" prop="loanee.occupation">
+      </el-table-column>
       <el-table-column label="Amount" prop="amount"> </el-table-column>
       <el-table-column label="Start date" prop="start_date"> </el-table-column>
       <el-table-column label="End Date" prop="end_date"> </el-table-column>
-      <el-table-column label="Category" prop="category"> </el-table-column>
+      <!-- <el-table-column label="Category" prop="category"> </el-table-column> -->
 
-      <el-table-column label="Phone" prop=loanee."mobile">
-      </el-table-column>
-
-      
-    
-  
+      <el-table-column label="Phone" prop="loanee.mobile"> </el-table-column>
 
       <el-table-column
         prop="status"
@@ -58,7 +54,7 @@
         <template slot-scope="scope" class="p-0" prop="status">
           <el-tag
             :type="scope.row.status === 'pending' ? 'approved' : 'success'"
-            style="width:100% !important"
+            style="width: 100% !important"
             disable-transitions
             >{{ scope.row.status }}
           </el-tag>
@@ -68,9 +64,7 @@
         <template slot-scope="scope" class="p-0" prop="id">
           <el-tag
             class="wallet btn d-flex align-items-center"
-            @click.native.prevent="
-              rowClicked(tableData[scope.$index].id)
-            "
+            @click.native.prevent="rowClicked(tableData[scope.$index].id)"
             disable-transitions
             >View
           </el-tag>
@@ -122,10 +116,10 @@ export default {
           minimumFractionDigits: 2,
         });
         data.amount = formatter.format(+data.amount);
-        data.daily_payment = formatter.format(+data.daily_payment);
-        data.loanee_wallet[0].balance = formatter.format(
-          +data.loanee_wallet[0].balance
-        );
+        // data.daily_payment = formatter.format(+data.daily_payment);
+        // data.loanee_wallet[0].balance = formatter.format(
+        //   +data.loanee_wallet[0].balance
+        // );
       });
 
       this.loading = false;

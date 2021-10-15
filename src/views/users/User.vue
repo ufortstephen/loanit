@@ -14,11 +14,11 @@
     </div>
 
     <!-- profile -->
-    <div class="row">
+    <div class="row align-items-center">
       <div class="col-md-12 grid-margin stretch-card mb-0">
         <div class="card">
-          <div class="card-body d-flex justify-content-between">
-            <h5 class="card-title mb-0">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0" v-if="user.loanee">
               {{ user.loanee.first_name }} {{ user.loanee.last_name }}
             </h5>
             <div>
@@ -31,8 +31,9 @@
               </button>
 
               <div>
-                <p class="mb-0">Balance</p>
-                <el-tag type="danger">{{ user.top.data[0].balance }}</el-tag>
+                <el-tag type="danger" v-if="user.top.data.length > 1"
+                  >Bal: {{ user.top.data[0].balance }}</el-tag
+                >
               </div>
             </div>
           </div>
@@ -46,20 +47,21 @@
             </div>
           </div>
           <div class="col-md-6 d-lg-flex justify-content-between">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="">
+            <div class="row align-items-center w-100">
+              <div class="col-6">
+                <div class="text-left">
                   <p class="text-white">Name:</p>
                   <p class="text-white">Email:</p>
 
-                  <p class="text-white">Account Number:</p>
+                  <p class="text-white">Amount Borrowed:</p>
                   <p class="text-white">Account Status:</p>
                   <p class="text-white">Balance:</p>
+                  <p class="text-white">Due Date:</p>
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="">
-                  <p class="text-white">
+              <div class="col-6">
+                <div class="text-right">
+                  <p class="text-white" v-if="user.loanee.first_name">
                     {{ user.loanee.first_name }}
                     {{ user.loanee.last_name }}
                   </p>
@@ -73,6 +75,9 @@
                   </p>
                   <p class="text-white">
                     {{ user.total_payment }}
+                  </p>
+                  <p class="text-white">
+                    {{ user.end_date }}
                   </p>
                 </div>
               </div>

@@ -28,18 +28,18 @@
           <!-- <addAdmin /> -->
         </CHeaderNavLink>
       </CHeaderNavItem>
-      <CHeaderNavItem class="d-md-down-none mx-2">
+      <CHeaderNavItem class="mx-2">
         <CHeaderNavLink>
           <CIcon name="cil-bell" />
         </CHeaderNavLink>
       </CHeaderNavItem>
 
-      <CHeaderNavItem class="d-md-down-none mx-2">
+      <CHeaderNavItem class="mx-2">
         <CHeaderNavLink>
           <CIcon name="cil-list" />
         </CHeaderNavLink>
       </CHeaderNavItem>
-      <CHeaderNavItem class="d-md-down-none mx-2">
+      <CHeaderNavItem class="mx-2">
         <CHeaderNavLink>
           <el-dropdown>
             <span class="el-dropdown-link">
@@ -75,7 +75,15 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.dispatch("logout").then(this.$router.push("/login"));
+      this.$confirm("End current Session?", "Logout", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "warning",
+      })
+        .then(() => {
+          this.$store.dispatch("logout").then(this.$router.push("/login"));
+        })
+        .catch(() => {});
     },
     gotoChangePass() {
       this.$router.push("/agentAdmin/change_password_agent");

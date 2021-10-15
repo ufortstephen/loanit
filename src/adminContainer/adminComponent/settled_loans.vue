@@ -19,36 +19,32 @@
         tableData.filter(
           (data) =>
             !search ||
-            data.first_name
-              .toLowerCase()
-              .includes(search.toLowerCase())
+            data.first_name.toLowerCase().includes(search.toLowerCase())
         )
       "
       style="width: 100%"
     >
-      <el-table-column label="First Name" prop="loanee.first_name"> </el-table-column>
-      <el-table-column label="Last Name" prop="loanee.last_name"> </el-table-column>
-      
+      <el-table-column label="First Name" prop="loanee.first_name">
+      </el-table-column>
+      <el-table-column label="Last Name" prop="loanee.last_name">
+      </el-table-column>
+
       <el-table-column label="Email" prop="loanee.email"> </el-table-column>
-      <el-table-column label="Occupation" prop="loanee.occupation"> </el-table-column>
+      <el-table-column label="Occupation" prop="loanee.occupation">
+      </el-table-column>
       <el-table-column label="Amount" prop="amount"> </el-table-column>
       <el-table-column label="Start date" prop="start_date"> </el-table-column>
       <el-table-column label="End Date" prop="end_date"> </el-table-column>
       <el-table-column label="Category" prop="category"> </el-table-column>
 
-      <el-table-column label="Phone" prop=loanee."mobile">
-      </el-table-column>
-
-      
-    
-  
+      <el-table-column label="Phone" prop="loanee.mobile"> </el-table-column>
 
       <el-table-column
         prop="status"
         label="Status"
         width="100"
         :filters="[
-          { text: 'active', value: 'active' },
+          { text: 'settled', value: 'settled' },
           { text: 'due', value: 'due' },
           { text: 'settled', value: 'settled' },
         ]"
@@ -57,10 +53,10 @@
       >
         <template slot-scope="scope" class="p-0" prop="status">
           <el-tag
-            :type="scope.row.status === 'active' ? 'success' : 'warning'"
-            style="width:100% !important"
+            :type="scope.row.status === 'settled' ? 'success' : 'success'"
+            style="width: 100% !important"
             disable-transitions
-            >{{ scope.row.status }}
+            >settled
           </el-tag>
         </template>
       </el-table-column>
@@ -68,9 +64,7 @@
         <template slot-scope="scope" class="p-0" prop="id">
           <el-tag
             class="wallet btn d-flex align-items-center"
-            @click.native.prevent="
-              rowClicked(tableData[scope.$index].id)
-            "
+            @click.native.prevent="rowClicked(tableData[scope.$index].id)"
             disable-transitions
             >View
           </el-tag>

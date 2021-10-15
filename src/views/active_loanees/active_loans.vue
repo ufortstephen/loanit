@@ -105,7 +105,12 @@ export default {
       });
       console.log(response);
 
-      this.tableData = response.data.loans;
+      this.tableData = response.data.loans.filter(
+        (item, index) => "approved" == item.status
+      );
+
+     
+
       this.tableData.forEach((data) => {
         // Formatter
         const formatter = new Intl.NumberFormat("en-US", {

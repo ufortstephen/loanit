@@ -85,6 +85,10 @@ const loaneeDetails = () =>
 const active_loanees = () =>
     import ('@/adminContainer/adminComponent/active_loanees')
 
+// All Users
+const all_users = () =>
+    import ('@/adminContainer/adminComponent/allUsers')
+
 // Due Loanees
 const due_loanees = () =>
     import ('@/adminContainer/adminComponent/due_loanees')
@@ -416,6 +420,11 @@ function configRoutes() {
                     path: 'active_loanees',
                     name: 'active_loanees',
                     component: active_loanees
+                },
+                {
+                    path: 'all_users',
+                    name: 'all_users',
+                    component: all_users
                 },
                 {
                     path: 'users',

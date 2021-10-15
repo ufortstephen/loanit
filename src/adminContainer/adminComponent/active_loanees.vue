@@ -21,7 +21,7 @@
         tableData.filter(
           (data) =>
             !search ||
-            data.first_name
+            data.loanee.first_name
               .toLowerCase()
               .includes(search.toLowerCase())
         )

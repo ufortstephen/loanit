@@ -30,12 +30,12 @@ export default [{
                     to: '/agentAdmin/active_loanees',
                     icon: ''
                 },
-                {
-                    _name: 'CSidebarNavItem',
-                    name: 'Due Payments',
-                    to: '/agentAdmin/due_loanees',
-                    icon: ''
-                },
+                // {
+                //     _name: 'CSidebarNavItem',
+                //     name: 'Due Payments',
+                //     to: '/agentAdmin/due_loanees',
+                //     icon: ''
+                // },
                 {
                     _name: 'CSidebarNavItem',
                     name: 'Pending Loans',
@@ -50,20 +50,22 @@ export default [{
                 },
             ]
         },
+
         {
             _name: 'CSidebarNavItem',
-            name: 'Users',
-            to: '/agentAdmin/active_loanees',
+            name: 'Add User',
+            to: '/agentAdmin/add_loan',
             icon: 'cil-pencil'
 
         },
-        // {
-        //     _name: 'CSidebarNavItem',
-        //     name: 'Add User',
-        //     to: '/agentAdmin/add_loan',
-        //     icon: 'cil-pencil'
 
-        // },
+        {
+            _name: 'CSidebarNavItem',
+            name: 'Users',
+            to: '/agentAdmin/all_users',
+            icon: 'cil-pencil'
+
+        },
 
 
 
